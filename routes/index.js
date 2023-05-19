@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const mysql = require('mysql');
-const client = require('./database');
+const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 const app = require('../app');
 
@@ -13,21 +13,29 @@ router.get('/', function(req, res, next) {
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = 1";
   //Execute db query
-  // client.query(sql, (err, rows) => {
-  //   //Check for error in db query
-  //   if (err) {
-  //     //display the error
-  //     console.log('Error querying the database:', err);
-  //     res.send(500);
-  //   } else {
-  //     // Render the pug template file with the database results
-  //     res.render('home', { 
-  //       products_list: rows
-  //     });
-  //   }
-  // });
-  res.render('home');
+  dbclient.query(sql, (err, rows) => {
+    //Check for error in db query
+    if (err) {
+      //display the error
+      console.log('Error querying the database:', err);
+      res.send(500);
+    } else {
+      // Render the pug template file with the database results
+      res.render('home', { 
+        products_list: rows
+      });
+    }
+  });
 });
+
+app.get('/test/:id', (req, res, next) => {
+  dbclient.query('SELECT * FROM product WHERE product_id = $1', [req.params.id], (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(result.rows[0])
+  })
+})
 
 router.get('/about', function(req, res, next) {
   // Render the pug template file
@@ -45,13 +53,13 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
   const brand_idFilter = (req.params.brandFilt == '_') ? 'brand_id' : req.params.brandFilt;
   try {
     //Execute db query
-    var product_query = await client.query(`SELECT * FROM product 
+    var product_query = await dbclient.query(`SELECT * FROM product 
     WHERE activity_id = ` + activity_idFilter + `  
     AND product_category_id = ` + product_category_idFilter +`  
     AND brand_id = ` + brand_idFilter);
-    var brand_query = await client.query("SELECT * FROM brand");
-    var category_query = await client.query("SELECT * FROM product_category");
-    var activity_query = await client.query("SELECT * FROM product_activity");
+    var brand_query = await dbclient.query("SELECT * FROM brand");
+    var category_query = await dbclient.query("SELECT * FROM product_category");
+    var activity_query = await dbclient.query("SELECT * FROM product_activity");
     
     // Render the pug template file with the database results
     res.render('shop', {
@@ -80,7 +88,7 @@ router.get('/product/:product_id', function(req, res, next) {
   sql += 'WHERE product.product_id=' + req.params.product_id + ' '
   sql += 'ORDER BY size_options.size_id'
   //Execute db query
-  client.query(sql, (err, rows) => {
+  dbclient.query(sql, (err, rows) => {
     //Check for error in db error
     if (err) {
       //display the query
@@ -135,7 +143,7 @@ router.post('/add_user', function(req, res, next) {
       var sql = `INSERT INTO customers(first_name, second_name, phone, email, password) 
       VALUES ("${req.body.first_name}","${req.body.second_name}","${req.body.phone}","${req.body.email}","${hashedPassword}")`;
       //Execute db query
-      client.query(sql, (err, rows) => {
+      dbclient.query(sql, (err, rows) => {
         //Check for error in db query
         if (err) {
           //display the error
@@ -160,7 +168,7 @@ router.get('/basket', function(req, res, next) {
   LEFT JOIN product ON product.product_id = size.product_id
   WHERE basket.customer_id = 17`;
   //Execute db query
-  client.query(sql, (err, rows) => {
+  dbclient.query(sql, (err, rows) => {
     //Check for error in db query
     if (err) {
       //display the error
