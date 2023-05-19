@@ -33,7 +33,7 @@ router.post('/login', function (req, res, next) {
       SELECT * FROM customers 
       WHERE email = "${user_email_address}"
       `;
-      database.query(query, function(error, data) {
+      client.query(query, function(err, data) {
         //check if data was returned
           if(data.length > 0) {
             console.log(data)

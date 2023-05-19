@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = 1 ORDER BY product_id";
   //Execute db query
-  database.query(sql, (err, rows, fields) => {
+  client.query(sql, (err, rows) => {
     //Check for error in db query
     if (err) {
       //display the error
@@ -33,11 +33,6 @@ router.get('/about', function(req, res, next) {
     
 });
 
-// util module for handle callback in mysql query
-const util = require('util');
-
-// create variable to get result from querying
-let resultQuery = util.promisify(database.query).bind(database);
 
 router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) => {
   console.log(req.params.activFilt);
@@ -46,22 +41,27 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
   const activity_idFilter = (req.params.activFilt == '_') ? 'activity_id' : req.params.activFilt;
   const product_category_idFilter = (req.params.categoryFilt == '_') ? 'product_category_id' : req.params.categoryFilt;
   const brand_idFilter = (req.params.brandFilt == '_') ? 'brand_id' : req.params.brandFilt;
-  //Execute db query
-  var product_query = await resultQuery(`SELECT * FROM product 
-  WHERE activity_id = ` + activity_idFilter + `  
-  AND product_category_id = ` + product_category_idFilter +`  
-  AND brand_id = ` + brand_idFilter);
-  var brand_query = await resultQuery("SELECT * FROM brand");
-  var category_query = await resultQuery("SELECT * FROM product_category");
-  var activity_query = await resultQuery("SELECT * FROM product_activity");
-   
-  // Render the pug template file with the database results
-  res.render('shop', {
-    products_list: product_query,
-    brand_list: brand_query,
-    prod_type_list: category_query,
-    activity_list: activity_query
-  });
+  try {
+    //Execute db query
+    var product_query = await client.query(`SELECT * FROM product 
+    WHERE activity_id = ` + activity_idFilter + `  
+    AND product_category_id = ` + product_category_idFilter +`  
+    AND brand_id = ` + brand_idFilter);
+    var brand_query = await client.query("SELECT * FROM brand");
+    var category_query = await client.query("SELECT * FROM product_category");
+    var activity_query = await client.query("SELECT * FROM product_activity");
+    
+    // Render the pug template file with the database results
+    res.render('shop', {
+      products_list: product_query,
+      brand_list: brand_query,
+      prod_type_list: category_query,
+      activity_list: activity_query
+    });
+  } catch (err) {
+    console.log(err.stack)
+  }
+  
 })
 
 
@@ -78,7 +78,7 @@ router.get('/product/:product_id', function(req, res, next) {
   sql += 'WHERE product.product_id=' + req.params.product_id + ' '
   sql += 'ORDER BY size_options.size_id'
   //Execute db query
-  database.query(sql, (err, rows, fields) => {
+  client.query(sql, (err, rows) => {
     //Check for error in db error
     if (err) {
       //display the query
@@ -133,7 +133,7 @@ router.post('/add_user', function(req, res, next) {
       var sql = `INSERT INTO customers(first_name, second_name, phone, email, password) 
       VALUES ("${req.body.first_name}","${req.body.second_name}","${req.body.phone}","${req.body.email}","${hashedPassword}")`;
       //Execute db query
-      database.query(sql, (err, rows, fields) => {
+      client.query(sql, (err, rows) => {
         //Check for error in db query
         if (err) {
           //display the error
@@ -158,7 +158,7 @@ router.get('/basket', function(req, res, next) {
   LEFT JOIN product ON product.product_id = size.product_id
   WHERE basket.customer_id = 17`;
   //Execute db query
-  database.query(sql, (err, rows, fields) => {
+  client.query(sql, (err, rows, fields) => {
     //Check for error in db query
     if (err) {
       //display the error
