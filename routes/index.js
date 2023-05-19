@@ -31,7 +31,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/about', function(req, res, next) {
-  console.log(re.session.customer_id);
   // Render the pug template file
   res.render('about');
     
@@ -51,9 +50,9 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
     WHERE activity_id = ` + activity_idFilter + `  
     AND product_category_id = ` + product_category_idFilter +`  
     AND brand_id = ` + brand_idFilter);
-    var brand_query = await dbclient.query("SELECT * FROM brand");
-    var category_query = await dbclient.query("SELECT * FROM product_category");
-    var activity_query = await dbclient.query("SELECT * FROM product_activity");
+    var brand_query = await dbclient.query("SELECT * FROM brand",[]);
+    var category_query = await dbclient.query("SELECT * FROM product_category",[]);
+    var activity_query = await dbclient.query("SELECT * FROM product_activity",[]);
     
     // Render the pug template file with the database results
     res.render('shop', {
