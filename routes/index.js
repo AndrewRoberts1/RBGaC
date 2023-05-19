@@ -3,6 +3,7 @@ var router = express.Router();
 const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 var appJS = require('../app');
+var session = require('express-session');
 
 var app = express();
 
