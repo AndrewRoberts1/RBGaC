@@ -3,7 +3,9 @@ var router = express.Router();
 const mysql = require('mysql');
 const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
-const app = require('../app');
+var appJS = require('../app');
+
+var app = express();
 
 //Session 
 app.set('trust proxy', 1) // trust first proxy
