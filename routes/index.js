@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+
 const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 var appJS = require('../app');
@@ -12,14 +12,15 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(session({  
   name: `rockBottomSession`,
   secret: 'secretOfSession',  
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie: { 
     secure: false, // This will only work if you have https enabled!
     maxAge: 60000 // 1 min
   } 
 }));
 
+var router = express.Router();
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
