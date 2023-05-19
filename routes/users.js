@@ -36,20 +36,20 @@ router.post('/login', function (req, res, next) {
       SELECT * FROM customers 
       WHERE email = "${user_email_address}"
       `;
-      client.query(query, function(err, data) {
+      client.query(query, function(err, result) {
         //check if data was returned
-          if(data.length > 0) {
-            console.log(data)
+          if(result.rows.length > 0) {
+            console.log(result.rows)
               //iterate over each row returned from db query
-              for(var count = 0; count < data.length; count++) {
+              for(var count = 0; count < result.rows.length; count++) {
                 //compare the password given and db password
-                bcrypt.compare(user_password, data[count].password,
+                bcrypt.compare(user_password, result.rows[count].password,
                   async function (err, isMatch) {
                       //check if they match
                       if (isMatch) {
                         console.log(req.session);
-                        console.log(data[count])
-                        app.session.customer_id = String(data[count].customer_id);
+                        console.log(result.rows[count])
+                        app.session.customer_id = String(result.rows[count].customer_id);
                         
                         console.log(app.session.customer_id);
                         res.redirect("/");

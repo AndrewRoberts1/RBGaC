@@ -88,7 +88,7 @@ router.get('/product/:product_id', function(req, res, next) {
   sql += 'WHERE product.product_id=' + req.params.product_id + ' '
   sql += 'ORDER BY size_options.size_id'
   //Execute db query
-  dbclient.query(sql, (err, rows) => {
+  dbclient.query(sql, (err, result) => {
     //Check for error in db error
     if (err) {
       //display the query
@@ -96,7 +96,7 @@ router.get('/product/:product_id', function(req, res, next) {
       res.send(500);
     } else {
       // Render the pug template file with the database results
-      const product_info = rows[0];
+      const product_info = result.rows[0];
       res.render('product', { 
         product_id: product_info.product_id,
         product_name: product_info.product_name,
@@ -106,7 +106,7 @@ router.get('/product/:product_id', function(req, res, next) {
         prod_type: product_info.category,
         price: product_info.price,
         colour: product_info.colour,
-        size_options: rows
+        size_options: result.rows
       });
     }
   });
@@ -143,7 +143,7 @@ router.post('/add_user', function(req, res, next) {
       var sql = `INSERT INTO customers(first_name, second_name, phone, email, password) 
       VALUES ("${req.body.first_name}","${req.body.second_name}","${req.body.phone}","${req.body.email}","${hashedPassword}")`;
       //Execute db query
-      dbclient.query(sql, (err, rows) => {
+      dbclient.query(sql, (err, result) => {
         //Check for error in db query
         if (err) {
           //display the error
@@ -168,7 +168,7 @@ router.get('/basket', function(req, res, next) {
   LEFT JOIN product ON product.product_id = size.product_id
   WHERE basket.customer_id = 17`;
   //Execute db query
-  dbclient.query(sql, (err, rows) => {
+  dbclient.query(sql, (err, result) => {
     //Check for error in db query
     if (err) {
       //display the error
@@ -176,12 +176,12 @@ router.get('/basket', function(req, res, next) {
       res.send(500);
     } else {
       let sum = 0;
-      for (item in rows) {
+      for (item in result.rows) {
         sum += item.price * item.quantity;
       }
       // Render the pug template file with the database results
       res.render('basket', { 
-        basket_list: rows,
+        basket_list: result.rows,
         subTotal: sum
       });
     }
