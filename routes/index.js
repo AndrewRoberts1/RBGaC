@@ -11,7 +11,7 @@ const app = require('../app');
 
 router.get('/', function(req, res, next) {
   // Make a database query
-  var sql = "SELECT * FROM product WHERE popular_item = 1 ORDER BY product_id";
+  var sql = "SELECT * FROM product WHERE popular_item = 1";
   //Execute db query
   client.query(sql, (err, rows) => {
     //Check for error in db query
