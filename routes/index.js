@@ -160,7 +160,7 @@ router.get('/basket', function(req, res, next) {
   LEFT JOIN product ON product.product_id = size.product_id
   WHERE basket.customer_id = 17`;
   //Execute db query
-  client.query(sql, (err, rows, fields) => {
+  client.query(sql, (err, rows) => {
     //Check for error in db query
     if (err) {
       //display the error
@@ -168,9 +168,9 @@ router.get('/basket', function(req, res, next) {
       res.send(500);
     } else {
       let sum = 0;
-      rows.forEach((item) => {
+      for (item in rows) {
         sum += item.price * item.quantity;
-      });
+      }
       // Render the pug template file with the database results
       res.render('basket', { 
         basket_list: rows,
