@@ -26,6 +26,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.use(session({
+  secret: 'my-secret',
+  resave: true,
+  saveUninitialized: true
+}));
+
+
 
 
 // catch 404 and forward to error handler
