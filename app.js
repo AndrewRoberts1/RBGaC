@@ -12,6 +12,12 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+app.use(session({
+  secret: 'my-secret',
+  resave: true,
+  saveUninitialized: true
+}));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -26,14 +32,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-app.use(session({
-  secret: 'my-secret',
-  resave: true,
-  saveUninitialized: true
-}));
-
-
 
 
 // catch 404 and forward to error handler
