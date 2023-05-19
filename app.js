@@ -26,18 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-//Session 
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({  
-  name: `rockBottomSession`,
-  secret: 'secretOfSession',  
-  resave: false,
-  saveUninitialized: false,
-  cookie: { 
-    secure: false, // This will only work if you have https enabled!
-    maxAge: 60000 // 1 min
-  } 
-}));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

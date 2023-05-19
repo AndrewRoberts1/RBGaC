@@ -5,12 +5,25 @@ const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 const app = require('../app');
 
-
+//Session 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({  
+  name: `rockBottomSession`,
+  secret: 'secretOfSession',  
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false, // This will only work if you have https enabled!
+    maxAge: 60000 // 1 min
+  } 
+}));
 
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
+  console.log(req.session)
   req.session.customer_id = 'no customer id';
+  console.log(req.session)
 
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = $1";
