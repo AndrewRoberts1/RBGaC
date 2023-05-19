@@ -13,20 +13,22 @@ router.get('/', function(req, res, next) {
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = 1";
   //Execute db query
-  client.query(sql, (err, rows) => {
-    //Check for error in db query
-    if (err) {
-      //display the error
-      console.log('Error querying the database:', err);
-      res.send(500);
-    } else {
-      // Render the pug template file with the database results
-      res.render('home', { 
-        products_list: rows
-      });
-    }
+  // client.query(sql, (err, rows) => {
+  //   //Check for error in db query
+  //   if (err) {
+  //     //display the error
+  //     console.log('Error querying the database:', err);
+  //     res.send(500);
+  //   } else {
+  //     // Render the pug template file with the database results
+  //     res.render('home', { 
+  //       products_list: rows
+  //     });
+  //   }
+  // });
+  res.render('home', { 
+    products_list: rows
   });
-
 });
 
 router.get('/about', function(req, res, next) {
