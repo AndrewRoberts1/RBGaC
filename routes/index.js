@@ -11,6 +11,7 @@ const app = require('../app');
 
 router.get('/', function(req, res, next) {
   console.log(req.session)
+  console.log(req.session.id)
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = $1";
   //Execute db query
@@ -28,15 +29,6 @@ router.get('/', function(req, res, next) {
     }
   });
 });
-
-router.get('/test/:id', (req, res, next) => {
-  dbclient.query('SELECT * FROM product WHERE product_id = $1', [req.params.id], (err, result) => {
-    if (err) {
-      return next(err)
-    }
-    res.send(result.rows[0])
-  })
-})
 
 router.get('/about', function(req, res, next) {
   // Render the pug template file
