@@ -10,6 +10,7 @@ const app = require('../app');
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
+  console.log(req.session)
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = $1";
   //Execute db query

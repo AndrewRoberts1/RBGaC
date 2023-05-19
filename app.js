@@ -28,7 +28,7 @@ app.use('/users', usersRouter);
 
 //Session 
 app.use(session({
-  secret : 'webslesson',
+  secret : 'rockBottomSession',
   resave : true,
   saveUninitialized : true,
   customer_id: ""
