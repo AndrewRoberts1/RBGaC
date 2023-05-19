@@ -11,9 +11,9 @@ const app = require('../app');
 
 router.get('/', function(req, res, next) {
   // Make a database query
-  var sql = "SELECT * FROM product WHERE popular_item = 1";
+  var sql = "SELECT * FROM product WHERE popular_item = $1";
   //Execute db query
-  dbclient.query(sql, (err, rows) => {
+  dbclient.query(sql,[1], (err, result) => {
     //Check for error in db query
     if (err) {
       //display the error
@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
     } else {
       // Render the pug template file with the database results
       res.render('home', { 
-        products_list: rows
+        products_list: result.rows
       });
     }
   });
