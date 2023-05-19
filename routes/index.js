@@ -10,10 +10,8 @@ const app = require('../app');
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
-  res.cookie('session', req.session.id);
+  req.session.customer_id = 'no customer id';
 
-  console.log(req.session)
-  console.log(req.session.id)
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = $1";
   //Execute db query
@@ -33,6 +31,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/about', function(req, res, next) {
+  console.log(re.session.customer_id);
   // Render the pug template file
   res.render('about');
     
