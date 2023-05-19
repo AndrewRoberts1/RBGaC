@@ -1,20 +1,13 @@
-const mysql = require('mysql');
+const { Client } = require('pg')
+const connectionString = "postgres://rock_bottom_gear_and_co_user:FrgSInv7DiUd2QPo7jmBeZqXY8PgjtkQ@dpg-chjkkj0rddlddrnan7sg-a/rock_bottom_gear_and_co";
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'testusername',
-    password: 'test123',
-    database: 'rock_bottom_gear_and_co',
-    port: '3306'
-});
+const client = new Client({
+  connectionString,
+})
 
-connection.connect((err) => {
-  if (err) {
-    console.log('Error connecting to the database:', err);
-    process.exit();
-  }
-
-  console.log('Connected to the database!');
-});
-
-module.exports = connection;
+client.connect()
+ 
+client.query('SELECT NOW()', (err, res) => {
+  console.log(err, res)
+  client.end()
+})
