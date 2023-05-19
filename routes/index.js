@@ -1,16 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const mysql = require('mysql');
-//const client = require('./database');
+const client = require('./database');
 const bcrypt = require('bcryptjs');
 const app = require('../app');
 
-const { Client } = require('pg')
-const connectionString = "postgres://rock_bottom_gear_and_co_user:FrgSInv7DiUd2QPo7jmBeZqXY8PgjtkQ@dpg-chjkkj0rddlddrnan7sg-a/rock_bottom_gear_and_co";
-
-const client = new Client({
-  connectionString,
-})
 
 
 /* GET home page. */
@@ -18,7 +12,6 @@ const client = new Client({
 router.get('/', function(req, res, next) {
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = 1 ORDER BY product_id";
-  client.connect();
   //Execute db query
   client.query(sql, (err, rows) => {
     //Check for error in db query
