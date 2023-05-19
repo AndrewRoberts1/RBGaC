@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const mysql = require('mysql');
-const database = require('./database');
+const client = require('./database');
 const bcrypt = require('bcryptjs');
 const app = require('../app');
 
