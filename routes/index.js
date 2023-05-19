@@ -26,9 +26,7 @@ router.get('/', function(req, res, next) {
   //     });
   //   }
   // });
-  res.render('home', { 
-    products_list: rows
-  });
+  res.render('home');
 });
 
 router.get('/about', function(req, res, next) {
