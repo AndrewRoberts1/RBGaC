@@ -10,6 +10,8 @@ const app = require('../app');
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
+  res.cookie('session', req.session.id);
+
   console.log(req.session)
   console.log(req.session.id)
   // Make a database query
