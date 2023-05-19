@@ -1,0 +1,100 @@
+.container {
+    padding-top: 3rem;
+    line-height:100%
+}
+
+.imageRow {
+    padding-top: 5.5rem;
+    width: 100%;
+    margin: 0;
+}
+.imgHeader {
+    padding: 0;
+    width: 100%;
+}
+
+.maintxt {
+    background-image: url(cropped-dolomites.jpg);
+    background-size: cover;
+    color: white;
+    height: 144px;
+    font-size: 32px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    text-align: flex-end;
+    text-align: center;
+    align-self: flex-end;
+}
+
+.rbContainer {
+    background: white;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+
+    /* border */
+    border-radius: 0px;
+    border-color: #F0F0F0;
+    border-style: solid;
+    
+}
+h2 {
+    text-align: center;
+}
+h5 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+h6 {
+    text-align: center;
+}
+.navbar {
+    background: rgba(245, 245, 245, 0.4);
+    padding: 0;
+}
+
+body {
+    background-color: white;
+}
+
+.navLink {
+    color: black ;
+    text-decoration: none;
+}
+.navLink:hover {
+    font-weight: 500;
+    color: black ;
+}
+.navButton{
+    border: 0;
+    cursor: pointer;
+    background: none!important;
+    border: none;
+    padding: 0!important;
+}
+
+footer {
+    background-color: #111121;
+}
+
+.footerIcon {
+    color: white;
+    padding: 3px;
+    width: 30px;
+    height: 25px;
+}
+
+.footerHeader {
+    color: white;
+    text-decoration: underline;
+    margin-bottom: 10pt;           
+}
+
+.footerText {
+    color: white;
+    font-size:   10pt;
+    line-height: 10pt; /* 14 = 10 + 2 above + 2 below */
+}

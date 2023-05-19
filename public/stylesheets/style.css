@@ -1,0 +1,480 @@
+/* body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+} */
+
+
+
+
+/* my style stuff below  */
+
+
+
+html, body { 
+  overflow-x: hidden; 
+}
+.mainCont {
+  padding-top: 12vh;
+  padding-left: 0;
+  padding-right: 0;
+  height: auto;
+  
+}
+
+/* Navbar */
+
+.navbar-brand{
+  height: 10vh;
+  padding: 0vh;
+  margin: 0vh;
+}
+
+.navbar {
+  background: rgba(245, 245, 245, 0.4);
+  padding: 0;
+}
+
+.navLink {
+  color: black ;
+  text-decoration: none;
+  
+}
+
+.navLinkDiv {
+  text-align: center;
+}
+.navLink:hover {
+  font-weight: 500;
+  color: black ;
+}
+.navButton{
+  border: 0;
+  cursor: pointer;
+  background: none!important;
+  border: none;
+  padding: 0!important;
+}
+
+/* Footer */
+
+
+footer {
+  background-color: #111121;
+}
+
+.footerIcon {
+  color: white;
+  padding: 3px;
+  width: 30px;
+  height: 25px;
+}
+
+.footerHeader {
+  color: white;
+  text-decoration: underline;
+  margin-bottom: 10pt;           
+}
+
+.footerText {
+  color: white;
+  font-size:   10pt;
+  line-height: 10pt; /* 14 = 10 + 2 above + 2 below */
+  text-decoration: none;
+}
+
+/* Image Header */
+
+.headerImage {
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  
+  margin: 0;
+  position: relative;
+  background-color: rgba(112,112,112, 0.25);
+  background-blend-mode: multiply;
+}
+
+.genericHead {
+  background-image: url("/images/Generic\ Header.jpg");
+  height: 17vh;
+  
+}
+
+.homeHead {
+  background-image: url("/images/Home\ Header.jpg");
+  background-position: center;
+  height: 80vh;
+  
+}
+
+.headerText {
+  color: white;
+  padding-top: 8vh;
+}
+
+.headerPadd { 
+  height: 10vh;
+}
+
+.whiteBtn {
+  border-radius: 0;
+  border-color: white;
+  border-width: 2px;
+  background-color: transparent;
+  color: white;
+  font-weight: 600;
+}
+
+.headShopBtn {
+  width: 10rem;
+}
+
+.headAboutBtn {
+  width: 15rem;
+}
+
+.headRow{
+  height: 80vh;
+}
+
+.homeHeaderText {
+  color: white;
+  
+}
+
+.homeHeaderThirdCol {
+  padding-bottom: 8vh;
+}
+
+
+/* Main body */
+
+.rbContainer {
+  background: white;
+  margin-top: 1rem;
+
+  /* border */
+  border-radius: 0px;
+  border-color: #F0F0F0;
+  border-style: solid;
+  
+}
+
+.mainRow {
+  padding: 2vh;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  margin: 12px;
+  margin-top: 0;
+}
+
+
+/* Activity Section */
+
+.activityRow {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.activityCol{
+  margin: 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.activityBtn {
+  width: 70%;
+  height: 10%;
+  margin-bottom: 10%;
+}
+.activityBtn:hover {
+  width: 80%;
+  color: white;
+  height: 13%;
+  margin-bottom: 7%;
+  font-weight: 600;
+
+}
+
+.activityText {
+  color: white;
+  padding-top: 40%;
+  height: 5%;
+  padding-bottom: 35%;
+}
+
+.activityImg {
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  background-position: center;  
+  height: 60vh;
+  background-color: rgba(112,112,112, 0.25);
+  background-blend-mode: multiply; 
+} 
+
+.activitySkiing {
+  background-image: url("/images/Skiing\ Image.jpg");
+}
+.activityClimbing {
+  background-image: url("/images/Climbing\ Image.jpg");
+}
+.activityHiking {
+  background-image: url("/images/Hiking\ Image.jpg");
+}
+.activityCamping {
+  background-image: url("/images/Camping\ Image.jpg");
+}
+
+/* Newsletter Section */
+
+.newsletterRow {
+  background-color: #111121;
+}
+
+.newsletterCol {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.newsletterText {
+  color: white;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 1rem;
+  margin-right: 1rem;;
+}
+
+.newsletterInput {
+  width: 75%;
+
+}
+
+.subBtn {
+  width: 40%;
+}
+
+
+/* Carousel */
+
+@media (max-width: 767px) {
+  .carousel-inner .carousel-item > div {
+      display: none;
+  }
+  .carousel-inner .carousel-item > div:first-child {
+      display: block;
+  }
+}
+
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+  display: flex;
+}
+
+/* medium and up screens */
+@media (min-width: 768px) {
+  
+  .carousel-inner .carousel-item-end.active,
+  .carousel-inner .carousel-item-next {
+    transform: translateX(25%);
+  }
+  
+  .carousel-inner .carousel-item-start.active, 
+  .carousel-inner .carousel-item-prev {
+    transform: translateX(-25%);
+  }
+}
+
+.carousel-inner .carousel-item-end,
+.carousel-inner .carousel-item-start { 
+transform: translateX(0);
+}
+
+.card {
+  border: 0;
+}
+
+.card-img {
+  position: sticky;
+  top: 0;
+}
+
+.prodBasketBtn {
+  width:  100%;
+}
+
+.carouselCol {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  filter: invert(0.5);
+  height: 3rem;
+  width: 3rem;
+}
+
+.card-img-overlay {
+  text-align: right;
+}
+
+
+/* About page */
+
+.aboutHead {
+  background-image: url("/images/Shop\ Page\ Header.jpg");
+  background-position: center;
+  height: 40vh;
+}
+
+.aboutSubHeader {
+  font-style: italic;
+  text-align: left;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.aboutLink {
+  text-decoration:none;
+  color: black;
+}
+
+.aboutHeadText {
+  color: white;
+  padding-top: 30vh;
+}
+
+
+/* Shop Pgae */
+
+/* .shopHeadRow{
+  padding-bottom: 25vh;
+  height: 40vh;
+  
+ 
+} */
+
+.shopHeadCol {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  
+}
+
+.shopFilterLabel{
+  color: black;
+  margin-top: 2rem;
+}
+
+.prodShopName {
+  color: black;
+  text-decoration: none;
+}
+
+.cardShop {border: 0;}
+
+
+/* Product Page */
+
+.productHead {
+  background-image: url("/images/Product\ Page\ Header.jpg");
+  height: 18vh;
+}
+
+.prodPriceTitle{
+  text-align: start;
+}
+
+.prodPriceValue{
+  float: right !important;
+}
+
+/* Generic */
+
+h2 {
+  text-align: center;
+}
+h4 {
+  text-align: center;
+}
+h6 {
+  text-align: center;
+}
+
+
+body {
+  background-color: white;
+}
+
+.redBtn {
+  background-color: #A61616;
+  color: white;
+  border-radius: 0;
+  font-weight: 600;
+}
+
+.removeBtn {
+  background-color: #A61616;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+}
+
+
+/* Sign in page */
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+/* Basket Page */
+
+.checkoutDetails {
+  margin-top: auto;
+}
+.checkoutCol {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.priceRight {
+  float: right !important;
+}
