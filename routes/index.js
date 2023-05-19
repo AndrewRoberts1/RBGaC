@@ -12,21 +12,13 @@ const client = new Client({
   connectionString,
 })
 
-client.connect()
- 
-client.query('SELECT NOW()', (err, res) => {
-  console.log(err, res)
-  client.end()
-})
-
-
-
 
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = 1 ORDER BY product_id";
+  client.connect();
   //Execute db query
   client.query(sql, (err, rows) => {
     //Check for error in db query
