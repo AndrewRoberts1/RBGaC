@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-app.get('/test/:id', (req, res, next) => {
+router.get('/test/:id', (req, res, next) => {
   dbclient.query('SELECT * FROM product WHERE product_id = $1', [req.params.id], (err, result) => {
     if (err) {
       return next(err)
