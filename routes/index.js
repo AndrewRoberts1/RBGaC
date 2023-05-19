@@ -36,6 +36,12 @@ router.get('/about', function(req, res, next) {
     
 });
 
+// util module for handle callback in mysql query
+const util = require('util');
+
+// create variable to get result from querying
+let resultQuery = util.promisify(dbclient.query).bind(dbclient);
+
 
 router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) => {
   console.log(req.params.activFilt);
@@ -46,13 +52,13 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
   const brand_idFilter = (req.params.brandFilt == '_') ? 'brand_id' : req.params.brandFilt;
   try {
     //Execute db query
-    var product_query = await dbclient.query(`SELECT * FROM product 
+    var product_query = await resultQuery.query(`SELECT * FROM product 
     WHERE activity_id = ` + activity_idFilter + `  
     AND product_category_id = ` + product_category_idFilter +`  
     AND brand_id = ` + brand_idFilter);
-    var brand_query = await dbclient.query("SELECT * FROM brand",[]);
-    var category_query = await dbclient.query("SELECT * FROM product_category",[]);
-    var activity_query = await dbclient.query("SELECT * FROM product_activity",[]);
+    var brand_query = await resultQuery.query("SELECT * FROM brand",[]);
+    var category_query = await resultQuery.query("SELECT * FROM product_category",[]);
+    var activity_query = await resultQuery.query("SELECT * FROM product_activity",[]);
     
     // Render the pug template file with the database results
     res.render('shop', {
