@@ -47,18 +47,19 @@ html(lang='en')
                 |#{desc}
           .row.justify-content-center
             .col-md-5
-              select.form-select.mt-4.mx-auto#sizeOptions
-                option(value='', selected='') Size 
-                each row in size_options
-                  option(value=row.size_id) #{row.size}
-              p.text-center.mt-3 In Stock
-              hr.mx-auto.mt-1
-              p.prodPriceTitle
-                | Price
-                span.prodPriceValue &pound;#{price}
-              .text-center.mt-5.mb-5
-                a(href="product/#{product_id}")
-                  button.btn.btn-lg.addBasketProdBtn.redBtn.text-center Add to basket
+              form(class="p-3" method="PUT" action="/basketadd" id="addItemBasket")
+                select.form-select.mt-4.mx-auto(id="sizeOptions" name="sizeOptions")
+                  option(value='', selected='') Size 
+                  each row in size_options
+                    option(value=row.size_id) #{row.size}
+                p.text-center.mt-3 In Stock
+                hr.mx-auto.mt-1
+                p.prodPriceTitle
+                  | Price
+                  span.prodPriceValue &pound;#{price}
+                .text-center.mt-5.mb-5
+                  a(href="product/#{product_id}")
+                    button.btn.btn-lg.addBasketProdBtn.redBtn.text-center(type="submit") Add to basket 
               // Main content [END]
       // Insert footer from partial folder  
       include ../views/partials/footer
@@ -68,27 +69,27 @@ html(lang='en')
 
     // JavaScript - to make page interactive
     script.
-    function addToBasket(product_id) {
+    //- function addToBasket(product_id) {
 
-      var size_id = document.getElementById('sizeOptions');
+    //-   var size_id = document.getElementById('sizeOptions');
 
-      // Create a new fetch request to the /basket/add endpoint
-      const request = new Request('/basketadd/#{size_id.value}', {
-        method: 'GET',
-      });
+    //-   // Create a new fetch request to the /basket/add endpoint
+    //-   const request = new Request('/basketadd/#{size_id.value}', {
+    //-     method: 'GET',
+    //-   });
 
-      // Make the request
-      fetch(request).then(response => {
-        // Check the response status code
-        if (response.status === 200) {
-          // The product was added to the basket
-          console.log('Product added to basket');
-        } else {
-          // There was an error adding the product to the basket
-          console.log('Error adding product to basket');
-        }
-      });
-    }
+    //-   // Make the request
+    //-   fetch(request).then(response => {
+    //-     // Check the response status code
+    //-     if (response.status === 200) {
+    //-       // The product was added to the basket
+    //-       console.log('Product added to basket');
+    //-     } else {
+    //-       // There was an error adding the product to the basket
+    //-       console.log('Error adding product to basket');
+    //-     }
+    //-   });
+    //- }
       
 
   body

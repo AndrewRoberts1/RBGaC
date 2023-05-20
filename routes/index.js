@@ -339,9 +339,9 @@ router.get('/payment', async function(req, res, next) {
 });
  
 
-router.put('/basketadd/:size_id', function(req, res, next) {
+router.put('/basketadd', function(req, res, next) {
   if (req.session.customer_id) {
-    
+    const size_id = req.body.sizeOptions;
     // Make a database query
     var sql = "SELECT * FROM basket WHERE customer_id = #{req.session.customer_id} AND size_id = #{size_id}";
     //Execute db query
