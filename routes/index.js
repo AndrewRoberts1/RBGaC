@@ -344,9 +344,9 @@ router.post('/basketadd', function(req, res, next) {
   if (req.session.customer_id) {
     const size_id = req.body.sizeOptions;
     // Make a database query
-    var sql = "SELECT * FROM basket WHERE customer_id = #{req.session.customer_id} AND size_id = #{size_id}";
+    var sql = "SELECT * FROM basket WHERE customer_id = $1 AND size_id = $2";
     //Execute db query
-    dbclient.query(sql, (err, result) => {
+    dbclient.query(sql, [req.session.customer_id,size_id], (err, result) => {
       //Check for error in db query
       if (err) {
         //display the error
