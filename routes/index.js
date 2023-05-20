@@ -347,6 +347,7 @@ router.post('/basketadd', function(req, res, next) {
     var sql = "SELECT * FROM basket WHERE customer_id = $1 AND size_id = $2";
     //Execute db query
     dbclient.query(sql, [req.session.customer_id,size_id], (err, result) => {
+      console.log('checked basket for the item : ', result.rows);
       //Check for error in db query
       if (err) {
         //display the error
@@ -356,8 +357,8 @@ router.post('/basketadd', function(req, res, next) {
         // chech if there are rows
         if (result.rows.length > 0) {
           //add size item
-
-          dbclient.query('INSERT INTO basket (customer_id, size_id, quantity), ($1, $2, 1)', [req.session.customer_id,size_id], (err, result) => {
+          console.log('there is none in there yet');
+          dbclient.query('INSERT INTO basket (customer_id, size_id, quantity) VALUES ($1, $2, 1)', [req.session.customer_id,size_id], (err, result) => {
             //Check for error in db query
             if (err) {
               //display the error
