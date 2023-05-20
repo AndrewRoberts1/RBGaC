@@ -50,10 +50,10 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
     var product_query = await resultQuery(`SELECT * FROM product 
     WHERE activity_id = ` + activity_idFilter + `  
     AND product_category_id = ` + product_category_idFilter +`  
-    AND brand_id = ` + brand_idFilter, []);
-    var brand_query = await resultQuery("SELECT * FROM brand",[]);
-    var category_query = await resultQuery("SELECT * FROM product_category",[]);
-    var activity_query = await resultQuery("SELECT * FROM product_activity",[]);
+    AND brand_id = ` + brand_idFilter);
+    var brand_query = await resultQuery("SELECT * FROM brand");
+    var category_query = await resultQuery("SELECT * FROM product_category");
+    var activity_query = await resultQuery("SELECT * FROM product_activity");
     
     // Render the pug template file with the database results
     res.render('shop', {
@@ -171,7 +171,7 @@ router.get('/basket', function(req, res, next) {
     } else {
       let sum = 0;
       for (item in result.rows) {
-        sum += item.price * item.quantity;
+        sum += result.rows[item].price * result.rows[item].quantity;
       }
       // Render the pug template file with the database results
       res.render('basket', { 

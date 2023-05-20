@@ -37,6 +37,8 @@ router.post('/login', function (req, res, next) {
       WHERE email = "${user_email_address}"
       `;
       dbclient.query(query, function(err, result) {
+        console.log('the result of the db query to customers is : ', result);
+        console.log('the result.rows is : ', result.rows);
         //check if data was returned
           if(result.rows.length > 0) {
             console.log(result.rows)
