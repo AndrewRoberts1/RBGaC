@@ -245,7 +245,7 @@ router.get('/checkout', async function(req, res, next) {
         }
         
         // Render the pug template file with the database results
-        res.render('basket', {
+        res.render('checkout', {
           customer_details: customer_query.rows[0],
           basket_list: result.rows,
           subTotal: sum

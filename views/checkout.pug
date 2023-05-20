@@ -23,39 +23,66 @@ html(lang='en')
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-8.mt-3.mb-3.rbContainer
-                table.table#basketTable 
-                    thead 
-                        th(scope="col") Product Details 
-                        th(scope="col") Quantity 
-                        //- th(scope="col") Availability
-                        th(scope="col") Cost 
-                        th(scope="col")
-                    tbody 
-                        each row in basket_list
-                            tr 
-                                td(scope="row")   
-                                    form(id="form#{row.product_id}" method="get" action="/product/"+ row.product_id)     
-                                        .row
-                                            .col-sm-3
-                                                a(onclick="document.getElementById('form#{row.product_id}').submit()" href="#")
-                                                    img.img-fluid(src='/images/product_images/'+ row.product_id+'.jpg')
-                                            .col-sm-9
-                                                a.navLink(onclick="document.getElementById('form"+ row.product_id+"').submit()" href="#")
-                                                    h6(style="text-align: left") #{row.product_name}
-                                                p.mt-4 Colour - #{row.colour}
-                                                p Size - #{row.size}
-                                td #{row.quantity}
-                                //- td  
-                                    //- if quantity > stock
-                                    //-     'In Stock'
-                                    //- else 
-                                    //-     'Not Enough Stock'
-                                td £#{row.price * row.quantity}
-                                td 
-                                    button.btn.removeBtn.btn-sm
-                                        svg.bi.bi-x-lg(xmlns='http://www.w3.org/2000/svg', width='16', height='16', fill='currentColor', viewBox='0 0 16 16')
-                                            path(d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z')
-                            
+                form(class="p-3" method="POST" action="/payment")
+                    .row.justify-content-center
+                        h4 Your Details
+                        .col-md-6
+                            //-input First name
+                            label( for="inputFirstName" class="sr-only mt-3") First Name
+                            input(type="text" name="first_name" id="inputFirstName" class="form-control" placeholder="First Name" required autofocus  value=first_name)
+                        .col-md-6
+                            //-input Surname
+                            label( for="inputSurname" class="sr-only mt-3") Surname
+                            input(type="text" name="second_name" id="inputSurname" class="form-control" placeholder="Surname" required autofocus  value=surname)
+                    .row.justify-content-center
+                        .col-md-6
+                            //-input email
+                            label(for="inputEmail" class="sr-only mt-3") Email address
+                            input(type="email" name="email" id="inputEmail" class="form-control" placeholder="example@email.com" required  value=email)
+                        .col-md-6
+                            //-input Phone Number
+                            label(for="inputNumber" class="sr-only mt-3") Phone Number
+                            input(type="number" name="phone" id="inputNumber" class="form-control" placeholder="01234456789" required  value=phone)
+                        hr
+                    .row.justify-content-center
+                        h4 Delivery Details
+                        .col-md-6
+                            //-input Building name
+                            input(type="text" name="name_number" id="inputNameNumber" class="form-control" placeholder="Building Name / Number" required  value=name_number)
+                        .col-md-6
+                            //-input County
+                            input(type="text" name="county" id="inputCounty" class="form-control" placeholder="County" required  value=county)
+                    .row.justify-content-center
+                        .col-md-6
+                            //-input Street
+                            input(type="text" name="street" id="inputStreet" class="form-control" placeholder="Street Name" required  value=street)
+                        .col-md-6
+                            //-input Country
+                            input(type="text" name="country" id="inputCountry" class="form-control" placeholder="Country" required  value=country)
+                    .row.justify-content-center
+                        .col-md-6
+                            //-input City
+                            input(type="text" name="city" id="inputCity" class="form-control" placeholder="City / Town" required  value=city)
+                        .col-md-6
+                            //-input postcode
+                            input(type="text" name="postcode" id="inputPostcode" class="form-control" placeholder="Postcode" required  value=postcode)
+                        hr
+                    .row.justify-content-center
+                        h4 Payment Details
+                        .col-md-12
+                            //-input Building name
+                            input(type="number" name="card_number" id="inputCardNumber" class="form-control" placeholder="Card Number" required  value=card_number)
+                    .row.justify-content-center
+                        .col-md-6
+                            //-input Street
+                            input(type="number" name="cvv" id="inputCVV" class="form-control" placeholder="Security Code" required  value=cvv)
+                        .col-md-6
+                            //-input Country
+                            input(type="text" name="exp_date" id="inputExpDate" class="form-control" placeholder="Exp Date" required  value=exp_date)
+                    
+
+
+
 
             .col-md-1
             .col-md-3.mt-3.mb-3.rbContainer.text-center.checkoutCol
