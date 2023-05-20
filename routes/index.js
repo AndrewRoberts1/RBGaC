@@ -358,7 +358,7 @@ router.post('/basketadd', function(req, res, next) {
         if (result.rows.length == 0) {
           //add size item
           console.log('there is none in there yet');
-          dbclient.query('INSERT INTO basket (customer_id, size_id, quantity) VALUES ($1, $2, 1)', [req.session.customer_id,size_id], (err, result) => {
+          dbclient.query('INSERT INTO basket (customer_id, size_id, quantity, session_id) VALUES ($1, $2, 1, 0)', [req.session.customer_id,size_id], (err, result) => {
             //Check for error in db query
             if (err) {
               //display the error
