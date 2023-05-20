@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-//const database = require('./database');
+const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 const app = require('../app');
 
@@ -36,7 +36,7 @@ router.post('/login', function (req, res, next) {
       SELECT * FROM customers 
       WHERE email = "${user_email_address}"
       `;
-      client.query(query, function(err, result) {
+      dbclient.query(query, function(err, result) {
         //check if data was returned
           if(result.rows.length > 0) {
             console.log(result.rows)
