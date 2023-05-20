@@ -18,6 +18,7 @@ let resultQuery = util.promisify(dbclient.query).bind(dbclient);
 
 router.get('/', function(req, res, next) {
   console.log(req.session);
+  console.log('session id is : ', req.session.id);
 
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = $1";
@@ -196,9 +197,9 @@ router.get('/basket', function(req, res, next) {
     var sql = `SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
     LEFT JOIN product ON product.product_id = size.product_id
-    WHERE basket.customer_id = #{req.session.customer_id}`;
+    WHERE basket.customer_id = $1`;
     //Execute db query
-    dbclient.query(sql, (err, result) => {
+    dbclient.query(sql, [req.session.customer_id], (err, result) => {
       //Check for error in db query
       if (err) {
         //display the error
@@ -266,10 +267,10 @@ router.get('/checkout', async function(req, res, next) {
           country: address_query.rows[0].country,
           postcode: address_query.rows[0].postcode,
           // card fields
-          card_id: address_query.rows[0].card_id,
-          card_number: address_query.rows[0].card_number,
-          cvv: address_query.rows[0].cvv,
-          exp_date: address_query.rows[0].exp_date,
+          card_id: card_query.rows[0].card_id,
+          card_number: card_query.rows[0].card_number,
+          cvv: card_query.rows[0].cvv,
+          exp_date: card_query.rows[0].exp_date,
         });
       }
     });
@@ -340,14 +341,12 @@ router.get('/payment', async function(req, res, next) {
  
 
 router.post('/basketadd', function(req, res, next) {
-  console.log("basketadd started" )
   if (req.session.customer_id) {
     const size_id = req.body.sizeOptions;
     // Make a database query
     var sql = "SELECT * FROM basket WHERE customer_id = $1 AND size_id = $2";
     //Execute db query
     dbclient.query(sql, [req.session.customer_id,size_id], (err, result) => {
-      console.log('checked basket for the item : ', result.rows);
       //Check for error in db query
       if (err) {
         //display the error
@@ -366,12 +365,24 @@ router.post('/basketadd', function(req, res, next) {
               res.send(500);
             } else {
               // chech if there are rows
-              console.log('row added : ', result.rows)
-              res.sendStatus(200);
+              console.log('row added');
+              res.redirect('/basket');
               
             }})
         } else {
           //increment quantity by 1
+          dbclient.query('UPDATE basket SET quantity = $1', [result.rows[0].quantity + 1], (err, result) => {
+            //Check for error in db query
+            if (err) {
+              //display the error
+              console.log('Error querying the database:', err);
+              res.send(500);
+            } else {
+              // chech if there are rows
+              console.log('quantity increased');
+              res.redirect('/basket');
+              
+            }})
         }
         
       }
