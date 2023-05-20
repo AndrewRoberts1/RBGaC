@@ -32,11 +32,11 @@ router.post('/login', function (req, res, next) {
   //check both email address and password are given
   if(user_email_address && user_password) {
     //build query to search for user by email address
-      query = `
+      let query = `
       SELECT * FROM customers 
-      WHERE email = "${user_email_address}"
+      WHERE email = $1
       `;
-      dbclient.query(query, function(err, result) {
+      dbclient.query(query, [user_email_address], (err, result) => {
         console.log('the result of the db query to customers is : ', result);
         console.log('the result.rows is : ', result.rows);
         //check if data was returned

@@ -61,6 +61,8 @@ html(lang='en')
             .col-md-3.mt-3.mb-3.rbContainer.text-center.checkoutCol
                 .row.checkoutDetails
                     .col.text-center
+                    each row in basket_list
+                        h6 #{row.quantity}x #{row.product_name}
                     form(id="basketForm" method="get" action="/") 
                         select#deliveryOptions.form-select.mt-5(required onchange="addDelivery(" +subTotal+")")
                             option(value="" selected) Delivery Options
