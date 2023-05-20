@@ -52,11 +52,8 @@ router.post('/login', async function (req, res, next) {
               for(var count = 0; count < result.rows.length; count++) {
                 console.log('the current row is : ',result.rows[count])
                 //compare the password given and db password
-                const compResult = await bcrypt.compare(user_password, result.rows[count].password,
-                  async function (err, isMatch) {
-                      //check if they match
-                      return isMatch;
-                  });
+                const compResult = awaitcompareAsync(user_password, result.rows[count].password);
+                  
                 console.log(compResult);
                 if (compResult) {
                   console.log('current session ' ,session);
@@ -83,5 +80,17 @@ router.post('/login', async function (req, res, next) {
   }
 
 });
+
+function compareAsync(param1, param2) {
+  return new Promise(function(resolve, reject) {
+      bcrypt.compare(param1, param2, function(err, res) {
+          if (err) {
+               reject(err);
+          } else {
+               resolve(res);
+          }
+      });
+  });
+}
 
 module.exports = router;
