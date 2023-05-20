@@ -42,6 +42,7 @@ router.post('/login', function (req, res, next) {
             console.log(result.rows)
               //iterate over each row returned from db query
               for(var count = 0; count < result.rows.length; count++) {
+                console.log('the current row is : ',result.rows[count])
                 //compare the password given and db password
                 bcrypt.compare(user_password, result.rows[count].password,
                   async function (err, isMatch) {
@@ -49,9 +50,9 @@ router.post('/login', function (req, res, next) {
                       if (isMatch) {
                         console.log(req.session);
                         console.log(result.rows[count])
-                        app.session.customer_id = String(result.rows[count].customer_id);
+                        req.session.customer_id = String(result.rows[count].customer_id);
                         
-                        console.log(app.session.customer_id);
+                        console.log(req.session);
                         res.redirect("/");
                       } else {
                         // If password doesn't match

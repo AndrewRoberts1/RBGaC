@@ -15,7 +15,8 @@ var app = express();
 app.use(session({
   secret: 'my-secret',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  customer_id: ''
 }));
 
 // view engine setup

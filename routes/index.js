@@ -8,9 +8,7 @@ var app = require('../app');
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
-  console.log(req.session)
-  req.session.customer_id = 'no customer id';
-  console.log(req.session)
+  console.log(req.session);
 
   // Make a database query
   var sql = "SELECT * FROM product WHERE popular_item = $1";
@@ -44,9 +42,6 @@ let resultQuery = util.promisify(dbclient.query).bind(dbclient);
 
 
 router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) => {
-  console.log(req.params.activFilt);
-  console.log(req.params.categoryFilt);
-
   const activity_idFilter = (req.params.activFilt == '_') ? 'activity_id' : req.params.activFilt;
   const product_category_idFilter = (req.params.categoryFilt == '_') ? 'product_category_id' : req.params.categoryFilt;
   const brand_idFilter = (req.params.brandFilt == '_') ? 'brand_id' : req.params.brandFilt;
@@ -61,15 +56,11 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
     var activity_query = await resultQuery("SELECT * FROM product_activity",[]);
     
     // Render the pug template file with the database results
-    console.log(product_query);
-    console.log(brand_query);
-    console.log(category_query);
-    console.log(activity_query);
     res.render('shop', {
-      products_list: product_query,
-      brand_list: brand_query,
-      prod_type_list: category_query,
-      activity_list: activity_query
+      products_list: product_query.rows,
+      brand_list: brand_query.rows,
+      prod_type_list: category_query.rows,
+      activity_list: activity_query.rows
     });
   } catch (err) {
     console.log(err.stack)
