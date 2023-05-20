@@ -33,7 +33,7 @@ html(lang='en')
                         each row in basket_list
                             tr 
                                 td(scope="row")   
-                                    form(id="form#{row.product_id}" method="get" action="/product/"+ row.product_id)     
+                                    form(id="form"+row.product_id method="get" action="/product/"+ row.product_id)     
                                         .row
                                             .col-sm-3
                                                 a(onclick="document.getElementById('form#{row.product_id}').submit()" href="#")
