@@ -47,7 +47,7 @@ html(lang='en')
                 |#{desc}
           .row.justify-content-center
             .col-md-5
-              form(class="p-3" method="PUT" action="/basketadd" id="addItemBasket")
+              form(class="p-3" method="POST" action="/basketadd" id="addItemBasket")
                 select.form-select.mt-4.mx-auto(id="sizeOptions" name="sizeOptions")
                   option(value='', selected='') Size 
                   each row in size_options

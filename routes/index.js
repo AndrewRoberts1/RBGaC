@@ -339,7 +339,8 @@ router.get('/payment', async function(req, res, next) {
 });
  
 
-router.put('/basketadd', function(req, res, next) {
+router.post('/basketadd', function(req, res, next) {
+  console.log("basketadd started" )
   if (req.session.customer_id) {
     const size_id = req.body.sizeOptions;
     // Make a database query
@@ -364,6 +365,7 @@ router.put('/basketadd', function(req, res, next) {
               res.send(500);
             } else {
               // chech if there are rows
+              console.log('row added : ', result.rows)
               res.sendStatus(200);
               
             }})
