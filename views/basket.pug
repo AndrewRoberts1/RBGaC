@@ -36,7 +36,7 @@ html(lang='en')
                                     form(id="form"+row.product_id method="get" action="/product/"+ row.product_id)     
                                         .row
                                             .col-sm-3
-                                                a(onclick="document.getElementById('form#{row.product_id}').submit()" href="#")
+                                                a(onclick="document.getElementById('form'"+row.product_id+").submit()" href="#")
                                                     img.img-fluid(src='/images/product_images/'+ row.product_id+'.jpg')
                                             .col-sm-9
                                                 a.navLink(onclick="document.getElementById('form"+ row.product_id+"').submit()" href="#")
