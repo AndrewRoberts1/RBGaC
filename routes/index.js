@@ -371,7 +371,7 @@ router.post('/basketadd', function(req, res, next) {
             }})
         } else {
           //increment quantity by 1
-          dbclient.query('UPDATE basket SET quantity = $1', [result.rows[0].quantity + 1], (err, result) => {
+          dbclient.query('UPDATE basket SET quantity = $1 WHERE customer_id = $2 AND size_id = $3', [result.rows[0].quantity + 1,req.session.customer_id,size_id], (err, result) => {
             //Check for error in db query
             if (err) {
               //display the error

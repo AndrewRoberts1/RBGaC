@@ -56,7 +56,7 @@ html(lang='en')
                 .row.checkoutDetails
                     .col.text-center
                     each row in basket_list
-                        h6 #{row.quantity}x #{row.product_name}
+                        h6(style="text-align: left;") #{row.quantity}x £#{row.price} - #{row.product_name}
                     form(id="basketForm" method="get" action="/checkout") 
                         select#deliveryOptions.form-select.mt-5(required name="deliveryOptions" onchange="addDelivery(" +subTotal+")")
                             option(value="" selected) Delivery Options
