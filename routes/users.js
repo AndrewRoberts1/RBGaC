@@ -24,8 +24,12 @@ router.get('/logout', function(req, res, next){
 
 var session;
 
+
+//MAYBE USE AYSNC ON THE TOP FUNCTION? - BARD?
+
+
 /* Login user */
-router.post('/login',  function (req, res, next) {
+router.post('/login', async function (req, res, next) {
   console.log(req.session);
   
   session = req.session;
@@ -40,7 +44,6 @@ router.post('/login',  function (req, res, next) {
       WHERE email = $1
       `;
       dbclient.query(query, [user_email_address], async (err, result) => {
-        console.log('the result of the db query to customers is : ', result);
         console.log('the result.rows is : ', result.rows);
         //check if data was returned
           if(result.rows.length > 0) {
