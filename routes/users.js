@@ -22,11 +22,14 @@ router.get('/logout', function(req, res, next){
 
 });
 
+var session;
 
 /* Login user */
 router.post('/login', function (req, res, next) {
   console.log(req.session);
-  //console.log(req.session);
+  
+  session = req.session;
+
   var user_email_address = req.body.username;
   var user_password = req.body.password;
   //check both email address and password are given
@@ -50,11 +53,11 @@ router.post('/login', function (req, res, next) {
                   async function (err, isMatch) {
                       //check if they match
                       if (isMatch) {
-                        console.log(req.session);
+                        console.log('current session ' ,session);
                         console.log(result.rows[count])
-                        req.session.customer_id = String(result.rows[count].customer_id);
+                        session.customer_id = result.rows[count].customer_id;
                         
-                        console.log(req.session);
+                        console.log(session);
                         res.redirect("/");
                       } else {
                         // If password doesn't match

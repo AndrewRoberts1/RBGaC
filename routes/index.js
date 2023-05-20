@@ -4,6 +4,14 @@ const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 var app = require('../app');
 
+// Below used to do multiple queries and get the result from all of them
+// util module for handle callback in mysql query
+const util = require('util');
+
+// create variable to get result from querying
+let resultQuery = util.promisify(dbclient.query).bind(dbclient);
+
+
 
 /* GET home page. */
 
@@ -33,12 +41,6 @@ router.get('/about', function(req, res, next) {
   res.render('about');
     
 });
-
-// util module for handle callback in mysql query
-const util = require('util');
-
-// create variable to get result from querying
-let resultQuery = util.promisify(dbclient.query).bind(dbclient);
 
 
 router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) => {
@@ -169,12 +171,44 @@ router.get('/basket', function(req, res, next) {
       console.log('Error querying the database:', err);
       res.send(500);
     } else {
+      //get total of basket
       let sum = 0;
       for (item in result.rows) {
         sum += result.rows[item].price * result.rows[item].quantity;
       }
       // Render the pug template file with the database results
       res.render('basket', { 
+        basket_list: result.rows,
+        subTotal: sum
+      });
+    }
+  });
+});
+
+router.get('/checkout', async function(req, res, next) {
+  var customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = 17");
+  // Make a database query
+  var sql = `SELECT * FROM basket
+  LEFT JOIN size_options as size ON size.size_id = basket.size_id
+  LEFT JOIN product ON product.product_id = size.product_id
+  WHERE basket.customer_id = 17`;
+  //Execute db query
+  dbclient.query(sql, (err, result) => {
+    //Check for error in db query
+    if (err) {
+      //display the error
+      console.log('Error querying the database:', err);
+      res.send(500);
+    } else {
+      //get total of basket
+      let sum = 0;
+      for (item in result.rows) {
+        sum += result.rows[item].price * result.rows[item].quantity;
+      }
+      
+      // Render the pug template file with the database results
+      res.render('basket', {
+        customer_details: customer_query.rows[0],
         basket_list: result.rows,
         subTotal: sum
       });

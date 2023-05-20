@@ -11,12 +11,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-
+// creating 24 hours from milliseconds
+const oneDay = 1000 * 60 * 60 * 24;
+//Session
 app.use(session({
   secret: 'my-secret',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
-  customer_id: ''
+  cookie: {maxAge: oneDay}
 }));
 
 // view engine setup
