@@ -52,7 +52,7 @@ router.post('/login', async function (req, res, next) {
               for(var count = 0; count < result.rows.length; count++) {
                 console.log('the current row is : ',result.rows[count])
                 //compare the password given and db password
-                const compResult = awaitcompareAsync(user_password, result.rows[count].password);
+                const compResult = await compareAsync(user_password, result.rows[count].password);
                   
                 console.log(compResult);
                 if (compResult) {
