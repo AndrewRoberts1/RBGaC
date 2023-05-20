@@ -55,12 +55,16 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
     var product_query = await resultQuery(`SELECT * FROM product 
     WHERE activity_id = ` + activity_idFilter + `  
     AND product_category_id = ` + product_category_idFilter +`  
-    AND brand_id = ` + brand_idFilter);
+    AND brand_id = ` + brand_idFilter, []);
     var brand_query = await resultQuery("SELECT * FROM brand",[]);
     var category_query = await resultQuery("SELECT * FROM product_category",[]);
     var activity_query = await resultQuery("SELECT * FROM product_activity",[]);
     
     // Render the pug template file with the database results
+    console.log(product_query);
+    console.log(brand_query);
+    console.log(category_query);
+    console.log(activity_query);
     res.render('shop', {
       products_list: product_query,
       brand_list: brand_query,
