@@ -25,7 +25,7 @@ router.get('/logout', function(req, res, next){
 var session;
 
 /* Login user */
-router.post('/login', function (req, res, next) {
+router.post('/login',  function (req, res, next) {
   console.log(req.session);
   
   session = req.session;
@@ -39,7 +39,7 @@ router.post('/login', function (req, res, next) {
       SELECT * FROM customers 
       WHERE email = $1
       `;
-      dbclient.query(query, [user_email_address], (err, result) => {
+      dbclient.query(query, [user_email_address], async (err, result) => {
         console.log('the result of the db query to customers is : ', result);
         console.log('the result.rows is : ', result.rows);
         //check if data was returned
@@ -49,22 +49,23 @@ router.post('/login', function (req, res, next) {
               for(var count = 0; count < result.rows.length; count++) {
                 console.log('the current row is : ',result.rows[count])
                 //compare the password given and db password
-                bcrypt.compare(user_password, result.rows[count].password,
+                const compResult = await bcrypt.compare(user_password, result.rows[count].password,
                   async function (err, isMatch) {
                       //check if they match
-                      if (isMatch) {
-                        console.log('current session ' ,session);
-                        console.log(result.rows[count])
-                        session.customer_id = result.rows[count].customer_id;
-                        
-                        console.log(session);
-                        res.redirect("/");
-                      } else {
-                        // If password doesn't match
-                        res.render('customer_login', { error: 'Incorrect Password' });
-                      }
-                  })
-                      
+                      return isMatch;
+                  });
+                console.log(compResult);
+                if (compResult) {
+                  console.log('current session ' ,session);
+                  console.log(result.rows[count])
+                  session.customer_id = result.rows[count].customer_id;
+                  
+                  console.log(session);
+                  res.redirect("/");
+                } else {
+                  // If password doesn't match
+                  res.render('customer_login', { error: 'Incorrect Password' });
+                }
               }
           }
           //if no data respond saying email is incorrect
