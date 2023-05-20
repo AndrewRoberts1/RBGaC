@@ -117,6 +117,36 @@ router.get('/customer_login', function(req, res, next) {
 });
 
 
+router.get('/customer_account', function(req, res, next) {
+  console.log(req.session);
+  if (req.session.customer_id) {
+    // Make a database query
+    var sql = "SELECT * FROM product WHERE popular_item = $1";
+    //Execute db query
+    dbclient.query(sql,[1], (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        var user = result.rows[0]
+        // Render the pug template file with the database results
+        res.render('customer_create', { 
+          first_name: user.first_name,
+          surname: user.second_name,
+          email: user.email,
+          phone: user.phone
+
+        });
+      }
+    });
+  } else {
+    res.redirect('/customer_login');
+  }
+  
+});
+
 // Get create customer page
 
 router.get('/customer_create', function(req, res, next) {
@@ -158,6 +188,7 @@ router.post('/add_user', function(req, res, next) {
 
 // GET basket page
 router.get('/basket', function(req, res, next) {
+
   // Make a database query
   var sql = `SELECT * FROM basket
   LEFT JOIN size_options as size ON size.size_id = basket.size_id

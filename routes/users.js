@@ -30,8 +30,6 @@ var session;
 
 /* Login user */
 router.post('/login', async function (req, res, next) {
-  console.log(req.session);
-  
   session = req.session;
 
   var user_email_address = req.body.username;
@@ -56,12 +54,9 @@ router.post('/login', async function (req, res, next) {
                   
                 console.log(compResult);
                 if (compResult) {
-                  console.log('current session ' ,session);
-                  console.log(result.rows[count])
                   session.customer_id = result.rows[count].customer_id;
                   
-                  console.log(session);
-                  res.redirect("/");
+                  res.redirect("/customer_account");
                 } else {
                   // If password doesn't match
                   res.render('customer_login', { error: 'Incorrect Password' });
