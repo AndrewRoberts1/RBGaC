@@ -26,8 +26,7 @@ html(lang='en')
                 table.table#basketTable 
                     thead 
                         th(scope="col") Product Details 
-                        th(scope="col") Quantity 
-                        //- th(scope="col") Availability
+                        th(scope="col") Quantity
                         th(scope="col") Cost 
                         th(scope="col")
                     tbody 
@@ -45,11 +44,6 @@ html(lang='en')
                                                 p.mt-4 Colour - #{row.colour}
                                                 p Size - #{row.size}
                                 td #{row.quantity}
-                                //- td  
-                                    //- if quantity > stock
-                                    //-     'In Stock'
-                                    //- else 
-                                    //-     'Not Enough Stock'
                                 td £#{row.price * row.quantity}
                                 td 
                                     button.btn.removeBtn.btn-sm
@@ -63,8 +57,8 @@ html(lang='en')
                     .col.text-center
                     each row in basket_list
                         h6 #{row.quantity}x #{row.product_name}
-                    form(id="basketForm" method="get" action="/") 
-                        select#deliveryOptions.form-select.mt-5(required onchange="addDelivery(" +subTotal+")")
+                    form(id="basketForm" method="get" action="/checkout") 
+                        select#deliveryOptions.form-select.mt-5(required name="deliveryOptions" onchange="addDelivery(" +subTotal+")")
                             option(value="" selected) Delivery Options
                             option(value="10") Next Day - £10
                             option(value="7") 2-4 Working Days - £7

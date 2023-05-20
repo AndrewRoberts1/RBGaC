@@ -7,6 +7,7 @@ var app = require('../app');
 // Below used to do multiple queries and get the result from all of them
 // util module for handle callback in mysql query
 const util = require('util');
+const { resourceLimits } = require('worker_threads');
 
 // create variable to get result from querying
 let resultQuery = util.promisify(dbclient.query).bind(dbclient);
@@ -195,7 +196,7 @@ router.get('/basket', function(req, res, next) {
     var sql = `SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
     LEFT JOIN product ON product.product_id = size.product_id
-    WHERE basket.customer_id = 17`;
+    WHERE basket.customer_id = #{req.session.customer_id}`;
     //Execute db query
     dbclient.query(sql, (err, result) => {
       //Check for error in db query
@@ -224,7 +225,84 @@ router.get('/basket', function(req, res, next) {
 
 router.get('/checkout', async function(req, res, next) {
   if (req.session.customer_id) {
-    var customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = 17");
+    const deliveryAmount = req.body.deliveryOptions;
+
+    var customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = #{req.session.customer_id}");
+    var address_query = await resultQuery("SELECT * FROM address WHERE customer_id = #{req.session.customer_id} ORDER BY address_id DESC LIMIT 1");
+    var card_query = await resultQuery("SELECT * FROM card_details WHERE customer_id = #{req.session.customer_id} ORDER BY card_id DESC LIMIT 1");
+    // Make a database query
+    var sql = `SELECT * FROM basket
+    LEFT JOIN size_options as size ON size.size_id = basket.size_id
+    LEFT JOIN product ON product.product_id = size.product_id
+    WHERE basket.customer_id = #{req.session.customer_id}`;
+    //Execute db query
+    dbclient.query(sql, (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        //get total of basket
+        let sum = 0;
+        for (item in result.rows) {
+          sum += result.rows[item].price * result.rows[item].quantity;
+        }
+        
+        // Render the pug template file with the database results
+        res.render('checkout', {
+          // order fields
+          delivery_amount: deliveryAmount,
+          customer_details: customer_query.rows[0],
+          basket_list: result.rows,
+          subTotal: sum,
+          total: sum + Number(delivery_amount),
+          // address fields
+          address_id: address_query.rows[0].address_id,
+          name_number: address_query.rows[0].name_number,
+          street: address_query.rows[0].street,
+          city: address_query.rows[0].city,
+          county: address_query.rows[0].county,
+          country: address_query.rows[0].country,
+          postcode: address_query.rows[0].postcode,
+          // card fields
+          card_id: address_query.rows[0].card_id,
+          card_number: address_query.rows[0].card_number,
+          cvv: address_query.rows[0].cvv,
+          exp_date: address_query.rows[0].exp_date,
+        });
+      }
+    });
+  } else {
+    // Redirect user to login if not already
+    res.redirect('/customer_login');
+  }
+});
+
+
+
+router.get('/payment', async function(req, res, next) {
+  if (req.session.customer_id) {
+
+    //Check if the addresses have been used before - if not create them and get the id for the order
+    if (!req.body.address_id) {
+      var address_query = await resultQuery("INSERT INTO address (customer_id, name_number, street, city, county, country, postcode)", 
+        [req.session.customer_id, req.body.name_number, req.body.street, req.body.city, req.body.county, req.body.country, req.body.postcode]);
+      var address_id = address_query.rows[0].address_id;
+    } else {
+      var address_id = req.body.address_id;
+    }
+    if (!req.body.card_id) {
+      var card_query = await resultQuery("INSERT INTO card_details (customer_id, card_number, cvv, exp_date)", 
+        [req.session.customer_id, req.body.card_number, req.body.cvv, req.body.exp_date]);
+      var card_id = card_query.rows[0].card_id;
+    } else {
+      var card_id = req.body.card_id;
+    }
+
+// add to order and DELETE FROM BASKET AFTER
+
+
     // Make a database query
     var sql = `SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
@@ -245,10 +323,12 @@ router.get('/checkout', async function(req, res, next) {
         }
         
         // Render the pug template file with the database results
-        res.render('checkout', {
+        res.render('order_confirmation', {
+          delivery_amount: deliveryAmount,
           customer_details: customer_query.rows[0],
-          basket_list: result.rows,
-          subTotal: sum
+          ordered_items: result.rows,
+          subTotal: sum,
+          total: sum + Number(delivery_amount)
         });
       }
     });
@@ -257,8 +337,47 @@ router.get('/checkout', async function(req, res, next) {
     res.redirect('/customer_login');
   }
 });
-
  
+
+router.put('/basketadd/:size_id', function(req, res, next) {
+  if (req.session.customer_id) {
+    
+    // Make a database query
+    var sql = "SELECT * FROM basket WHERE customer_id = #{req.session.customer_id} AND size_id = #{size_id}";
+    //Execute db query
+    dbclient.query(sql, (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        // chech if there are rows
+        if (resourceLimits.rows.length > 0) {
+          //add size item
+
+          dbclient.query('INSERT INTO basket (customer_id, size_id, quantity), ($1, $2, 1)', [req.session.customer_id,size_id], (err, result) => {
+            //Check for error in db query
+            if (err) {
+              //display the error
+              console.log('Error querying the database:', err);
+              res.send(500);
+            } else {
+              // chech if there are rows
+              res.sendStatus(200);
+              
+            }})
+        } else {
+          //increment quantity by 1
+        }
+        
+      }
+    });
+  } else {
+    // Redirect user to login if not already
+    res.redirect('/customer_login');
+  }
+})
 
 
 module.exports = router;

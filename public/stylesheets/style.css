@@ -478,3 +478,11 @@ body {
 .priceRight {
   float: right !important;
 }
+
+/* Success page */
+
+.successHead {
+  background-image: url("/images/Confirmation\ Header.jpg");
+  height: 29vh;
+  
+}

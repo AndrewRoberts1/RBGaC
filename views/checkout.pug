@@ -23,7 +23,7 @@ html(lang='en')
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-8.mt-3.mb-3.rbContainer
-                form(class="p-3" method="POST" action="/payment")
+                form(class="p-3" method="POST" action="/payment" id="checkoutForm")
                     .row.justify-content-center
                         h4 Your Details
                         .col-md-6
@@ -43,42 +43,55 @@ html(lang='en')
                             //-input Phone Number
                             label(for="inputNumber" class="sr-only mt-3") Phone Number
                             input(type="number" name="phone" id="inputNumber" class="form-control" placeholder="01234456789" required  value=phone)
-                        hr
+                        hr.mt-3
                     .row.justify-content-center
+                        input(type="text" name="address_id" id="address_id" value=address_id style="display:none;")
                         h4 Delivery Details
                         .col-md-6
                             //-input Building name
-                            input(type="text" name="name_number" id="inputNameNumber" class="form-control" placeholder="Building Name / Number" required  value=name_number)
+                            label( for="inputNameNumber" class="sr-only mt-3") Building Name / Number
+                            input(type="text" name="name_number" id="inputNameNumber" class="form-control" placeholder="Building Name / Number" required  value=name_number onchange="clearAddressId()")
                         .col-md-6
                             //-input County
-                            input(type="text" name="county" id="inputCounty" class="form-control" placeholder="County" required  value=county)
+                            label( for="inputCounty" class="sr-only mt-3") County
+                            input(type="text" name="county" id="inputCounty" class="form-control" placeholder="County" required  value=county onchange="clearAddressId()")
                     .row.justify-content-center
                         .col-md-6
                             //-input Street
-                            input(type="text" name="street" id="inputStreet" class="form-control" placeholder="Street Name" required  value=street)
+                            label( for="inputStreet" class="sr-only mt-3") Street Name
+                            input(type="text" name="street" id="inputStreet" class="form-control" placeholder="Street Name" required  value=street onchange="clearAddressId()")
                         .col-md-6
                             //-input Country
-                            input(type="text" name="country" id="inputCountry" class="form-control" placeholder="Country" required  value=country)
+                            label( for="inputCountry" class="sr-only mt-3") Country
+                            input(type="text" name="country" id="inputCountry" class="form-control" placeholder="Country" required  value=country onchange="clearAddressId()")
                     .row.justify-content-center
                         .col-md-6
                             //-input City
-                            input(type="text" name="city" id="inputCity" class="form-control" placeholder="City / Town" required  value=city)
+                            label( for="inputCity" class="sr-only mt-3") City / Town
+                            input(type="text" name="city" id="inputCity" class="form-control" placeholder="City / Town" required  value=city onchange="clearAddressId()")
                         .col-md-6
                             //-input postcode
-                            input(type="text" name="postcode" id="inputPostcode" class="form-control" placeholder="Postcode" required  value=postcode)
-                        hr
+                            label( for="inputPostcode" class="sr-only mt-3") Postcode
+                            input(type="text" name="postcode" id="inputPostcode" class="form-control" placeholder="Postcode" required  value=postcode onchange="clearAddressId()")
+                        hr.mt-3
                     .row.justify-content-center
                         h4 Payment Details
+                        input(type="text" name="card_id" id="card_id" value=card_id style="display:none;")
                         .col-md-12
                             //-input Building name
-                            input(type="number" name="card_number" id="inputCardNumber" class="form-control" placeholder="Card Number" required  value=card_number)
+                            label( for="inputCardNumber" class="sr-only mt-3") Card Number
+                            input(type="number" name="card_number" id="inputCardNumber" class="form-control" placeholder="Card Number" required  value=card_number onchange="clearCardId()")
                     .row.justify-content-center
                         .col-md-6
                             //-input Street
-                            input(type="number" name="cvv" id="inputCVV" class="form-control" placeholder="Security Code" required  value=cvv)
+                            label( for="inputCVV" class="sr-only mt-3") Security Code
+                            input(type="number" name="cvv" id="inputCVV" class="form-control" placeholder="Security Code" required  value=cvv onchange="clearCardId()")
                         .col-md-6
                             //-input Country
-                            input(type="text" name="exp_date" id="inputExpDate" class="form-control" placeholder="Exp Date" required  value=exp_date)
+                            label( for="inputExpDate" class="sr-only mt-3") Exp Date
+                            input(type="text" name="exp_date" id="inputExpDate" class="form-control" placeholder="Exp Date" required  value=exp_date onchange="clearCardId()")
+                        input(type="text" name="delivery_amount" id="delivery_amount" value=delivery_amount style="display:none;")
+                        input(type="text" name="total" id="total" value=total style="display:none;")
                     
 
 
@@ -89,25 +102,19 @@ html(lang='en')
                 .row.checkoutDetails
                     .col.text-center
                     each row in basket_list
-                        h6 #{row.quantity}x #{row.product_name}
-                    form(id="basketForm" method="get" action="/") 
-                        select#deliveryOptions.form-select.mt-5(required onchange="addDelivery(" +subTotal+")")
-                            option(value="" selected) Delivery Options
-                            option(value="10") Next Day - £10
-                            option(value="7") 2-4 Working Days - £7
-                            option(value="5") 5-7 Working Days - £5
-                
-                        h6.prodPriceTitle.mb-3.mt-5
-                            | Sub Total
-                            span.priceRight £#{subTotal}
-                        h6.prodPriceTitle.mb-3
-                            | Delivery
-                            span#basketDelivery.priceRight £ - 
-                        hr
-                        h6.prodPriceTitle.mb-3
-                            | Total
-                            span#basketTotal.priceRight £#{subTotal}
-                        button.btn.redBtn.mb-5( type="submit") Checkout
+                        h6 #{row.quantity}x £#{row.price} - #{row.product_name}
+                    
+                    h6.prodPriceTitle.mb-3.mt-5
+                        | Sub Total
+                        span.priceRight £#{subTotal}
+                    h6.prodPriceTitle.mb-3
+                        | Delivery
+                        span#basketDelivery.priceRight £#{delivery_amount}
+                    hr
+                    h6.prodPriceTitle.mb-3
+                        | Total
+                        span#basketTotal.priceRight £#{total}
+                    button.btn.redBtn.mb-5( type="submit" form="checkoutForm") Checkout
                 
         
         // Main Content [END]
@@ -120,14 +127,14 @@ html(lang='en')
 
     // JavaScript - to make page interactive
     script.
-        function addDelivery(subTotal) {
-            const deliveryOptions = document.getElementById('deliveryOptions');
-            const basketDelivery = document.getElementById('basketDelivery');
-            const basketTotal = document.getElementById('basketTotal');
-            basketDelivery.innerHTML = "£"+deliveryOptions.value;
-            basketTotal.innerHTML = "£"+(Number(deliveryOptions.value) + Number(subTotal)) ;
+        function clearAddressId() {
+            var addressIdField = document.getElementById('address_id');
+            addressIdField.value = "";
         }
-      
+        function clearCardId() {
+            var cardIdField = document.getElementById('card_id');
+            cardIdField.value = "";
+        }
 
   body
   // jQuery and Bootstrap Bundle

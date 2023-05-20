@@ -47,10 +47,10 @@ html(lang='en')
                 |#{desc}
           .row.justify-content-center
             .col-md-5
-              select.form-select.mt-4.mx-auto
+              select.form-select.mt-4.mx-auto#sizeOptions
                 option(value='', selected='') Size 
                 each row in size_options
-                  option(value=row.size) #{row.size}
+                  option(value=row.size_id) #{row.size}
               p.text-center.mt-3 In Stock
               hr.mx-auto.mt-1
               p.prodPriceTitle
@@ -68,6 +68,27 @@ html(lang='en')
 
     // JavaScript - to make page interactive
     script.
+    function addToBasket(product_id) {
+
+      var size_id = document.getElementById('sizeOptions');
+
+      // Create a new fetch request to the /basket/add endpoint
+      const request = new Request('/basketadd/#{size_id.value}', {
+        method: 'PUT',
+      });
+
+      // Make the request
+      fetch(request).then(response => {
+        // Check the response status code
+        if (response.status === 200) {
+          // The product was added to the basket
+          console.log('Product added to basket');
+        } else {
+          // There was an error adding the product to the basket
+          console.log('Error adding product to basket');
+        }
+      });
+    }
       
 
   body
