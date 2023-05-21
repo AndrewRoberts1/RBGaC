@@ -242,6 +242,35 @@ router.post('/checkout', async function(req, res, next) {
     for (item in basket_query.rows) {
       sum += basket_query.rows[item].price * basket_query.rows[item].quantity;
     }
+    if ( address_query.rows > 0) {
+      var address_id = address_query.rows[0].address_id;
+      var name_number = address_query.rows[0].name_number;
+      var street = address_query.rows[0].street;
+      var city = address_query.rows[0].city;
+      var county = address_query.rows[0].county;
+      var country = address_query.rows[0].country;
+      var postcode = address_query.rows[0].postcode;
+    } else {
+      var address_id = "";
+      var name_number = "";
+      var street = "";
+      var city = "";
+      var county = "";
+      var country = "";
+      var postcode = "";
+    }
+
+    if (card_query.rows > 0) {
+      var card_id = card_query.rows[0].card_id;
+      var card_number = card_query.rows[0].card_number;
+      var cvv = card_query.rows[0].cvv;
+      var exp_date = card_query.rows[0].exp_date;
+    } else {
+      var card_id = "";
+      var card_number = "";
+      var cvv = "";
+      var exp_date = "";
+    }
 
     console.log(deliveryAmount);
     res.render('checkout', {
@@ -252,18 +281,18 @@ router.post('/checkout', async function(req, res, next) {
       subTotal: sum,
       total: sum + Number(deliveryAmount),
       // address fields
-      address_id: address_query.rows[0].address_id,
-      name_number: address_query.rows[0].name_number,
-      street: address_query.rows[0].street,
-      city: address_query.rows[0].city,
-      county: address_query.rows[0].county,
-      country: address_query.rows[0].country,
-      postcode: address_query.rows[0].postcode,
+      address_id: address_id,
+      name_number: name_number,
+      street: street,
+      city: city,
+      county: county,
+      country: country,
+      postcode: postcode,
       // card fields
-      card_id: card_query.rows[0].card_id,
-      card_number: card_query.rows[0].card_number,
-      cvv: card_query.rows[0].cvv,
-      exp_date: card_query.rows[0].exp_date,
+      card_id: card_id,
+      card_number: card_number,
+      cvv: cvv,
+      exp_date: exp_date,
     });
     
   } else {
