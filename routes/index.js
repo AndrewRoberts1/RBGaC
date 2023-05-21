@@ -325,52 +325,63 @@ router.get('/payment', async function(req, res, next) {
 
     //Check if the addresses have been used before - if not create them and get the id for the order
     if (!req.body.address_id) {
-      var address_query = await resultQuery("INSERT INTO address (customer_id, name_number, street, city, county, country, postcode)", 
+      const address_query = await resultQuery("INSERT INTO address (customer_id, name_number, street, city, county, country, postcode) VALUES ($1,$2,$3,$4,$5,$6,$7)", 
         [req.session.customer_id, req.body.name_number, req.body.street, req.body.city, req.body.county, req.body.country, req.body.postcode]);
       var address_id = address_query.rows[0].address_id;
     } else {
       var address_id = req.body.address_id;
     }
     if (!req.body.card_id) {
-      var card_query = await resultQuery("INSERT INTO card_details (customer_id, card_number, cvv, exp_date)", 
+      const card_query = await resultQuery("INSERT INTO card_details (customer_id, card_number, cvv, exp_date) VALUES ($1,$2,$3,$4)", 
         [req.session.customer_id, req.body.card_number, req.body.cvv, req.body.exp_date]);
       var card_id = card_query.rows[0].card_id;
     } else {
       var card_id = req.body.card_id;
     }
 
-// add to order and DELETE FROM BASKET AFTER
+    // Get todays date
+    var date_today = new Date(Date.now());
 
+    //Create order
 
     // Make a database query
-    var sql = `SELECT * FROM basket
+    var order_sql = `INSERT INTO orders (customer_id, card_id, address_id, order_amount, status, ordered_date, delivery_amount) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+    //Execute db query
+    const order_query = await resultQuery(order_sql, [req.session.customer_id, card_id, address_id, req.body.order_amount, "Order Raised", date_today, req.body.delivery_amount]);
+
+    //Get items from the basket
+
+    const basket_query = await resultQuery(`SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
     LEFT JOIN product ON product.product_id = size.product_id
-    WHERE basket.customer_id = 17`;
+    WHERE basket.customer_id =$1`, [req.session.customer_id]);
+
+    //Move items from basket to ordered items list with new order_id - then delete from basket
+
+    // Make a database query
+    var ordered_items_sql = "INSERT INTO ordered_items (order_id, size_id, quantity) VALUES ";
+    for (item in basket_query.rows) {
+      ordered_items_sql += "("+order_query.rows[0].order_id+","+basket_query.rows[item].size_id+","+basket_query.rows[item].quantity+")z";
+    }
+    //remove last comma
+    ordered_items_query = ordered_items_query.slice(0, -1);
+    ordered_items_sql += `;
+    DELETE FROM basket WHERE basket.customer_id = ` + req.session.customer_id;
     //Execute db query
-    dbclient.query(sql, (err, result) => {
-      //Check for error in db query
-      if (err) {
-        //display the error
-        console.log('Error querying the database:', err);
-        res.send(500);
-      } else {
-        //get total of basket
-        let sum = 0;
-        for (item in result.rows) {
-          sum += result.rows[item].price * result.rows[item].quantity;
-        }
-        
-        // Render the pug template file with the database results
-        res.render('order_confirmation', {
-          delivery_amount: deliveryAmount,
-          customer_details: customer_query.rows[0],
-          ordered_items: result.rows,
-          subTotal: sum,
-          total: sum + Number(delivery_amount)
-        });
-      }
-    });
+    const ordered_items_query = await resultQuery(ordered_items_sql);
+      
+    if(order_query.rows.length > 0) {
+      // Render the pug template file with the database results
+      res.render('order_confirmation', {
+        order_id: order_query.rows[0].order_id,
+        order_amount: order_query.rows[0].order_amount,
+        delivery_date: date_today,
+        ordered_items: basket_query.rows      
+      });
+    }
+      
+      
+    
   } else {
     // Redirect user to login if not already
     res.redirect('/customer_login');
