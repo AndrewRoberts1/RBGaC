@@ -123,6 +123,8 @@ footer {
 
 body {
   height: 90vh;
+  position: absolute;
+  bottom: 0;
 }
 
 .whiteBtn {
