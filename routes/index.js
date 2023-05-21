@@ -284,15 +284,10 @@ router.post('/checkout', async function(req, res, next) {
     }
     var formattedExpDate = "";
     formattedExpDate += exp_date.getFullYear()+ "-";
-    console.log(formattedExpDate);
     formattedExpDate += ((exp_date.getMonth() < 10) ? "0": "");
-    console.log(formattedExpDate);
     formattedExpDate += exp_date.getMonth() +"-";
-    console.log(formattedExpDate);
     formattedExpDate += ((exp_date.getDate() < 10) ? "0": "");
-    console.log(formattedExpDate);
     formattedExpDate += exp_date.getDate();
-    console.log(formattedExpDate);
     res.render('checkout', {
       // order fields
       delivery_amount: deliveryAmount,
@@ -359,7 +354,7 @@ router.post('/payment', async function(req, res, next) {
 
     // Make a database query
     var order_sql = `INSERT INTO orders (customer_id, card_id, address_id, order_amount, status, ordered_date, delivery_amount) VALUES ($1,$2,$3,$4,$5,$6,$7);
-    SELECT * FROM orders WHERE customer_id = $1 ORDER BY order_id DESC LIMIT 1`;
+    SELECT * FROM orders WHERE customer_id = $1 ORDER BY order_id DESC LIMIT 1;`;
     //Execute db query
     const order_query = await resultQuery(order_sql, [req.session.customer_id, card_id, address_id, req.body.order_amount, "Order Raised", date_today, req.body.delivery_amount]);
 
