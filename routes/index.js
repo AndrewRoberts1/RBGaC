@@ -372,11 +372,11 @@ router.post('/payment', async function(req, res, next) {
     // Make a database query
     var ordered_items_sql = "INSERT INTO ordered_items (order_id, size_id, quantity) VALUES ";
     for (item in basket_query.rows) {
-      ordered_items_sql += "("+order_query.rows[0].order_id+","+basket_query.rows[item].size_id+","+basket_query.rows[item].quantity+")z";
+      ordered_items_sql += "("+order_query.rows[0].order_id+","+basket_query.rows[item].size_id+","+basket_query.rows[item].quantity+"),";
     }
     //remove last comma
-    delete_basket_sql = delete_basket_sql.slice(0, -1);
-    delete_basket_sql += `DELETE FROM basket WHERE basket.customer_id = ` + req.session.customer_id;
+    ordered_items_sql = ordered_items_sql.slice(0, -1);
+    delete_basket_sql = `DELETE FROM basket WHERE basket.customer_id = ` + req.session.customer_id;
     //Execute db query
     const ordered_items_query = await resultQuery(ordered_items_sql);
     const delete_basket_query = await resultQuery(delete_basket_sql);
