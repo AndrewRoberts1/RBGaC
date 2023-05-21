@@ -353,11 +353,14 @@ router.post('/payment', async function(req, res, next) {
     const order_query = await resultQuery(order_sql, [req.session.customer_id, card_id, address_id, req.body.order_amount, "Order Raised", date_today, req.body.delivery_amount]);
 
     //Get items from the basket
+    console.log('order raised')
 
     const basket_query = await resultQuery(`SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
     LEFT JOIN product ON product.product_id = size.product_id
     WHERE basket.customer_id =$1`, [req.session.customer_id]);
+
+    console.log('got from basket')
 
     //Move items from basket to ordered items list with new order_id - then delete from basket
 
@@ -372,6 +375,8 @@ router.post('/payment', async function(req, res, next) {
     DELETE FROM basket WHERE basket.customer_id = ` + req.session.customer_id;
     //Execute db query
     const ordered_items_query = await resultQuery(ordered_items_sql);
+
+    console.log('items added to odered items list')
       
     if(order_query.rows.length > 0) {
       // Render the pug template file with the database results
