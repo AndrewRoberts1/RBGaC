@@ -320,7 +320,7 @@ router.post('/checkout', async function(req, res, next) {
 
 
 
-router.get('/payment', async function(req, res, next) {
+router.post('/payment', async function(req, res, next) {
   if (req.session.customer_id) {
 
     //Check if the addresses have been used before - if not create them and get the id for the order
