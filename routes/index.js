@@ -246,11 +246,11 @@ router.post('/checkout', async function(req, res, next) {
     console.log(deliveryAmount);
     res.render('checkout', {
       // order fields
-      //delivery_amount: deliveryAmount,
+      delivery_amount: deliveryAmount,
       customer_details: customer_query.rows[0],
       basket_list: basket_query.rows,
       subTotal: sum,
-      total: sum + Number(delivery_amount),
+      total: sum + Number(deliveryAmount),
       // address fields
       address_id: address_query.rows[0].address_id,
       name_number: address_query.rows[0].name_number,
