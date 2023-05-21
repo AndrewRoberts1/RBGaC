@@ -121,6 +121,10 @@ footer {
   height: 10vh;
 }
 
+body {
+  height: 90vh;
+}
+
 .whiteBtn {
   border-radius: 0;
   border-color: white;
