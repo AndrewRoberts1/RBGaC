@@ -272,6 +272,18 @@ router.post('/checkout', async function(req, res, next) {
       var exp_date = "";
     }
 
+    if (customer_query.rows > 0) {
+      var first_name = customer_query.rows[0].first_name;
+      var surname = customer_query.rows[0].surname;
+      var email = customer_query.rows[0].email;
+      var phone = customer_query.rows[0].phone;
+    } else {
+      var first_name = "";
+      var surname = "";
+      var email = "";
+      var phone = "";
+    }
+
     console.log(deliveryAmount);
     res.render('checkout', {
       // order fields
@@ -280,6 +292,11 @@ router.post('/checkout', async function(req, res, next) {
       basket_list: basket_query.rows,
       subTotal: sum,
       total: sum + Number(deliveryAmount),
+      // customer fields
+      first_name: first_name,
+      surname: surname,
+      email: email,
+      phone: phone,
       // address fields
       address_id: address_id,
       name_number: name_number,
