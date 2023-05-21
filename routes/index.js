@@ -282,8 +282,15 @@ router.post('/checkout', async function(req, res, next) {
       var email = "";
       var phone = "";
     }
-
-
+    var formattedExpDate = "";
+    formattedExpDate += exp_date.getFullYear()+ "-";
+    console.log(formattedExpDate);
+    formattedExpDate += ((exp_date.getMonth().length == 1) ? "0": "");
+    console.log(formattedExpDate);
+    formattedExpDate += exp_date.getMonth() +"-";
+    console.log(formattedExpDate);
+    formattedExpDate += exp_date.getDate();
+    console.log(formattedExpDate);
     res.render('checkout', {
       // order fields
       delivery_amount: deliveryAmount,
@@ -309,7 +316,7 @@ router.post('/checkout', async function(req, res, next) {
       card_number: card_number,
       cvv: cvv,
       //exp_date: exp_date.getFullYear() + "-" +( (exp_date.getMonth().length == 1) ? "0": "") + exp_date.getMonth() +"-" + exp_date.getDate(),
-      exp_date: "2023-05-21"
+      exp_date: formattedExpDate
     });
     
   } else {
