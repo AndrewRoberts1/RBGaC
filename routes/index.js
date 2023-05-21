@@ -269,6 +269,7 @@ router.post('/checkout', async function(req, res, next) {
       var cvv = "";
       var exp_date = "";
     }
+    console.log('the card id from the query going to checkout is : ', card_id);
 
     if (customer_query.rows.length > 0) {
       var first_name = customer_query.rows[0].first_name;
@@ -282,16 +283,13 @@ router.post('/checkout', async function(req, res, next) {
       var phone = "";
     }
 
-    console.log(customer_query.rows);
-    console.log(first_name);
-    console.log(email);
     res.render('checkout', {
       // order fields
       delivery_amount: deliveryAmount,
       customer_details: customer_query.rows[0],
       basket_list: basket_query.rows,
       subTotal: sum,
-      total: sum + Number(deliveryAmount),
+      order_amount: sum + Number(deliveryAmount),
       // customer fields
       first_name: first_name,
       surname: surname,
