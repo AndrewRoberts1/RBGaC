@@ -228,53 +228,42 @@ router.get('/checkout', async function(req, res, next) {
   if (req.session.customer_id) {
     console.log('going to checkout');
     const deliveryAmount = req.body.deliveryOptions;
-
+    //Make database queries to get data for page
     const customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = $1", [req.session.customer_id]);
     const address_query = await resultQuery("SELECT * FROM address WHERE customer_id = $1 ORDER BY address_id DESC LIMIT 1", [req.session.customer_id]);
     const card_query = await resultQuery("SELECT * FROM card_details WHERE customer_id = $1 ORDER BY card_id DESC LIMIT 1", [req.session.customer_id]);
-    // Make a database query
-    var sql = `SELECT * FROM basket
+    const basket_query = await resultQuery(`SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
     LEFT JOIN product ON product.product_id = size.product_id
-    WHERE basket.customer_id =$1`;
-    //Execute db query
-    dbclient.query(sql, [req.session.customer_id], (err, result) => {
-      //Check for error in db query
-      if (err) {
-        //display the error
-        console.log('Error querying the database:', err);
-        res.send(500);
-      } else {
-        //get total of basket
-        let sum = 0;
-        for (item in result.rows) {
-          sum += result.rows[item].price * result.rows[item].quantity;
-        }
-        
-        // Render the pug template file with the database results
-        res.render('checkout', {
-          // order fields
-          delivery_amount: deliveryAmount,
-          customer_details: customer_query.rows[0],
-          basket_list: result.rows,
-          subTotal: sum,
-          total: sum + Number(delivery_amount),
-          // address fields
-          address_id: address_query.rows[0].address_id,
-          name_number: address_query.rows[0].name_number,
-          street: address_query.rows[0].street,
-          city: address_query.rows[0].city,
-          county: address_query.rows[0].county,
-          country: address_query.rows[0].country,
-          postcode: address_query.rows[0].postcode,
-          // card fields
-          card_id: card_query.rows[0].card_id,
-          card_number: card_query.rows[0].card_number,
-          cvv: card_query.rows[0].cvv,
-          exp_date: card_query.rows[0].exp_date,
-        });
-      }
+    WHERE basket.customer_id =$1`, [req.session.customer_id]);
+    //get varaibles for total amount
+    let sum = 0;
+    for (item in basket_query.rows) {
+      sum += basket_query.rows[item].price * basket_query.rows[item].quantity;
+    }
+    
+    res.render('checkout', {
+      // order fields
+      delivery_amount: deliveryAmount,
+      customer_details: customer_query.rows[0],
+      basket_list: basket_query.rows,
+      subTotal: sum,
+      total: sum + Number(delivery_amount),
+      // address fields
+      address_id: address_query.rows[0].address_id,
+      name_number: address_query.rows[0].name_number,
+      street: address_query.rows[0].street,
+      city: address_query.rows[0].city,
+      county: address_query.rows[0].county,
+      country: address_query.rows[0].country,
+      postcode: address_query.rows[0].postcode,
+      // card fields
+      card_id: card_query.rows[0].card_id,
+      card_number: card_query.rows[0].card_number,
+      cvv: card_query.rows[0].cvv,
+      exp_date: card_query.rows[0].exp_date,
     });
+    
   } else {
     // Redirect user to login if not already
     res.redirect('/customer_login');
