@@ -241,6 +241,7 @@ router.get('/checkout', async function(req, res, next) {
     for (item in basket_query.rows) {
       sum += basket_query.rows[item].price * basket_query.rows[item].quantity;
     }
+
     
     res.render('checkout', {
       // order fields
