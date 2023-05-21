@@ -284,7 +284,9 @@ router.post('/checkout', async function(req, res, next) {
       var phone = "";
     }
 
-    console.log(deliveryAmount);
+    console.log(customer_query.rows);
+    console.log(first_name);
+    console.log(email);
     res.render('checkout', {
       // order fields
       delivery_amount: deliveryAmount,
