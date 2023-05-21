@@ -375,7 +375,7 @@ router.post('/payment', async function(req, res, next) {
       ordered_items_sql += "("+order_query.rows[0].order_id+","+basket_query.rows[item].size_id+","+basket_query.rows[item].quantity+")z";
     }
     //remove last comma
-    ordered_items_query = ordered_items_query.slice(0, -1);
+    delete_basket_sql = delete_basket_sql.slice(0, -1);
     delete_basket_sql += `DELETE FROM basket WHERE basket.customer_id = ` + req.session.customer_id;
     //Execute db query
     const ordered_items_query = await resultQuery(ordered_items_sql);
