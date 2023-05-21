@@ -94,6 +94,7 @@ html(lang='en')
                             input(type="date" name="exp_date" id="inputExpDate" class="form-control" placeholder="Exp Date" required  value=exp_date onchange="clearCardId()")
 
                         //Hidden fields needed for post
+                        input(type="text" name="cardid" id="cardId" value=card_id style="display:none;")
                         input(type="text" name="delivery_amount" id="delivery_amount" value=delivery_amount style="display:none;")
                         input(type="text" name="order_amount" id="order_amount" value=order_amount style="display:none;")
                     

@@ -330,13 +330,13 @@ router.post('/payment', async function(req, res, next) {
     } else {
       var address_id = req.body.address_id;
     }
-    if (!req.body.card_id) {
+    if (!req.body.cardid) {
       const card_query = await resultQuery("INSERT INTO card_details (customer_id, card_number, cvv, exp_date) VALUES ($1,$2,$3,$4)", 
         [req.session.customer_id, req.body.card_number, req.body.cvv, req.body.exp_date]);
       console.log(card_query.rows);
       var card_id = card_query.rows[0].card_id;
     } else {
-      var card_id = req.body.card_id;
+      var card_id = req.body.cardid;
     }
     console.log(address_id);
     console.log(card_id);
