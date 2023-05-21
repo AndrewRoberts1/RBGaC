@@ -226,7 +226,7 @@ router.get('/basket', function(req, res, next) {
 
 router.get('/checkout', async function(req, res, next) {
   if (req.session.customer_id) {
-    console.log('going to checkout - delivery amount : ',req.body.deliveryOptions);
+    console.log('going to checkout - delivery amount : ',req.body.deliveryoptions);
 
     const deliveryAmount = req.body.deliveryOptions;
     //Make database queries to get data for page
