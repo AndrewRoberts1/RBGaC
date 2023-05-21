@@ -394,4 +394,31 @@ router.post('/basketadd', function(req, res, next) {
 })
 
 
+
+router.post('/basketremove', function(req, res, next) {
+  if (req.session.customer_id) {
+    const size_id = req.body.size_id;
+    // Make a database query
+    var sql = "DELETE FROM basket WHERE customer_id = $1 AND size_id = $2";
+    //Execute db query
+    dbclient.query(sql, [req.session.customer_id,size_id], (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        //Reload page to show change
+        res.redirect('/basket');
+      }
+        
+    });
+  } else {
+    // Redirect user to login if not already
+    res.redirect('/customer_login');
+  }
+})
+
+
+
 module.exports = router;
