@@ -226,7 +226,8 @@ router.get('/basket', function(req, res, next) {
 
 router.get('/checkout', async function(req, res, next) {
   if (req.session.customer_id) {
-    console.log('going to checkout');
+    console.log('going to checkout - delivery amount : ',req.body.deliveryOptions);
+
     const deliveryAmount = req.body.deliveryOptions;
     //Make database queries to get data for page
     const customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = $1", [req.session.customer_id]);
@@ -242,7 +243,7 @@ router.get('/checkout', async function(req, res, next) {
       sum += basket_query.rows[item].price * basket_query.rows[item].quantity;
     }
 
-    
+    console.log(deliveryAmount);
     res.render('checkout', {
       // order fields
       delivery_amount: deliveryAmount,
