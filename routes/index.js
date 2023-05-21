@@ -353,11 +353,11 @@ router.post('/payment', async function(req, res, next) {
     //Create order
 
     // Make a database query
-    var order_sql = `INSERT INTO orders (customer_id, card_id, address_id, order_amount, status, ordered_date, delivery_amount) VALUES ($1,$2,$3,$4,$5,$6,$7);
-    SELECT * FROM orders WHERE customer_id = $1 ORDER BY order_id DESC LIMIT 1;`;
+    var order_insert_sql = `INSERT INTO orders (customer_id, card_id, address_id, order_amount, status, ordered_date, delivery_amount) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+    var order_sql = `SELECT * FROM orders WHERE customer_id = $1 ORDER BY order_id DESC LIMIT 1;`;
     //Execute db query
-    const order_query = await resultQuery(order_sql, [req.session.customer_id, card_id, address_id, req.body.order_amount, "Order Raised", date_today, req.body.delivery_amount]);
-
+    const order_insert_query = await resultQuery(order_insert_sql, [req.session.customer_id, card_id, address_id, req.body.order_amount, "Order Raised", date_today, req.body.delivery_amount]);
+    const order_query = await resultQuery(order_sql, [req.session.customer_id]);
     //Get items from the basket
     console.log('order raised')
 
@@ -377,10 +377,10 @@ router.post('/payment', async function(req, res, next) {
     }
     //remove last comma
     ordered_items_query = ordered_items_query.slice(0, -1);
-    ordered_items_sql += `;
-    DELETE FROM basket WHERE basket.customer_id = ` + req.session.customer_id;
+    delete_basket_sql += `DELETE FROM basket WHERE basket.customer_id = ` + req.session.customer_id;
     //Execute db query
     const ordered_items_query = await resultQuery(ordered_items_sql);
+    const delete_basket_query = await resultQuery(delete_basket_sql);
 
     console.log('items added to odered items list')
       
