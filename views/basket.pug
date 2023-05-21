@@ -60,7 +60,7 @@ html(lang='en')
                         each row in basket_list
                             h6(style="text-align: left;") #{row.quantity}x £#{row.price} - #{row.product_name}
                         form(id="basketForm" method="get" action="/checkout") 
-                            select#deliveryOptions.form-select.mt-3(required name="deliveryOptions" id="deliveryOptions" onchange="addDelivery(" +subTotal+")")
+                            select#deliveryOptions.form-select.mt-3(required name="deliveryOptions" id="deliveryOptionsInput" onchange="addDelivery(" +subTotal+")")
                                 option(value="" selected) Delivery Options
                                 option(value="10") Next Day - £10
                                 option(value="7") 2-4 Working Days - £7
