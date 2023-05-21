@@ -240,7 +240,7 @@ router.post('/checkout', async function(req, res, next) {
     for (item in basket_query.rows) {
       sum += basket_query.rows[item].price * basket_query.rows[item].quantity;
     }
-    if ( address_query.rows > 0) {
+    if ( address_query.rows.length > 0) {
       var address_id = address_query.rows[0].address_id;
       var name_number = address_query.rows[0].name_number;
       var street = address_query.rows[0].street;
@@ -258,7 +258,7 @@ router.post('/checkout', async function(req, res, next) {
       var postcode = "";
     }
 
-    if (card_query.rows > 0) {
+    if (card_query.rows.length > 0) {
       var card_id = card_query.rows[0].card_id;
       var card_number = card_query.rows[0].card_number;
       var cvv = card_query.rows[0].cvv;
@@ -270,9 +270,9 @@ router.post('/checkout', async function(req, res, next) {
       var exp_date = "";
     }
 
-    if (customer_query.rows > 0) {
+    if (customer_query.rows.length > 0) {
       var first_name = customer_query.rows[0].first_name;
-      var surname = customer_query.rows[0].surname;
+      var surname = customer_query.rows[0].second_name;
       var email = customer_query.rows[0].email;
       var phone = customer_query.rows[0].phone;
     } else {
