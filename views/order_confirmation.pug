@@ -23,13 +23,13 @@ html(lang='en')
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-12.mt-3.mb-3.rbContainer.text-center
-                p.mt-2 Payment has been taken and your order if being processed now. You will receive confirmation when your order has been shipped.
-                p.mt-2
+                p.mt-2 Payment has been taken and your order is being processed now. You will receive confirmation when your order has been shipped.
+                p.mt-2.mb-1
                     strong Order Number: #{order_id}
-                p
+                p.mb-1
                     strong Expected Delivery Date: #{delivery_date}
-                p
-                    strong Payment Received: #{order_amount}
+                p.mb-3
+                    strong Payment Received: £#{order_amount}
                 hr.mt-2 
 
                 //- table of ordered items
@@ -44,7 +44,7 @@ html(lang='en')
                                 td(scope="row")   
                                     form(id="form#{row.product_id}" method="get" action="/product/"+ row.product_id)     
                                         .row
-                                            .col-sm-3
+                                            .col-sm-3.text-start
                                                 a(onclick="document.getElementById('form#{row.product_id}').submit()" href="#")
                                                     img.img-fluid(src='/images/product_images/'+ row.product_id+'.jpg')
                                             .col-sm-9

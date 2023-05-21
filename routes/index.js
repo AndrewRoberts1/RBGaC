@@ -388,7 +388,7 @@ router.post('/payment', async function(req, res, next) {
       res.render('order_confirmation', {
         order_id: order_query.rows[0].order_id,
         order_amount: order_query.rows[0].order_amount,
-        delivery_date: date_today,
+        delivery_date: formatDate(order_query.rows[0].ordered_date),
         ordered_items: basket_query.rows      
       });
     }
@@ -482,5 +482,17 @@ router.post('/basketremove', function(req, res, next) {
 })
 
 
+
+// functions
+
+function formatDate(date) {
+  var formattedExpDate = ""
+  formattedExpDate += date.getFullYear()+ "-";
+  formattedExpDate += ((date.getMonth() < 10) ? "0": "");
+  formattedExpDate += date.getMonth() +"-";
+  formattedExpDate += ((date.getDate() < 10) ? "0": "");
+  formattedExpDate += date.getDate();
+  return formattedExpDate
+}
 
 module.exports = router;
