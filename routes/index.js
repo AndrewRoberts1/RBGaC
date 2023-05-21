@@ -356,7 +356,8 @@ router.post('/payment', async function(req, res, next) {
     //Create order
 
     // Make a database query
-    var order_sql = `INSERT INTO orders (customer_id, card_id, address_id, order_amount, status, ordered_date, delivery_amount) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+    var order_sql = `INSERT INTO orders (customer_id, card_id, address_id, order_amount, status, ordered_date, delivery_amount) VALUES ($1,$2,$3,$4,$5,$6,$7);
+    SELET * FROM orders WHERE customer_id = $1 ORDER BY order_id DESC LIMIT 1`;
     //Execute db query
     const order_query = await resultQuery(order_sql, [req.session.customer_id, card_id, address_id, req.body.order_amount, "Order Raised", date_today, req.body.delivery_amount]);
 
