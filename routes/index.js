@@ -25,19 +25,10 @@ const transporter = nodemailer.createTransport({
 const mailOptions = {
   from: 'rockbottomgearandco@gmail.com',
   to: 'andy.direct101@gmail.com',
-  subject: 'This is an email test',
-  text: 'Email content - from nodemail wahooo!'
+  subject: 'Order Raised!',
+  text:`Thank you for shopping with us at Rock Bottom Gear & Co!
+  Your order has been created and we are processing it now.`
 };
-
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
- console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-    // do something useful
-  }
-});
-
 
 /* GET home page. */
 
@@ -407,7 +398,14 @@ router.post('/payment', async function(req, res, next) {
     const delete_basket_query = await resultQuery(delete_basket_sql);
 
     console.log('items added to odered items list')
-      
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+     console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        // do something useful
+      }
+    });
     if(order_query.rows.length > 0) {
       // Render the pug template file with the database results
       res.render('order_confirmation', {
