@@ -308,7 +308,7 @@ router.post('/checkout', async function(req, res, next) {
       card_id: card_id,
       card_number: card_number,
       cvv: cvv,
-      exp_date: exp_date.getFullYear() + "/" + exp_date.getMonth() +"/" + exp_date.getDate(),
+      exp_date: exp_date.getFullYear() + "-" + exp_date.getMonth() +"-" + exp_date.getDate(),
     });
     
   } else {
