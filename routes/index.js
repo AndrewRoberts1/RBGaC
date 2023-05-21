@@ -246,7 +246,7 @@ router.post('/checkout', async function(req, res, next) {
     console.log(deliveryAmount);
     res.render('checkout', {
       // order fields
-      delivery_amount: deliveryAmount,
+      //delivery_amount: deliveryAmount,
       customer_details: customer_query.rows[0],
       basket_list: basket_query.rows,
       subTotal: sum,
