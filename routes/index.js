@@ -3,6 +3,7 @@ var router = express.Router();
 const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 var app = require('../app');
+const nodemailer = require("nodemailer");
 
 // Below used to do multiple queries and get the result from all of them
 // util module for handle callback in mysql query
@@ -12,6 +13,30 @@ const { resourceLimits } = require('worker_threads');
 // create variable to get result from querying
 let resultQuery = util.promisify(dbclient.query).bind(dbclient);
 
+// create reusable transporter object using the default SMTP transport
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'rockbottomgearandco@gmail.com',
+    pass: 'tmllppqzwxqeqwth'
+  }
+});
+
+const mailOptions = {
+  from: 'rockbottomgearandco@gmail.com',
+  to: 'andy.direct101@gmail.com',
+  subject: 'This is an email test',
+  text: 'Email content - from nodemail wahooo!'
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+ console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+    // do something useful
+  }
+});
 
 
 /* GET home page. */
