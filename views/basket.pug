@@ -59,7 +59,7 @@ html(lang='en')
                     .col.text-center.mt-3
                         each row in basket_list
                             h6(style="text-align: left;") #{row.quantity}x £#{row.price} - #{row.product_name}
-                        form(id="basketForm" method="get" action="/checkout") 
+                        form(id="basketForm" method="post" action="/checkout") 
                             select#deliveryOptionsSelect.form-select.mt-3(required name="deliveryoptions" onchange="addDelivery(" +subTotal+")")
                                 option(value="" selected) Delivery Options
                                 option(value="10") Next Day - £10
@@ -90,7 +90,7 @@ html(lang='en')
     // JavaScript - to make page interactive
     script.
         function addDelivery(subTotal) {
-            const deliveryOptions = document.getElementById('deliveryOptions');
+            const deliveryOptions = document.getElementById('deliveryOptionsSelect');
             const basketDelivery = document.getElementById('basketDelivery');
             const basketTotal = document.getElementById('basketTotal');
             basketDelivery.innerHTML = "£"+deliveryOptions.value;

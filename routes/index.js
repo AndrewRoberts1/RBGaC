@@ -224,11 +224,11 @@ router.get('/basket', function(req, res, next) {
   }
 });
 
-router.get('/checkout', async function(req, res, next) {
+router.post('/checkout', async function(req, res, next) {
   if (req.session.customer_id) {
     console.log('going to checkout - delivery amount : ',req.body.deliveryoptions);
 
-    const deliveryAmount = req.body.deliveryOptions;
+    const deliveryAmount = req.body.deliveryoptions;
     //Make database queries to get data for page
     const customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = $1", [req.session.customer_id]);
     const address_query = await resultQuery("SELECT * FROM address WHERE customer_id = $1 ORDER BY address_id DESC LIMIT 1", [req.session.customer_id]);
