@@ -33,20 +33,20 @@ html(lang='en')
                         each row in basket_list
                             tr 
                                 td(scope="row")   
-                                    form(id="form"+row.product_id method="get" action="/product/"+ row.product_id)     
+                                    form(id="basketItemForm"+row.product_id method="get" action="/product/"+ row.product_id)     
                                         .row
                                             .col-sm-3
-                                                a(onclick="document.getElementById('form'"+row.product_id+").submit()" href="#")
+                                                a(onclick="document.getElementById('basketItemForm"+row.product_id+").submit()" href="#")
                                                     img.img-fluid(src='/images/product_images/'+ row.product_id+'.jpg')
                                             .col-sm-9
-                                                a.navLink(onclick="document.getElementById('form"+ row.product_id+"').submit()" href="#")
+                                                a.navLink(onclick="document.getElementById('basketItemForm"+ row.product_id+"').submit()" href="#")
                                                     h6(style="text-align: left") #{row.product_name}
                                                 p.mt-4 Colour - #{row.colour}
                                                 p Size - #{row.size}
                                 td #{row.quantity}
                                 td £#{row.price * row.quantity}
                                 td 
-                                    form(id="removeform"+row.product_id method="post" action="/basketremove") 
+                                    form(id="removeForm"+row.product_id method="post" action="/basketremove") 
                                         button.btn.removeBtn.btn-sm(type="submit")
                                             svg.bi.bi-x-lg(xmlns='http://www.w3.org/2000/svg', width='16', height='16', fill='currentColor', viewBox='0 0 16 16')
                                                 path(d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z')

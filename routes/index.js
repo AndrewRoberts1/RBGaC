@@ -226,18 +226,19 @@ router.get('/basket', function(req, res, next) {
 
 router.get('/checkout', async function(req, res, next) {
   if (req.session.customer_id) {
+    console.log('going to checkout');
     const deliveryAmount = req.body.deliveryOptions;
 
-    var customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = #{req.session.customer_id}");
-    var address_query = await resultQuery("SELECT * FROM address WHERE customer_id = #{req.session.customer_id} ORDER BY address_id DESC LIMIT 1");
-    var card_query = await resultQuery("SELECT * FROM card_details WHERE customer_id = #{req.session.customer_id} ORDER BY card_id DESC LIMIT 1");
+    const customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = $1", [req.session.customer_id]);
+    const address_query = await resultQuery("SELECT * FROM address WHERE customer_id = $1 ORDER BY address_id DESC LIMIT 1", [req.session.customer_id]);
+    const card_query = await resultQuery("SELECT * FROM card_details WHERE customer_id = $1 ORDER BY card_id DESC LIMIT 1", [req.session.customer_id]);
     // Make a database query
     var sql = `SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
     LEFT JOIN product ON product.product_id = size.product_id
-    WHERE basket.customer_id = #{req.session.customer_id}`;
+    WHERE basket.customer_id =$1`;
     //Execute db query
-    dbclient.query(sql, (err, result) => {
+    dbclient.query(sql, [req.session.customer_id], (err, result) => {
       //Check for error in db query
       if (err) {
         //display the error
