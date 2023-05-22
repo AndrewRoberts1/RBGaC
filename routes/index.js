@@ -424,17 +424,17 @@ router.post('/payment', async function(req, res, next) {
       subject: 'Order Raised!',
       text:`To ` + customer_query.rows[0].first_name + `
       
-      Thank you for shopping with us at Rock Bottom Gear & Co!
-      Your order has been created and we are processing it now.
-      
-      Order Summary:
-      
-      Order Number: ` + order_query.rows[0].order_id + ` 
-      Order Amount: £` + order_query.rows[0].order_amount + `
-      Estimated Delivery Date: ` + formatDate(delivery_date) + `
-      
-      Thanks,
-      Rock Bottom Gear & Co Team`
+Thank you for shopping with us at Rock Bottom Gear & Co!
+Your order has been created and we are processing it now.
+
+Order Summary:
+
+Order Number: ` + order_query.rows[0].order_id + ` 
+Order Amount: £` + order_query.rows[0].order_amount + `
+Estimated Delivery Date: ` + formatDate(delivery_date) + `
+
+Thanks,
+Rock Bottom Gear & Co Team`
       
     };
     transporter.sendMail(mailOrderCreated, function(error, info){
@@ -717,7 +717,7 @@ router.post('/size_option_save', async function(req, res, next) {
       res.send(500);
     } else {
       // Render the pug template file with the database results
-      res.direct('/edit_size');
+      res.redirect('back');
       
     }
       
@@ -738,7 +738,7 @@ router.post('/add_size', async function(req, res, next) {
         res.send(500);
       } else {
         // Render the pug template file with the database results
-        res.redirect('/edit_size')
+        res.redirect('back');
         
       }
         
