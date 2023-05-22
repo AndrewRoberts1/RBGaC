@@ -80,15 +80,15 @@ html(lang='en')
                                 //- input#addImage.form-control(type='file')
                             .col-md-6.mt-2
                                 label.form-label Popular Item
-                                input#addColour.form-control(type='text' placeholder="1 = Yes / 0 = No" name="popular_item" value=popular_item required)
+                                input#addColour.form-control(type='number' placeholder="1 = Yes / 0 = No" name="popular_item" value=popular_item required)
                             
                         .row.mt-3.justify-content-center
                             .col-md-4.mx-auto.d-grid
                                 button#addProduct.btn.btn-secondary(type="submit") Save
-                            .col-md-4.mx-auto.d-grid
-                                form(id="editForm"+product_id method="GET" action="/edit_size/"+product_id+"/_")
-                                    input#addProdMode.form-control(type='text' name="product_id" value=product_id  style="display:none;")
-                                    button#addProduct.btn.btn-secondary(type="submit") Edit Size Options
+                            //- .col-md-4.mx-auto.d-grid
+                            //-     form(id="editForm"+product_id method="GET" action="/edit_size/"+product_id+"/_")
+                            //-         input#addProdMode.form-control(type='text' name="product_id" value=product_id  style="display:none;")
+                            //-         button#addProduct.btn.btn-secondary(type="submit") Edit Size Options
 
         
         // Main Content [END]

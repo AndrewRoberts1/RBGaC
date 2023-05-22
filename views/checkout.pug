@@ -53,23 +53,25 @@ html(lang='en')
                             label( for="inputNameNumber" class="sr-only mt-1 mb-1") Building Name / Number
                             input(type="text" name="name_number" id="inputNameNumber" class="form-control" placeholder="Building Name / Number" required  value=name_number onchange="clearAddressId()")
                         .col-md-6
-                            //-input County
-                            label( for="inputCounty" class="sr-only mt-1 mb-1") County
-                            input(type="text" name="county" id="inputCounty" class="form-control" placeholder="County" required  value=county onchange="clearAddressId()")
-                    .row.justify-content-center
-                        .col-md-6
                             //-input Street
                             label( for="inputStreet" class="sr-only mt-1 mb-1") Street Name
                             input(type="text" name="street" id="inputStreet" class="form-control" placeholder="Street Name" required  value=street onchange="clearAddressId()")
-                        .col-md-6
-                            //-input Country
-                            label( for="inputCountry" class="sr-only mt-1 mb-1") Country
-                            input(type="text" name="country" id="inputCountry" class="form-control" placeholder="Country" required  value=country onchange="clearAddressId()")
+                            
                     .row.justify-content-center
                         .col-md-6
                             //-input City
                             label( for="inputCity" class="sr-only mt-1 mb-1") City / Town
                             input(type="text" name="city" id="inputCity" class="form-control" placeholder="City / Town" required  value=city onchange="clearAddressId()")
+                        .col-md-6
+                            //-input County
+                            label( for="inputCounty" class="sr-only mt-1 mb-1") County
+                            input(type="text" name="county" id="inputCounty" class="form-control" placeholder="County" required  value=county onchange="clearAddressId()")
+                            
+                    .row.justify-content-center
+                        .col-md-6
+                            //-input Country
+                            label( for="inputCountry" class="sr-only mt-1 mb-1") Country
+                            input(type="text" name="country" id="inputCountry" class="form-control" placeholder="Country" required  value=country onchange="clearAddressId()")
                         .col-md-6
                             //-input postcode
                             label( for="inputPostcode" class="sr-only mt-1 mb-1") Postcode

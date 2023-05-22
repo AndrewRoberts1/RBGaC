@@ -93,7 +93,7 @@ router.get('/product/:product_id', function(req, res, next) {
   sql += 'LEFT JOIN product_category ON product_category.product_category_id = product.product_category_id '
   sql += 'LEFT JOIN brand ON brand.brand_id = product.brand_id '
   sql += 'WHERE product.product_id=' + req.params.product_id + ' '
-  sql += 'ORDER BY size_options.size_id'
+  sql += 'ORDER BY size_options.size_order'
   //Execute db query
   dbclient.query(sql, (err, result) => {
     //Check for error in db error
