@@ -618,7 +618,7 @@ router.post('/edit_product', async function(req, res, next) {
   });
 })
 
-router.get('/remove_product', async function(req, res, next) {
+router.post('/remove_product', async function(req, res, next) {
   const product_id = req.body.product_id;
     // Make a database query
     var sql = "DELETE FROM product WHERE product_id = $1";
@@ -719,22 +719,10 @@ router.post('/size_option_save', async function(req, res, next) {
 
 router.post('/add_size', async function(req, res, next) {
   const product_id = req.body.product_id;
-    // Make a database query
-    var sql = `INSERT INTO size_options (product_id) VALUES ($1)`;
-    //Execute db query
-    dbclient.query(sql, [product_id], (err, result) => {
-      //Check for error in db query
-      if (err) {
-        //display the error
-        console.log('Error querying the database:', err);
-        res.send(500);
-      } else {
-        // Render the pug template file with the database results
-        res.redirect('/edit_size/'+result.rows[0].product_id+"/_")
-        
-      }
-        
-    });
+  const update_size_query = await resultQuery("INSERT INTO size_options (product_id) VALUES ($1)", [product_id]);
+
+  res.redirect('/edit_size/'+product_id+"/_")
+    
   
 })
 

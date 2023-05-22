@@ -23,7 +23,7 @@ html(lang='en')
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-10.mt-3.mb-3.rbContainer
-                form(id="backForm" method="get" action="//view_products")
+                form(id="backForm" method="get" action="/view_products")
                     button.btn.btn-secondary.mb-2.mt-2(type="submit") Back
                 div.text-center
                     if size_id
@@ -58,11 +58,11 @@ html(lang='en')
                                                 td #{row.size}
                                                 td #{row.size_order}
                                                 td 
-                                                    form(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/"+row.size_id)
+                                                    form.mt-1(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/"+row.size_id)
                                                         input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
                                                         button.btn.btn-primary(type="submit") Edit
                                                     
-                                                    form(id="editForm"+row.product_id method="POST" action="/remove_size")
+                                                    form.mt-1(id="editForm"+row.product_id method="POST" action="/remove_size")
                                                         input#addProdMode.form-control(type='text' name="product_id" value=row.size_id  style="display:none;")
                                                         button.btn.btn-danger(type="submit") Remove
                                         else 
