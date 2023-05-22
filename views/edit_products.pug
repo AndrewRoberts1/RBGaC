@@ -48,7 +48,7 @@ html(lang='en')
                                         if brand == row.brand_name
                                             option(value=row.brand_id selected) #{row.brand_name}
                                         else 
-                                            option(value=row.brand_id selected) #{row.brand_name}
+                                            option(value=row.brand_id ) #{row.brand_name}
                             .col-md-4.mt-2
                                 label.form-label Activity
                                 select#addActivity.form-select(type='text' name="activity" required)
@@ -59,7 +59,7 @@ html(lang='en')
                                         if activity = row.activity
                                             option(value=row.activity_id selected) #{row.activity}
                                         else 
-                                            option(value=row.activity_id selected) #{row.activity}
+                                            option(value=row.activity_id ) #{row.activity}
                             .col-md-4.mt-2
                                 label.form-label Product Type
                                 select#addProdType.form-select(type='text' name="product_type" required)
@@ -70,7 +70,7 @@ html(lang='en')
                                         if product_type == row.category
                                             option(value=row.product_category_id selected) #{row.category}
                                         else 
-                                            option(value=row.product_category_id selected) #{row.category}
+                                            option(value=row.product_category_id ) #{row.category}
                         .row.mt-3.justify-content-center
                             .col-md-6.mt-2
                                 label.form-label Description
