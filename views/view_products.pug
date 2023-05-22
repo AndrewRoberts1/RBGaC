@@ -27,22 +27,21 @@ html(lang='en')
                     button.btn.btn-primary(type="submit") Add new
                 table#prodTable.table
                     thead
-                        th ID
-                        th Product Name
+                        th Product
                         th Size Opitons
-                        th Edit
-                        th Delete
+                        th 
                     tbody#prodTableBody
                         each row in product_list
                             tr
-                                td #{row.product_id}
-                                td #{row.product_name}
+                                td #{row.product_id} - #{row.product_name}
                                 td #{row.size}
                                 td 
                                     form(id="editForm"+row.product_id method="POST" action="/edit_product")
                                         input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                         button.btn.btn-primary(type="submit") Edit
-                                td 
+                                    form(id="editForm"+row.product_id method="POST" action="/edit_size")
+                                        input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
+                                        button.btn.btn-primary(type="submit") Edit Size Options
                                     form(id="editForm"+row.product_id method="POST" action="/remove_product")
                                         input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                         button.btn.btn-danger(type="submit") Remove

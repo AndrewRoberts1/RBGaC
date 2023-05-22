@@ -680,6 +680,99 @@ router.get('/view_products', async function(req, res, next) {
   
 })
 
+
+router.post('/edit_size', async function(req, res, next) {
+  const product_id = req.body.product_id;
+    // Make a database query
+    var sql = `SELECT * FROM size_options WHERE product_id = $1`;
+    //Execute db query
+    dbclient.query(sql, [product_id], (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        // Render the pug template file with the database results
+        res.render('edit_size_options', {
+          size_options: result.rows
+        });
+        
+      }
+        
+    });
+  
+})
+
+router.post('/size_option_save', async function(req, res, next) {
+  const product_id = req.body.product_id;
+    // Make a database query
+    var sql = `SELECT * FROM size_options`;
+    //Execute db query
+    dbclient.query(sql, (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        // Render the pug template file with the database results
+        res.render('edit_size_options', {
+          size_options: result.rows
+        });
+        
+      }
+        
+    });
+  
+})
+
+router.post('/add_size', async function(req, res, next) {
+  const product_id = req.body.product_id;
+    // Make a database query
+    var sql = `SELECT * FROM size_options`;
+    //Execute db query
+    dbclient.query(sql, (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        // Render the pug template file with the database results
+        res.render('edit_size_options', {
+          size_options: result.rows
+        });
+        
+      }
+        
+    });
+  
+})
+
+router.post('/remove_size', async function(req, res, next) {
+  const product_id = req.body.product_id;
+    // Make a database query
+    var sql = `SELECT * FROM size_options`;
+    //Execute db query
+    dbclient.query(sql, (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        // Render the pug template file with the database results
+        res.render('edit_size_options', {
+          size_options: result.rows
+        });
+        
+      }
+        
+    });
+  
+})
+
 // functions
 
 function formatDate(date) {
