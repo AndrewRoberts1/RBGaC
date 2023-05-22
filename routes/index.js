@@ -680,6 +680,7 @@ router.get('/view_products', async function(req, res, next) {
 
 
 router.get('/edit_size/:product_id/:size_id', async function(req, res, next) {
+  console.log("you got the get for edit_size");
   const product_id = req.params.product_id;
   const size_query = await resultQuery("SELECT * FROM size_options WHERE product_id = $1", [product_id]);
   if (req.params.size_id !== "_") {
@@ -705,23 +706,12 @@ router.get('/edit_size/:product_id/:size_id', async function(req, res, next) {
 
 router.post('/size_option_save', async function(req, res, next) {
   const size_id = req.body.size_id;
-  console.log(req.body);
-  // Make a database query
-  var sql = `UPDATE size_options SET size=$1, size_order=$2  WHERE size_id = $3`;
-  //Execute db query
-  dbclient.query(sql, [req.body.size, req.body.size_order, size_id], (err, result) => {
-    //Check for error in db query
-    if (err) {
-      //display the error
-      console.log('Error querying the database:', err);
-      res.send(500);
-    } else {
-      // Render the pug template file with the database results
-      res.redirect('/edit_size/'+result.rows[0].product_id+"/_")
-      
-    }
-      
-  });
+  
+  const update_size_query = await resultQuery("UPDATE size_options SET size=$1, size_order=$2  WHERE size_id = $3", 
+    [req.body.size, req.body.size_order, size_id]);
+  const get_size_query = await resultQuery("SELECT * FROM size_options WHERE size_id = $1", [size_id]);
+
+  res.redirect('/edit_size/'+get_size_query.rows[0].product_id+"/_")
   
 })
 
