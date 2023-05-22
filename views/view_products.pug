@@ -39,7 +39,7 @@ html(lang='en')
                                     form(id="editForm"+row.product_id method="POST" action="/edit_product")
                                         input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                         button.btn.btn-primary(type="submit") Edit
-                                    form(id="editForm"+row.product_id method="POST" action="/edit_size/"+row.product_id+"/_")
+                                    form(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/_")
                                         input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                         button.btn.btn-primary(type="submit") Edit Size Options
                                     form(id="editForm"+row.product_id method="POST" action="/remove_product")
