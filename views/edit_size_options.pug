@@ -44,8 +44,8 @@ html(lang='en')
                                     th Size Opiton
                                     th Size Order
                                     th 
-                                        form(id="editForm"+row.product_id method="POST" action="/add_size")
-                                            input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
+                                        form(id="addSizeForm" method="POST" action="/add_size")
+                                            input#addProdMode.form-control(type='text' name="product_id" value=product_id  style="display:none;")
                                             button.btn.btn-primary(type="submit") Add Size Option
                                 tbody#prodTableBody
                                     each row in size_options

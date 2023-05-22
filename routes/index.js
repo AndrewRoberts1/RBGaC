@@ -691,10 +691,12 @@ router.post('/edit_size', async function(req, res, next) {
       size_id: single_size_query.rows[0].size_id,
       size: single_size_query.rows[0].size,
       size_order: single_size_query.rows[0].size_order,
+      product_id: size_query.rows[0].product_id
     });
   } else {
     res.render('edit_size_options', {
-      size_options: size_query.rows
+      size_options: size_query.rows,
+      product_id: size_query.rows[0].product_id
       
     });
   }
