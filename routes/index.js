@@ -681,48 +681,45 @@ router.get('/view_products', async function(req, res, next) {
 
 router.post('/edit_size', async function(req, res, next) {
   const product_id = req.body.product_id;
-    // Make a database query
-    var sql = `SELECT * FROM size_options WHERE product_id = $1`;
-    //Execute db query
-    dbclient.query(sql, [product_id], (err, result) => {
-      //Check for error in db query
-      if (err) {
-        //display the error
-        console.log('Error querying the database:', err);
-        res.send(500);
-      } else {
-        // Render the pug template file with the database results
-        res.render('edit_size_options', {
-          size_options: result.rows
-        });
-        
-      }
-        
+  const size_query = await resultQuery("SELECT * FROM size_options WHERE product_id = $1", [product_id]);
+  if (req.body.size_id) {
+    const size_id =req.body.size_id;
+    const single_size_query = await resultQuery("SELECT * FROM size_options WHERE size_id = $1", [size_id]);
+  
+    res.render('edit_size_options', {
+      size_options: size_query.rows,
+      size_id: single_size_query.rows[0].size_id,
+      size: single_size_query.rows[0].size,
+      size_order: single_size_query.rows[0].size_order,
     });
+  } else {
+    res.render('edit_size_options', {
+      size_options: size_query.rows
+      
+    });
+  }
   
 })
 
 router.post('/size_option_save', async function(req, res, next) {
-  const product_id = req.body.product_id;
+  const size_id = req.body.size_id;
   console.log(req.body);
-    // // Make a database query
-    // var sql = `SELECT * FROM size_options`;
-    // //Execute db query
-    // dbclient.query(sql, (err, result) => {
-    //   //Check for error in db query
-    //   if (err) {
-    //     //display the error
-    //     console.log('Error querying the database:', err);
-    //     res.send(500);
-    //   } else {
-    //     // Render the pug template file with the database results
-    //     res.render('edit_size_options', {
-    //       size_options: result.rows
-    //     });
-        
-    //   }
-        
-    // });
+  // Make a database query
+  var sql = `UPDATE size_options SET size=$1, size_order=$2  WHERE size_id = $3`;
+  //Execute db query
+  dbclient.query(sql, [req.body.size, req.body.size_order], (err, result) => {
+    //Check for error in db query
+    if (err) {
+      //display the error
+      console.log('Error querying the database:', err);
+      res.send(500);
+    } else {
+      // Render the pug template file with the database results
+      res.direct('/edit_size');
+      
+    }
+      
+  });
   
 })
 

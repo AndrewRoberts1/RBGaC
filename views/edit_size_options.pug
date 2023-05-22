@@ -24,28 +24,57 @@ html(lang='en')
         .row.mainRow.justify-content-center
             .col-md-10.mt-3.mb-3.rbContainer
                 div.text-center
-                    each row, index in size_options 
-                        .row.mt-3.justify-content-center
+                    .row.mt-3.justify-content-center
+                        form(class="p-3" method="POST" action="/size_option_save")
+                            input#addProdMode.form-control(type='text' name="size_id" value=size_id  style="display:none;")
                             .col-md-5.mt-2
                                 label.form-label Size Option
-                                input#addSize.form-control.addSizeClass(type='text' name="size"+index value=row.size)
+                                input#addSize.form-control.addSizeClass(type='text' name="size" value=size)
                             .col-md-5.mt-2
                                 label.form-label Size Order
-                                input#addSize.form-control.addSizeClass(type='text' name="sizeorder"+index value=row.size_order)
-                            .col-md-2.mt-2.d-flex.align-items-end
-                                form(class="p-3" method="POST" action="/remove_size")
-                                    input#prodId.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
-                                    button.btn.btn-danger() Remove
+                                input#addSize.form-control.addSizeClass(type='text' name="size_order" value=size_order)
 
-                        .row.mt-3.justify-content-center
-                            .col-md-4.mx-auto.d-grid
-                                form(class="p-3" method="POST" action="/size_option_save")
-                                    input#addProdMode.form-control(type='text' name="product_id" value=product_id  style="display:none;")
+                            .row.mt-3.justify-content-center
+                                .col-md-4.mx-auto.d-grid
                                     button#addProduct.btn.btn-secondary(type="submit") Save
-                            .col-md-4.mx-auto.d-grid
-                                form(class="p-3" method="POST" action="/add_size")
-                                    input#prodId.form-control(type='text' name="product_id" value=product_id  style="display:none;")
-                                    button#addProduct.btn.btn-secondary(type="submit") Add new size
+                    .row.mt-3.justify-content-center
+                        .col-md-12.mt-2
+                            table#prodTable.table
+                                thead
+                                    th Size Opiton
+                                    th Size Order
+                                    th 
+                                        form(id="editForm"+row.product_id method="POST" action="/add_size")
+                                            input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
+                                            button.btn.btn-primary(type="submit") Add Size Option
+                                tbody#prodTableBody
+                                    each row in size_options
+                                        if size_id == row.size_id
+                                            tr.table-primary
+                                                td #{row.size}
+                                                td #{row.size_order}
+                                                td 
+                                                    form(id="editForm"+row.product_id method="POST" action="/edit_size")
+                                                        input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
+                                                        button.btn.btn-primary(type="submit") Edit
+                                                    
+                                                    form(id="editForm"+row.product_id method="POST" action="/remove_size")
+                                                        input#addProdMode.form-control(type='text' name="product_id" value=row.size_id  style="display:none;")
+                                                        button.btn.btn-danger(type="submit") Remove
+                                        else 
+                                            tr
+                                                td #{row.size}
+                                                td #{row.size_order}
+                                                td 
+                                                    form(id="editForm"+row.product_id method="POST" action="/edit_size")
+                                                        input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
+                                                        button.btn.btn-primary(type="submit") Edit
+                                                    
+                                                    form(id="editForm"+row.product_id method="POST" action="/remove_size")
+                                                        input#addProdMode.form-control(type='text' name="product_id" value=row.size_id  style="display:none;")
+                                                        button.btn.btn-danger(type="submit") Remove
+
+
 
         
         // Main Content [END]
