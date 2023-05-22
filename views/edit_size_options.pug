@@ -72,7 +72,8 @@ html(lang='en')
                                                         button.btn.btn-primary(type="submit") Edit
                                                     
                                                     form(id="editForm"+row.product_id method="POST" action="/remove_size")
-                                                        input#addProdMode.form-control(type='text' name="product_id" value=row.size_id  style="display:none;")
+                                                        input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
+                                                        input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                                         button.btn.btn-danger(type="submit") Remove
 
 
