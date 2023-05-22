@@ -616,7 +616,7 @@ router.post('/edit_product', async function(req, res, next) {
   });
 })
 
-router.get('/remove_products', async function(req, res, next) {
+router.get('/remove_product', async function(req, res, next) {
   const product_id = req.body.product_id;
     // Make a database query
     var sql = "DELETE FROM product WHERE product_id = $1";
