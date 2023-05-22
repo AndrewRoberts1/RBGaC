@@ -178,10 +178,10 @@ router.post('/add_user', function(req, res, next) {
       }
       console.log(hashedPassword);
       // Make a database query
-      var sql = `INSERT INTO customers(first_name, second_name, phone, email, password) 
-      VALUES ("${req.body.first_name}","${req.body.second_name}","${req.body.phone}","${req.body.email}","${hashedPassword}")`;
+      var sql = `INSERT INTO customers (first_name, second_name, phone, email, password) 
+      VALUES ($1,$2,$3,$4,$5)`;
       //Execute db query
-      dbclient.query(sql, (err, result) => {
+      dbclient.query(sql, [req.body.first_name,req.body.second_name,req.body.phone,req.body.email,hashedPassword], (err, result) => {
         //Check for error in db query
         if (err) {
           //display the error
