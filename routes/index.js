@@ -738,22 +738,10 @@ router.post('/add_size', async function(req, res, next) {
 
 router.post('/remove_size', async function(req, res, next) {
   const size_id = req.body.size_id;
-    // Make a database query
-    var sql = `DELETE FROM size_options WHERE size_id = $1`;
-    //Execute db query
-    dbclient.query(sql, [size_id], (err, result) => {
-      //Check for error in db query
-      if (err) {
-        //display the error
-        console.log('Error querying the database:', err);
-        res.send(500);
-      } else {
-        // Render the pug template file with the database results
-        res.redirect('/edit_size/'+result.rows[0].product_id+"/_")
-        
-      }
-        
-    });
+  const update_size_query = await resultQuery("DELETE FROM size_options WHERE size_id = $1", [size_id]);
+  const get_size_query = await resultQuery("SELECT * FROM size_options WHERE size_id = $1", [size_id]);
+
+  res.redirect('/edit_size/'+get_size_query.rows[0].product_id+"/_")
   
 })
 
