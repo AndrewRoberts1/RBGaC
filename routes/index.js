@@ -566,7 +566,7 @@ router.post('/productadd', async function(req, res, next) {
   });
 })
 
-router.post('/edit_products', async function(req, res, next) {
+router.post('/edit_product', async function(req, res, next) {
   const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
   const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
   const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
@@ -640,7 +640,8 @@ router.get('/view_products', async function(req, res, next) {
     string_agg(size_options.size, ', ') AS size
   FROM product
   INNER JOIN size_options ON product.product_id = size_options.product_id
-  GROUP BY product.product_id;`;
+  GROUP BY product.product_id
+  ORDER BY product.product_id;`;
     //Execute db query
     dbclient.query(sql, (err, result) => {
       //Check for error in db query
