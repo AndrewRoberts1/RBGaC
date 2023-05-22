@@ -544,7 +544,7 @@ router.post('/basketremove', function(req, res, next) {
 })
 
 
-router.get('/add_products', async function(req, res, next) {
+router.get('/add_product', async function(req, res, next) {
   const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
   const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
   const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
@@ -559,17 +559,29 @@ router.get('/add_products', async function(req, res, next) {
 })
 
 
-router.post('/productadd', async function(req, res, next) {
-  const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
-  const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
-  const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
-
-  // Render the pug template file with the database results
-  res.render('edit_products', {
-    brand_options: brand_query.rows,
-    activity_options: activity_query.rows,
-    product_type_options: product_type_query.rows
-  });
+router.post('/productsave', async function(req, res, next) {
+  switch (req.body.mode) {
+    case "New":
+      const insert_prod_query = await resultQuery("INSERT INTO product (product_category_id,activity_id,brand_id,product_name,price,colour,description, popular_item) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
+      [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc, req.body.popular_item]);
+      break;
+    case "Edit":
+      const update_prod_query = await resultQuery(`UPDATE product
+      SET product_category_id = $1,
+      activity_id = $2,
+      brand_id = $3,
+      product_name = $4,
+      price = $5,
+      colour = $6,
+      description = $7,
+      popular_item = $8
+      WHERE product_id = $9;`,
+      [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc, req.body.popular_item, req.body.product_id]);
+      break;
+  }
+  
+  //Reload page to show change
+  res.redirect('view_products');
 })
 
 router.post('/edit_product', async function(req, res, next) {
@@ -588,6 +600,7 @@ router.post('/edit_product', async function(req, res, next) {
   // Render the pug template file with the database results
   res.render('edit_products', {
     //load product detials
+    product_id:  product_query.rows[0].product_id,
     product_name: product_query.rows[0].product_name,
     price: product_query.rows[0].price,
     colour: product_query.rows[0].colour,
@@ -599,7 +612,7 @@ router.post('/edit_product', async function(req, res, next) {
     brand_options: brand_query.rows,
     activity_options: activity_query.rows,
     product_type_options: product_type_query.rows,
-    mode: "edit"
+    mode: "Edit"
   });
 })
 

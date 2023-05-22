@@ -24,8 +24,9 @@ html(lang='en')
         .row.mainRow.justify-content-center
             .col-md-10.mt-3.mb-3.rbContainer
                 div.text-center
-                    form(class="p-3" method="POST" action="/productadd")
+                    form(class="p-3" method="POST" action="/productsave")
                         input#addProdMode.form-control(type='text' name="mode" value=mode  style="display:none;")
+                        input#addProdMode.form-control(type='text' name="product_id" value=product_id  style="display:none;")
                         .row.mt-3.justify-content-center
                             .col-md-4.mt-2
                                 label.form-label Product Name
@@ -93,7 +94,7 @@ html(lang='en')
                                             button#addSizeOption.btn.btn-primary Add new size
                             .row.mt-3.justify-content-center
                             .col-md-4.mx-auto.d-grid
-                                button#addProduct.btn.btn-secondary(type="submit") Add Product
+                                button#addProduct.btn.btn-secondary(type="submit") Save
 
         
         // Main Content [END]
