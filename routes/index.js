@@ -729,7 +729,7 @@ router.post('/size_option_save', async function(req, res, next) {
 router.post('/add_size', async function(req, res, next) {
   const product_id = req.body.product_id;
     // Make a database query
-    var sql = `INSERT INTO size_options (product_id) VALUE ($1)`;
+    var sql = `INSERT INTO size_options (product_id) VALUES ($1)`;
     //Execute db query
     dbclient.query(sql, [product_id], (err, result) => {
       //Check for error in db query
