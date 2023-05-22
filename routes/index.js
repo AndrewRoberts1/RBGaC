@@ -608,7 +608,7 @@ router.post('/edit_product', async function(req, res, next) {
     activity: product_query.rows[0].activity,
     desc: product_query.rows[0].description,
     popular_item: product_query.rows[0].popular_item,
-    product_name: product_query.rows[0].product_name,
+    product_type: product_query.rows[0].category,
     brand_options: brand_query.rows,
     activity_options: activity_query.rows,
     product_type_options: product_type_query.rows,
