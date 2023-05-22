@@ -30,55 +30,56 @@ html(lang='en')
                         .row.mt-3.justify-content-center
                             .col-md-4.mt-2
                                 label.form-label Product Name
-                                input#addProdName.form-control(type='text' name="product_name" value=product_name)
+                                input#addProdName.form-control(type='text' name="product_name" value=product_name required)
                             .col-md-4.mt-2
                                 label.form-label Price
-                                input#addPrice.form-control(type='text' name="price" value=price)
+                                input#addPrice.form-control(type='text' name="price" value=price required)
                             .col-md-4.mt-2
                                 label.form-label Colour
-                                input#addColour.form-control(type='text' name="colour" value=colour)
+                                input#addColour.form-control(type='text' name="colour" value=colour required)
                             .row.mt-3.justify-content-center
                             .col-md-4.mt-2
                                 label.form-label Brand Name
-                                select#addBrand.form-select(type='text' name="brand")
+                                select#addBrand.form-select(type='text' name="brand" required)
                                     unless brand
                                         option(value='' selected='') Please select...
                                     
                                     each row in brand_options 
-                                        if brand
+                                        if brand == row.brand_name
                                             option(value=row.brand_id selected) #{row.brand_name}
                                         else 
                                             option(value=row.brand_id selected) #{row.brand_name}
                             .col-md-4.mt-2
                                 label.form-label Activity
-                                select#addActivity.form-select(type='text' name="activity")
+                                select#addActivity.form-select(type='text' name="activity" required)
                                     unless activity
                                         option(value='' selected='') Please select...
                                     
                                     each row in activity_options 
-                                        if activity
+                                        if activity = row.activity
                                             option(value=row.activity_id selected) #{row.activity}
                                         else 
                                             option(value=row.activity_id selected) #{row.activity}
                             .col-md-4.mt-2
                                 label.form-label Product Type
-                                select#addProdType.form-select(type='text' name="product_type")
+                                select#addProdType.form-select(type='text' name="product_type" required)
                                     unless product_type
                                         option(value='' selected='') Please select...
                                     
                                     each row in product_type_options 
-                                        if product_type
+                                        if product_type == row.category
                                             option(value=row.product_category_id selected) #{row.category}
                                         else 
                                             option(value=row.product_category_id selected) #{row.category}
                             .row.mt-3.justify-content-center
                             .col-md-5.mt-2
                                 label.form-label Description
-                                textarea#addDesc.form-control(type='text' name="desc" value=desc)
+                                textarea#addDesc.form-control(type='text' name="desc" value=desc required)
+                                    | #{desc}
                                 //- label.form-label.mt-2 Image
                                 //- input#addImage.form-control(type='file')
                                 label.form-label Popular Item
-                                input#addColour.form-control(type='text' placeholder="1 = Yes / 0 = No" name="popular_item" value=popular_item)
+                                input#addColour.form-control(type='text' placeholder="1 = Yes / 0 = No" name="popular_item" value=popular_item required)
                             .col-md-7.mt-2
                                 #sizeAccordion.accordion
                                 .accordion-item
@@ -88,6 +89,14 @@ html(lang='en')
                                     #sizeAccordionCollapse.accordion-collapse.collapse.show(aria-labelledby='accHeading' data-bs-parent='sizeAccordion')
                                     .accordion-body
                                         // Row to add elements using JS
+                                        each row, index in size_options 
+                                            .row.mt-3.justify-content-center
+                                                .col-md-8.mt-2
+                                                    label.form-label Size Option
+                                                    input#addSize.form-control.addSizeClass(type='text' name="size"+index value=row.size)
+                                                .col-md-3.mt-2.d-flex.align-items-end
+                                                    button.btn.btn-danger(onclick='removeSize(this)') Remove
+
                                         #sizeOptionRows
                                         .row.mt-3.justify-content-center
                                         .col-md-4.mt-2.mx-auto.d-grid
