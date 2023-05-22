@@ -679,11 +679,11 @@ router.get('/view_products', async function(req, res, next) {
 })
 
 
-router.post('/edit_size', async function(req, res, next) {
-  const product_id = req.body.product_id;
+router.get('/edit_size/:product_id/:size_id', async function(req, res, next) {
+  const product_id = req.params.product_id;
   const size_query = await resultQuery("SELECT * FROM size_options WHERE product_id = $1", [product_id]);
-  if (req.body.size_id) {
-    const size_id =req.body.size_id;
+  if (req.params.size_id !== "_") {
+    const size_id = req.params.size_id;
     const single_size_query = await resultQuery("SELECT * FROM size_options WHERE size_id = $1", [size_id]);
   
     res.render('edit_size_options', {
@@ -717,7 +717,7 @@ router.post('/size_option_save', async function(req, res, next) {
       res.send(500);
     } else {
       // Render the pug template file with the database results
-      res.redirect('back');
+      res.redirect('/edit_size/'+result.rows[0].product_id+"/_")
       
     }
       
@@ -738,7 +738,7 @@ router.post('/add_size', async function(req, res, next) {
         res.send(500);
       } else {
         // Render the pug template file with the database results
-        res.redirect('back');
+        res.redirect('/edit_size/'+result.rows[0].product_id+"/_")
         
       }
         
@@ -759,7 +759,7 @@ router.post('/remove_size', async function(req, res, next) {
         res.send(500);
       } else {
         // Render the pug template file with the database results
-        res.redirect('/edit_size')
+        res.redirect('/edit_size/'+result.rows[0].product_id+"/_")
         
       }
         

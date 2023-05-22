@@ -54,7 +54,7 @@ html(lang='en')
                                                 td #{row.size}
                                                 td #{row.size_order}
                                                 td 
-                                                    form(id="editForm"+row.product_id method="POST" action="/edit_size")
+                                                    form(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/"+row.size_id)
                                                         input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
                                                         button.btn.btn-primary(type="submit") Edit
                                                     
@@ -66,7 +66,7 @@ html(lang='en')
                                                 td #{row.size}
                                                 td #{row.size_order}
                                                 td 
-                                                    form(id="editForm"+row.product_id method="POST" action="/edit_size")
+                                                    form(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/"+row.size_id)
                                                         input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
                                                         button.btn.btn-primary(type="submit") Edit
                                                     
