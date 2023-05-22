@@ -339,18 +339,24 @@ router.post('/payment', async function(req, res, next) {
     console.log(req.body);
     //Check if the addresses have been used before - if not create them and get the id for the order
     if (!req.body.address_id) {
-      const address_query = await resultQuery("INSERT INTO address (customer_id, name_number, street, city, county, country, postcode) VALUES ($1,$2,$3,$4,$5,$6,$7); SELECT * FROM address WHERE customer_id = $1 ORDER BY address_id DESC LIMIT 1", 
+      //Insert address
+      const address_query = await resultQuery("INSERT INTO address (customer_id, name_number, street, city, county, country, postcode) VALUES ($1,$2,$3,$4,$5,$6,$7);", 
         [req.session.customer_id, req.body.name_number, req.body.street, req.body.city, req.body.county, req.body.country, req.body.postcode]);
-      console.log(address_query.rows);
-      var address_id = address_query.rows[0].address_id;
+      //GET new address id from latest insert
+      const get_address_query = await resultQuery("SELECT * FROM address WHERE customer_id = $1 ORDER BY address_id DESC LIMIT 1", [req.session.customer_id]);
+      console.log(get_address_query.rows);
+      var address_id = get_address_query.rows[0].address_id;
     } else {
       var address_id = req.body.address_id;
     }
     if (!req.body.cardid) {
-      const card_query = await resultQuery("INSERT INTO card_details (customer_id, card_number, cvv, exp_date) VALUES ($1,$2,$3,$4); SELECT * FROM card_details WHERE customer_id = $1 ORDER BY card_id DESC LIMIT 1", 
+      //Insert card
+      const card_query = await resultQuery("INSERT INTO card_details (customer_id, card_number, cvv, exp_date) VALUES ($1,$2,$3,$4);", 
         [req.session.customer_id, req.body.card_number, req.body.cvv, req.body.exp_date]);
-      console.log(card_query.rows);
-      var card_id = card_query.rows[0].card_id;
+      //GET new card id from latest insert
+      const get_card_query = await resultQuery("SELECT * FROM card_details WHERE customer_id = $1 ORDER BY card_id DESC LIMIT 1", [req.session.customer_id]);
+      console.log(get_card_query.rows);
+      var card_id = get_card_query.rows[0].card_id;
     } else {
       var card_id = req.body.cardid;
     }
