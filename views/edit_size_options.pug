@@ -18,7 +18,7 @@ html(lang='en')
         .headerPadd
         // Header Image Section [START]
         .headerImage.genericHead.bottomAlign
-            .h2.headerText.text-center Add Products
+            .h2.headerText.text-center Edit Size Option
 
             // Header Image Section [END]
         .row.mainRow.justify-content-center
@@ -70,11 +70,11 @@ html(lang='en')
                                                 td #{row.size}
                                                 td #{row.size_order}
                                                 td 
-                                                    form(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/"+row.size_id)
+                                                    form.mt-1(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/"+row.size_id)
                                                         input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
                                                         button.btn.btn-primary(type="submit") Edit
                                                     
-                                                    form(id="editForm"+row.product_id method="POST" action="/remove_size")
+                                                    form.mt-1(id="editForm"+row.product_id method="POST" action="/remove_size")
                                                         input#addProdMode.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
                                                         input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                                         button.btn.btn-danger(type="submit") Remove
