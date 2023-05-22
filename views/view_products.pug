@@ -58,30 +58,6 @@ html(lang='en')
 
     // JavaScript - to make page interactive
     script.
-        const addSizeBtn = document.querySelector('#addSizeOption');
-        
-        addSizeBtn.onclick = function () {
-            var sizeRow= document.getElementById('sizeOptionRows');
-            var tempHtml = "";
-            tempHtml += '<div class="row mt-3 justify-content-center">';
-            tempHtml += '                                                <div class="col-md-8 mt-2">';
-            tempHtml += '                                                    <label class="form-label">Size Option</label>';
-            tempHtml += '                                                    <input class="form-control addSizeClass" type="text" id="addSize">';
-            tempHtml += '                                                </div>';
-            tempHtml += '                                                <div class="col-md-3 mt-2 d-flex align-items-end">';
-            tempHtml += '                                                    <button class="btn btn-danger" onclick="removeSize(this)">Remove</button>';
-            tempHtml += '                                                </div>';
-            tempHtml += '                                            </div>';
-            
-            sizeRow.innerHTML += tempHtml;
-
-            var sizeArr = [];
-            document.querySelectorAll('.addSizeClass').forEach(function(el) {
-                sizeArr.push(el.value)
-            })
-
-        }
-      
 
   body
   // jQuery and Bootstrap Bundle

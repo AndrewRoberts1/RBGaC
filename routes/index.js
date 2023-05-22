@@ -654,9 +654,7 @@ router.get('/remove_products', async function(req, res, next) {
 router.get('/view_products', async function(req, res, next) {
   const product_id = req.body.product_id;
     // Make a database query
-    var sql = `SELECT
-    product.*,
-    string_agg(size_options.size, ', ') AS size
+    var sql = `SELECT product.*, string_agg(size_options.size, ', ') AS size
   FROM product
   INNER JOIN size_options ON product.product_id = size_options.product_id
   GROUP BY product.product_id
