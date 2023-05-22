@@ -22,13 +22,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const mailOptions = {
-  from: 'rockbottomgearandco@gmail.com',
-  to: 'andy.direct101@gmail.com',
-  subject: 'Order Raised!',
-  text:`Thank you for shopping with us at Rock Bottom Gear & Co!
-  Your order has been created and we are processing it now.`
-};
 
 /* GET home page. */
 
@@ -396,9 +389,47 @@ router.post('/payment', async function(req, res, next) {
     //Execute db query
     const ordered_items_query = await resultQuery(ordered_items_sql);
     const delete_basket_query = await resultQuery(delete_basket_sql);
+    //GET customer details
+    const customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = $1", [req.session.customer_id]);
 
-    console.log('items added to odered items list')
-    transporter.sendMail(mailOptions, function(error, info){
+    console.log('items added to odered items list');
+
+    var predicted_delivery_days = 0;
+    //Figure out predicted delivery date
+    switch(req.body.delivery_amount) {
+      case 5:
+        predicted_delivery_days = 6;
+        break;
+      case 7:
+        predicted_delivery_days = 3;
+        break;
+      case 10:
+        predicted_delivery_days = 1;
+        break;
+    }
+
+    const delivery_date = order_query.rows[0].ordered_date.setDate(order_query.rows[0].ordered_date.getDate() + predicted_delivery_days);
+ 
+    const mailOrderCreated = {
+      from: 'rockbottomgearandco@gmail.com',
+      to: customer_query.rows[0].email,
+      subject: 'Order Raised!',
+      text:`To ` + customer_query.rows[0].first_name + `
+      
+      Thank you for shopping with us at Rock Bottom Gear & Co!
+      Your order has been created and we are processing it now.
+      
+      Order Summary:
+      
+      Order Number: ` + order_query.rows[0].order_id + ` 
+      Order Amount: £` + order_query.rows[0].order_amount + `
+      Estimated Delivery Date: ` + formatDate(delivery_date) + `
+      
+      Thanks,
+      Rock Bottom Gear & Co Team`
+      
+    };
+    transporter.sendMail(mailOrderCreated, function(error, info){
       if (error) {
      console.log(error);
       } else {
@@ -411,7 +442,7 @@ router.post('/payment', async function(req, res, next) {
       res.render('order_confirmation', {
         order_id: order_query.rows[0].order_id,
         order_amount: order_query.rows[0].order_amount,
-        delivery_date: formatDate(order_query.rows[0].ordered_date),
+        delivery_date: formatDate(delivery_date),
         ordered_items: basket_query.rows      
       });
     }
