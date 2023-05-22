@@ -23,6 +23,8 @@ html(lang='en')
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-10.mt-3.mb-3.rbContainer
+                form(id="backForm" method="get" action="//view_products")
+                    button.btn.btn-secondary.mb-2.mt-2(type="submit") Back
                 div.text-center
                     form(class="p-3" method="POST" action="/productsave")
                         input#addProdMode.form-control(type='text' name="mode" value=mode  style="display:none;")
