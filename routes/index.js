@@ -132,9 +132,9 @@ router.get('/customer_account', function(req, res, next) {
   console.log(req.session);
   if (req.session.customer_id) {
     // Make a database query
-    var sql = "SELECT * FROM product WHERE popular_item = $1";
+    var sql = "SELECT * FROM customers WHERE customer_id = $1";
     //Execute db query
-    dbclient.query(sql,[1], (err, result) => {
+    dbclient.query(sql,[req.session.customer_id], (err, result) => {
       //Check for error in db query
       if (err) {
         //display the error
@@ -272,11 +272,18 @@ router.post('/checkout', async function(req, res, next) {
       var card_number = card_query.rows[0].card_number;
       var cvv = card_query.rows[0].cvv;
       var exp_date = new Date(card_query.rows[0].exp_date);
+      var formattedExpDate = "";
+      formattedExpDate += exp_date.getFullYear()+ "-";
+      formattedExpDate += ((exp_date.getMonth() < 10) ? "0": "");
+      formattedExpDate += exp_date.getMonth() +"-";
+      formattedExpDate += ((exp_date.getDate() < 10) ? "0": "");
+      formattedExpDate += exp_date.getDate();
     } else {
       var card_id = "";
       var card_number = "";
       var cvv = "";
-      var exp_date = "";
+      var formattedExpDate = "";
+      
     }
     console.log('the card id from the query going to checkout is : ', card_id);
 
@@ -291,12 +298,7 @@ router.post('/checkout', async function(req, res, next) {
       var email = "";
       var phone = "";
     }
-    var formattedExpDate = "";
-    formattedExpDate += exp_date.getFullYear()+ "-";
-    formattedExpDate += ((exp_date.getMonth() < 10) ? "0": "");
-    formattedExpDate += exp_date.getMonth() +"-";
-    formattedExpDate += ((exp_date.getDate() < 10) ? "0": "");
-    formattedExpDate += exp_date.getDate();
+    
     res.render('checkout', {
       // order fields
       delivery_amount: deliveryAmount,
@@ -536,6 +538,127 @@ router.post('/basketremove', function(req, res, next) {
 })
 
 
+router.get('/add_products', async function(req, res, next) {
+  const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
+  const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
+  const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
+
+  // Render the pug template file with the database results
+  res.render('edit_products', {
+    brand_options: brand_query.rows,
+    activity_options: activity_query.rows,
+    product_type_options: product_type_query.rows,
+    mode: "New"
+  });
+})
+
+
+router.post('/productadd', async function(req, res, next) {
+  const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
+  const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
+  const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
+
+  // Render the pug template file with the database results
+  res.render('edit_products', {
+    brand_options: brand_query.rows,
+    activity_options: activity_query.rows,
+    product_type_options: product_type_query.rows
+  });
+})
+
+router.post('/edit_products', async function(req, res, next) {
+  const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
+  const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
+  const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
+  var sql = 'SELECT * FROM product ' ;
+  sql += 'LEFT JOIN size_options ON size_options.product_id = product.product_id '
+  sql += 'LEFT JOIN product_activity ON product_activity.activity_id = product.activity_id '
+  sql += 'LEFT JOIN product_category ON product_category.product_category_id = product.product_category_id '
+  sql += 'LEFT JOIN brand ON brand.brand_id = product.brand_id '
+  sql += 'WHERE product.product_id=' + req.body.product_id + ' '
+  sql += 'ORDER BY size_options.size_id'
+  const product_query = await resultQuery(sql);
+
+  // Render the pug template file with the database results
+  res.render('edit_products', {
+    //load product detials
+    product_name: product_query.rows[0].product_name,
+    price: product_query.rows[0].price,
+    colour: product_query.rows[0].colour,
+    brand: product_query.rows[0].brand_name,
+    activity: product_query.rows[0].activity,
+    desc: product_query.rows[0].description,
+    popular_item: product_query.rows[0].popular_item,
+    product_name: product_query.rows[0].product_name,
+    brand_options: brand_query.rows,
+    activity_options: activity_query.rows,
+    product_type_options: product_type_query.rows,
+    mode: "edit"
+  });
+})
+
+router.get('/remove_products', async function(req, res, next) {
+  const product_id = req.body.product_id;
+    // Make a database query
+    var sql = "DELETE FROM product WHERE product_id = $1";
+    //Execute db query
+    dbclient.query(sql, [product_id], (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+
+        // Make a database query
+        var sql = "DELETE FROM size_options WHERE product_id = $1";
+        //Execute db query
+        dbclient.query(sql, [product_id], (err, result) => {
+          //Check for error in db query
+          if (err) {
+            //display the error
+            console.log('Error querying the database:', err);
+            res.send(500);
+          } else {
+            //Reload page to show change
+            res.redirect('view_products');
+          }
+            
+        });
+      }
+        
+    });
+  
+})
+
+
+router.get('/view_products', async function(req, res, next) {
+  const product_id = req.body.product_id;
+    // Make a database query
+    var sql = `SELECT
+    product.*,
+    string_agg(size_options.size, ', ') AS size
+  FROM product
+  INNER JOIN size_options ON product.product_id = size_options.product_id
+  GROUP BY product.product_id;`;
+    //Execute db query
+    dbclient.query(sql, (err, result) => {
+      //Check for error in db query
+      if (err) {
+        //display the error
+        console.log('Error querying the database:', err);
+        res.send(500);
+      } else {
+        // Render the pug template file with the database results
+        res.render('view_products', {
+          product_list: result.rows
+        });
+        
+      }
+        
+    });
+  
+})
 
 // functions
 
