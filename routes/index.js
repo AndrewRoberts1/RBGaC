@@ -416,8 +416,8 @@ router.post('/payment', async function(req, res, next) {
         break;
     }
 
-    const delivery_date = order_query.rows[0].ordered_date.setDate(order_query.rows[0].ordered_date.getDate() + predicted_delivery_days);
- 
+    const delivery_date = new Date(order_query.rows[0].ordered_date.setDate(order_query.rows[0].ordered_date.getDate() + predicted_delivery_days));
+    console.log(' the expected delivery date is : ', delivery_date);
     const mailOrderCreated = {
       from: 'rockbottomgearandco@gmail.com',
       to: customer_query.rows[0].email,
@@ -706,33 +706,34 @@ router.post('/edit_size', async function(req, res, next) {
 
 router.post('/size_option_save', async function(req, res, next) {
   const product_id = req.body.product_id;
-    // Make a database query
-    var sql = `SELECT * FROM size_options`;
-    //Execute db query
-    dbclient.query(sql, (err, result) => {
-      //Check for error in db query
-      if (err) {
-        //display the error
-        console.log('Error querying the database:', err);
-        res.send(500);
-      } else {
-        // Render the pug template file with the database results
-        res.render('edit_size_options', {
-          size_options: result.rows
-        });
+  console.log(req.body);
+    // // Make a database query
+    // var sql = `SELECT * FROM size_options`;
+    // //Execute db query
+    // dbclient.query(sql, (err, result) => {
+    //   //Check for error in db query
+    //   if (err) {
+    //     //display the error
+    //     console.log('Error querying the database:', err);
+    //     res.send(500);
+    //   } else {
+    //     // Render the pug template file with the database results
+    //     res.render('edit_size_options', {
+    //       size_options: result.rows
+    //     });
         
-      }
+    //   }
         
-    });
+    // });
   
 })
 
 router.post('/add_size', async function(req, res, next) {
   const product_id = req.body.product_id;
     // Make a database query
-    var sql = `SELECT * FROM size_options`;
+    var sql = `INSERT INTO size_options (product_id) VALUE ($1)`;
     //Execute db query
-    dbclient.query(sql, (err, result) => {
+    dbclient.query(sql, [product_id], (err, result) => {
       //Check for error in db query
       if (err) {
         //display the error
@@ -740,9 +741,7 @@ router.post('/add_size', async function(req, res, next) {
         res.send(500);
       } else {
         // Render the pug template file with the database results
-        res.render('edit_size_options', {
-          size_options: result.rows
-        });
+        res.redirect('/edit_size')
         
       }
         
@@ -751,11 +750,11 @@ router.post('/add_size', async function(req, res, next) {
 })
 
 router.post('/remove_size', async function(req, res, next) {
-  const product_id = req.body.product_id;
+  const size_id = req.body.size_id;
     // Make a database query
-    var sql = `SELECT * FROM size_options`;
+    var sql = `DELETE FROM size_options WHERE size_id = $1`;
     //Execute db query
-    dbclient.query(sql, (err, result) => {
+    dbclient.query(sql, [size_id], (err, result) => {
       //Check for error in db query
       if (err) {
         //display the error
@@ -763,9 +762,7 @@ router.post('/remove_size', async function(req, res, next) {
         res.send(500);
       } else {
         // Render the pug template file with the database results
-        res.render('edit_size_options', {
-          size_options: result.rows
-        });
+        res.redirect('/edit_size')
         
       }
         

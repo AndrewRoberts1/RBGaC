@@ -86,7 +86,7 @@ html(lang='en')
                             .col-md-4.mx-auto.d-grid
                                 button#addProduct.btn.btn-secondary(type="submit") Save
                             .col-md-4.mx-auto.d-grid
-                                form(id="editForm"+row.product_id method="POST" action="/edit_size")
+                                form(id="editForm"+product_id method="POST" action="/edit_size")
                                     input#addProdMode.form-control(type='text' name="product_id" value=product_id  style="display:none;")
                                     button#addProduct.btn.btn-secondary(type="submit") Edit Size Options
 

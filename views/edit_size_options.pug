@@ -36,7 +36,7 @@ html(lang='en')
                                     input#addSize.form-control.addSizeClass(type='text' name="sizeorder"+index value=row.size_order)
                                 .col-md-2.mt-2.d-flex.align-items-end
                                     form(class="p-3" method="POST" action="/remove_size")
-                                        input#prodId.form-control(type='text' name="product_id" value=row.size_id  style="display:none;")
+                                        input#prodId.form-control(type='text' name="size_id" value=row.size_id  style="display:none;")
                                         button.btn.btn-danger() Remove
 
                         .row.mt-3.justify-content-center
@@ -44,7 +44,7 @@ html(lang='en')
                                 button#addProduct.btn.btn-secondary(type="submit") Save
                             .col-md-4.mx-auto.d-grid
                                 form(class="p-3" method="POST" action="/add_size")
-                                    input#prodId.form-control(type='text' name="product_id" value=row.size_id  style="display:none;")
+                                    input#prodId.form-control(type='text' name="product_id" value=product_id  style="display:none;")
                                     button#addProduct.btn.btn-secondary(type="submit") Add new size
 
         
