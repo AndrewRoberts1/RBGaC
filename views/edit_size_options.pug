@@ -25,18 +25,19 @@ html(lang='en')
             .col-md-10.mt-3.mb-3.rbContainer
                 div.text-center
                     .row.mt-3.justify-content-center
-                        form(class="p-3" method="POST" action="/size_option_save")
-                            input#addProdMode.form-control(type='text' name="size_id" value=size_id  style="display:none;")
-                            .col-md-5.mt-2
-                                label.form-label Size Option
-                                input#addSize.form-control.addSizeClass(type='text' name="size" value=size)
-                            .col-md-5.mt-2
-                                label.form-label Size Order
-                                input#addSize.form-control.addSizeClass(type='text' name="size_order" value=size_order)
+                        if size_id
+                            form(class="p-3" method="POST" action="/size_option_save")
+                                input#addProdMode.form-control(type='text' name="size_id" value=size_id  style="display:none;")
+                                .col-md-5.mt-2
+                                    label.form-label Size Option
+                                    input#addSize.form-control.addSizeClass(type='text' name="size" value=size)
+                                .col-md-5.mt-2
+                                    label.form-label Size Order
+                                    input#addSize.form-control.addSizeClass(type='text' name="size_order" value=size_order)
 
-                            .row.mt-3.justify-content-center
-                                .col-md-4.mx-auto.d-grid
-                                    button#addProduct.btn.btn-secondary(type="submit") Save
+                                .row.mt-3.justify-content-center
+                                    .col-md-4.mx-auto.d-grid
+                                        button#addProduct.btn.btn-secondary(type="submit") Save
                     .row.mt-3.justify-content-center
                         .col-md-12.mt-2
                             table#prodTable.table

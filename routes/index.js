@@ -709,7 +709,7 @@ router.post('/size_option_save', async function(req, res, next) {
   // Make a database query
   var sql = `UPDATE size_options SET size=$1, size_order=$2  WHERE size_id = $3`;
   //Execute db query
-  dbclient.query(sql, [req.body.size, req.body.size_order], (err, result) => {
+  dbclient.query(sql, [req.body.size, req.body.size_order, size_id], (err, result) => {
     //Check for error in db query
     if (err) {
       //display the error
