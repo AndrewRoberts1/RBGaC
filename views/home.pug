@@ -77,9 +77,10 @@ html(lang='en')
           h5.newsletterText Join our newsletter!
           p.newsletterText.mt-3 Be the first to get updates about sales, new arrivals, and much more!
         .col-md-6.newsletterCol
-          form.form-outline.d-flex.justify-content-centerform(id="newsletterForm" method="post" action="newsletter_signup") 
-            input.form-control.text-center.newsletterInput(type='email' name="email" placeholder='Please enter your email' required)
-            button.btn.btn-lg.redBtn.subBtn.mt-4(type="submit") Subscribe
+          form(id="newsletterForm" method="post" action="newsletter_signup")
+            .form-outline.d-flex.justify-content-centerform 
+              input.form-control.text-center.newsletterInput(type='email' name="email" placeholder='Please enter your email' required)
+              button.btn.btn-lg.redBtn.subBtn.mt-4(type="submit") Subscribe
       // Newsletter Section [END]
       // Popular Products Carousel Section [START]
       .row.activityRow.justify-content-center
