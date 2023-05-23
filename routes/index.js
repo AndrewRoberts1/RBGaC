@@ -416,9 +416,9 @@ router.post('/payment', async function(req, res, next) {
         break;
     }
     // Add ten days to specified date
-    var date = new Date(order_query.rows[0].ordered_date);
+    var delivery_date = new Date(order_query.rows[0].ordered_date);
 
-    const delivery_date = date.setDate(date.getDate() + predicted_delivery_days);
+    delivery_date.setDate(delivery_date.getDate() + predicted_delivery_days);
 
     console.log(' the expected delivery date is : ', delivery_date);
     const mailOrderCreated = {
