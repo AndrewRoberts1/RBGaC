@@ -42,7 +42,7 @@ html(lang='en')
               if brand_filter == row.brand_id
                 option(value=row.brand_id selected) #{row.brand_name}
               else 
-                option(value=row.brand_id) #{row.category}
+                option(value=row.brand_id) #{row.brand_name}
         .col-md-3.shopHeadCol
           label.form-label.shopFilterLabel(for='productTypeFilter') Activity Filter
           select#activityFilter.form-select(onchange="addFilter()")
