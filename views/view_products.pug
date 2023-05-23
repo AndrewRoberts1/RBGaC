@@ -23,13 +23,14 @@ html(lang='en')
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-10.mt-3.mb-3.rbContainer
-                form(id="addForm" method="get" action="/add_product")
-                    button.btn.btn-primary.mb-2.mt-2(type="submit") Add new
+                
                 table#prodTable.table
                     thead
                         th Product
                         th Size Opitons
                         th 
+                            form(id="addForm" method="get" action="/add_product")
+                                button.btn.btn-primary.mb-2.mt-2(type="submit") Add new
                     tbody#prodTableBody
                         each row in product_list
                             tr

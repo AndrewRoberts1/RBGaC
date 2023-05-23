@@ -765,6 +765,17 @@ Rock Bottom Gear & Co Team`
   res.render('newsletter_confirmation')
 })
 
+
+
+// Logout user
+router.get('/logout', function(req, res, next){
+
+req.session.destroy();
+
+res.redirect("/");
+
+});
+
 // functions
 
 function formatDate(date) {

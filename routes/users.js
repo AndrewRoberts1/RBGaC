@@ -8,19 +8,7 @@ const app = require('../app');
 
 
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
 
-// Logout user
-router.get('/logout', function(req, res, next){
-
-  req.session.destroy();
-
-  res.redirect("/");
-
-});
 
 var session;
 
