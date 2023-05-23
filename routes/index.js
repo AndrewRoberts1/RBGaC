@@ -756,6 +756,7 @@ Rock Bottom Gear & Co Team`
       // do something useful
     }
   });
+  res.render('newsletter_confirmation')
 })
 
 // functions
