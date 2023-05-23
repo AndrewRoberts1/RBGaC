@@ -436,7 +436,6 @@ Order Summary:
 Order Number: ` + order_query.rows[0].order_id + ` 
 Order Amount: £` + order_query.rows[0].order_amount + `
 Ordere Date: ` + formatDate(order_date) + `
-Expected Delivery (Days): ` +predicted_delivery_days+ `
 
 Thanks,
 Rock Bottom Gear & Co Team`
