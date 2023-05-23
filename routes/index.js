@@ -734,6 +734,30 @@ router.post('/remove_size', async function(req, res, next) {
   
 })
 
+
+router.post('/newsletter_signup', function(req, res, next) {
+  const mailNewsletter = {
+    from: 'rockbottomgearandco@gmail.com',
+    to: req.body.email,
+    subject: 'Subscribed to Newsletter!',
+    text:`Hi,
+    
+Thank you for subscribing to our newsletter with us at Rock Bottom Gear & Co!
+
+Thanks,
+Rock Bottom Gear & Co Team`
+    
+  };
+  transporter.sendMail(mailNewsletter, function(error, info){
+    if (error) {
+   console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+      // do something useful
+    }
+  });
+})
+
 // functions
 
 function formatDate(date) {

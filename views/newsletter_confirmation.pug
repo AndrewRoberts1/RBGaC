@@ -9,7 +9,7 @@ html(lang='en')
 
     link(rel='stylesheet', href='/stylesheets/style.css')
     // Page title
-    title Login
+    title Newsletter Confirmation
   body
     // Insert navbar from partial folder
     include ../views/partials/header
@@ -18,34 +18,22 @@ html(lang='en')
         .headerPadd
         // Header Image Section [START]
         .headerImage.genericHead.bottomAlign
-            .row.justify-content-center.shopHeadRow
-                .col-md-3.shopHeadCol
+            .h2.headerText.text-center Thank you!
 
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-10.mt-3.mb-3.rbContainer
-                div.text-center
-                    form(class="form-signin" method="POST" action="/users/login")
-                        
-                        
-                        - var h1Classes = ['h3', 'mb-3', 'font-weight-normal']
-                        h1(class=h1Classes) Please sign in
-                        //-input email
-                        label( for="inputEmail" class="sr-only mt-3") Email address
-                        input(type="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus)
-                        //-input password
-                        label(for="inputPassword" class="sr-only mt-3") Password
-                        input(type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required)
-                        
-                        if error
-                            h5.text-danger.mt-3 #{error}
-                        - var buttonClass=['btn', 'btn-lg', 'btn-block', 'redBtn', 'mt-5'];
-                        button(class=buttonClass type="submit") Sign in
-                        a(href="customer_create") 
-                            p.mt-3 Create a new account here
-
-            
-        
+                h3 Thank you for signing up for the newsletter! 
+                p 
+                    h6 You should receive an email letting confirming you have signed up! 
+                p
+                    h6 Newsletters are sent quarterly so be on the look out for the next one! 
+                br
+                p 
+                    h6 In the meantime please checkout our fab selection of outdoor gear 
+                    a.btn.mt-3.headShopBtn.whiteBtn(href='shop/_/_/_') 
+                        h5 Shop
+                
         // Main Content [END]
 
     // Insert footer from partial folder  
@@ -56,7 +44,7 @@ html(lang='en')
 
     // JavaScript - to make page interactive
     script.
-      
+        
 
   body
   // jQuery and Bootstrap Bundle
