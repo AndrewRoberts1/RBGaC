@@ -420,11 +420,8 @@ router.post('/payment', async function(req, res, next) {
         break;
     }
     // Add ten days to specified date
-    var delivery_date = new Date(order_query.rows[0].ordered_date);
+    var order_date = new Date(order_query.rows[0].ordered_date);
 
-    delivery_date.setDate(delivery_date.getDate() + predicted_delivery_days);
-
-    console.log(' the expected delivery date is : ', delivery_date);
     const mailOrderCreated = {
       from: 'rockbottomgearandco@gmail.com',
       to: customer_query.rows[0].email,
@@ -438,7 +435,8 @@ Order Summary:
 
 Order Number: ` + order_query.rows[0].order_id + ` 
 Order Amount: £` + order_query.rows[0].order_amount + `
-Estimated Delivery Date: ` + formatDate(delivery_date) + `
+Ordere Date: ` + formatDate(order_date) + `
+Expected Delivery (Days): ` +predicted_delivery_days+ `
 
 Thanks,
 Rock Bottom Gear & Co Team`
@@ -457,8 +455,9 @@ Rock Bottom Gear & Co Team`
       res.render('order_confirmation', {
         order_id: order_query.rows[0].order_id,
         order_amount: order_query.rows[0].order_amount,
-        delivery_date: formatDate(delivery_date),
-        ordered_items: basket_query.rows      
+        order_date: formatDate(order_date),
+        ordered_items: basket_query.rows,
+        delivery_days: predicted_delivery_days
       });
     }
       
