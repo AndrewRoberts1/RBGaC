@@ -415,8 +415,11 @@ router.post('/payment', async function(req, res, next) {
         predicted_delivery_days = 1;
         break;
     }
+    // Add ten days to specified date
+    var date = new Date(order_query.rows[0].ordered_date);
 
-    const delivery_date = new Date(order_query.rows[0].ordered_date.setDate(order_query.rows[0].ordered_date.getDate() + predicted_delivery_days));
+    const delivery_date = date.setDate(date.getDate() + predicted_delivery_days);
+
     console.log(' the expected delivery date is : ', delivery_date);
     const mailOrderCreated = {
       from: 'rockbottomgearandco@gmail.com',

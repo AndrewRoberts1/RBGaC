@@ -47,7 +47,7 @@ html(lang='en')
                                             .col-sm-3.text-start
                                                 a(onclick="document.getElementById('form#{row.product_id}').submit()" href="#")
                                                     img.img-fluid(src='/images/product_images/'+ row.product_id+'.jpg')
-                                            .col-sm-9
+                                            .col-sm-9.text-start
                                                 a.navLink(onclick="document.getElementById('form"+ row.product_id+"').submit()" href="#")
                                                     h6(style="text-align: left") #{row.product_name}
                                                 p.mt-4 Colour - #{row.colour}
