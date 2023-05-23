@@ -22,20 +22,38 @@ html(lang='en')
         .col-md-3.shopHeadCol
           label.form-label.shopFilterLabel(for='productTypeFilter') Product Type Filter
           select#productTypeFilter.form-select(onchange="addFilter()")
-            option(value='', selected='') Please select...
+            if category_filter == "_"
+              option(value='' selected) Please select...
+            else
+              option(value='') Please select...
             each row in prod_type_list
+              if category_filter == row.product_category_id
+                option(value=row.product_category_id selected) #{row.category}
+              else 
                 option(value=row.product_category_id) #{row.category}
         .col-md-3.shopHeadCol
           label.form-label.shopFilterLabel(for='productTypeFilter') Brand Filter
           select#brandFilter.form-select(onchange="addFilter()")
-            option(value='', selected='') Please select...
+            if brand_filter == "_"
+              option(value='' selected) Please select...
+            else
+              option(value='') Please select...
             each row in brand_list
-                option(value=row.brand_id) #{row.brand_name}
+              if brand_filter == row.brand_id
+                option(value=row.brand_id selected) #{row.brand_name}
+              else 
+                option(value=row.brand_id) #{row.category}
         .col-md-3.shopHeadCol
           label.form-label.shopFilterLabel(for='productTypeFilter') Activity Filter
           select#activityFilter.form-select(onchange="addFilter()")
-            option(value='', selected='') Please select...
+            if activity_filter == "_"
+              option(value='' selected) Please select...
+            else
+              option(value='') Please select...
             each row in activity_list
+              if activity_filter == row.activity_id
+                option(value=row.activity_id selected) #{row.activity}
+              else 
                 option(value=row.activity_id) #{row.activity}
       // Header Image Section [END]
       // Shop Section [START]

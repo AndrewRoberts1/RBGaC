@@ -73,7 +73,11 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
       products_list: product_query.rows,
       brand_list: brand_query.rows,
       prod_type_list: category_query.rows,
-      activity_list: activity_query.rows
+      activity_list: activity_query.rows,
+      activity_filter: req.params.activFilt,
+      brand_filter: req.params.brandFilt,
+      category_filter: req.params.categoryFilt
+
     });
   } catch (err) {
     console.log(err.stack)
