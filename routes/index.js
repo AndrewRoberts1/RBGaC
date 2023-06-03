@@ -41,7 +41,8 @@ router.get('/', function(req, res, next) {
     } else {
       // Render the pug template file with the database results
       res.render('home', { 
-        products_list: result.rows
+        products_list: result.rows,
+        admin: true
       });
     }
   });
