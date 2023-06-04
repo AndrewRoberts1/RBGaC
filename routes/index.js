@@ -42,7 +42,7 @@ router.get('/', function(req, res, next) {
       // Render the pug template file with the database results
       res.render('home', { 
         products_list: result.rows,
-        admin: true
+        admin: req.session.admin
       });
     }
   });
@@ -50,7 +50,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/about', function(req, res, next) {
   // Render the pug template file
-  res.render('about');
+  res.render('about',{
+  admin: req.session.admin});
     
 });
 
@@ -77,7 +78,8 @@ router.get('/shop/:activFilt/:categoryFilt/:brandFilt', async (req, res, next) =
       activity_list: activity_query.rows,
       activity_filter: req.params.activFilt,
       brand_filter: req.params.brandFilt,
-      category_filter: req.params.categoryFilt
+      category_filter: req.params.categoryFilt,
+      admin: req.session.admin
 
     });
   } catch (err) {
@@ -118,7 +120,8 @@ router.get('/product/:product_id', function(req, res, next) {
         prod_type: product_info.category,
         price: product_info.price,
         colour: product_info.colour,
-        size_options: result.rows
+        size_options: result.rows,
+        admin: req.session.admin
       });
     }
   });
@@ -129,7 +132,8 @@ router.get('/product/:product_id', function(req, res, next) {
 // GET customer login page
 
 router.get('/customer_login', function(req, res, next) {
-  res.render('customer_login', { error: false });
+  res.render('customer_login', { error: false,
+    admin: req.session.admin });
 });
 
 
@@ -152,7 +156,8 @@ router.get('/customer_account', function(req, res, next) {
           first_name: user.first_name,
           surname: user.second_name,
           email: user.email,
-          phone: user.phone
+          phone: user.phone,
+          admin: req.session.admin
 
         });
       }
@@ -167,7 +172,8 @@ router.get('/customer_account', function(req, res, next) {
 // Get create customer page
 
 router.get('/customer_create', function(req, res, next) {
-  res.render('customer_create');
+  res.render('customer_create',{
+    admin: req.session.admin});
 });
 
 router.post('/add_user', function(req, res, next) {
@@ -228,7 +234,8 @@ router.get('/basket', function(req, res, next) {
         // Render the pug template file with the database results
         res.render('basket', { 
           basket_list: result.rows,
-          subTotal: sum
+          subTotal: sum,
+          admin: req.session.admin
         });
       }
     });
@@ -328,7 +335,9 @@ router.post('/checkout', async function(req, res, next) {
       card_id: card_id,
       card_number: card_number,
       cvv: cvv,
-      exp_date: formattedExpDate
+      exp_date: formattedExpDate,
+      // admin check
+      admin: req.session.admin
     });
     
   } else {
@@ -457,7 +466,8 @@ Rock Bottom Gear & Co Team`
         order_amount: order_query.rows[0].order_amount,
         order_date: formatDate(order_date),
         ordered_items: basket_query.rows,
-        delivery_days: predicted_delivery_days
+        delivery_days: predicted_delivery_days,
+        admin: req.session.admin
       });
     }
       
@@ -560,7 +570,8 @@ router.get('/add_product', async function(req, res, next) {
     brand_options: brand_query.rows,
     activity_options: activity_query.rows,
     product_type_options: product_type_query.rows,
-    mode: "New"
+    mode: "New",
+    admin: req.session.admin
   });
 })
 
@@ -620,7 +631,8 @@ router.post('/edit_product', async function(req, res, next) {
     brand_options: brand_query.rows,
     activity_options: activity_query.rows,
     product_type_options: product_type_query.rows,
-    mode: "Edit"
+    mode: "Edit",
+    admin: req.session.admin
   });
 })
 
@@ -677,7 +689,8 @@ router.get('/view_products', async function(req, res, next) {
       } else {
         // Render the pug template file with the database results
         res.render('view_products', {
-          product_list: result.rows
+          product_list: result.rows,
+          admin: req.session.admin
         });
         
       }
@@ -700,12 +713,14 @@ router.get('/edit_size/:product_id/:size_id', async function(req, res, next) {
       size_id: single_size_query.rows[0].size_id,
       size: single_size_query.rows[0].size,
       size_order: single_size_query.rows[0].size_order,
-      product_id: size_query.rows[0].product_id
+      product_id: size_query.rows[0].product_id,
+      admin: req.session.admin
     });
   } else {
     res.render('edit_size_options', {
       size_options: size_query.rows,
-      product_id: size_query.rows[0].product_id
+      product_id: size_query.rows[0].product_id,
+      admin: req.session.admin
       
     });
   }
@@ -762,7 +777,8 @@ Rock Bottom Gear & Co Team`
       // do something useful
     }
   });
-  res.render('newsletter_confirmation')
+  res.render('newsletter_confirmation', {
+    admin: req.session.admin})
 })
 
 

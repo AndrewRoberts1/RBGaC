@@ -41,6 +41,9 @@ router.post('/login', async function (req, res, next) {
                 console.log(compResult);
                 if (compResult) {
                   session.customer_id = result.rows[count].customer_id;
+                  if (result.rows[count].admin) {
+                    session.admin = true;
+                  }
                   
                   res.redirect("/customer_account");
                 } else {
