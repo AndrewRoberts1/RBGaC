@@ -137,7 +137,7 @@ router.get('/customer_account', function(req, res, next) {
   console.log(req.session);
   if (req.session.customer_id) {
     // Make a database query
-    var sql = "SELECT * FROM customers WHERE customer_id = $1";
+    var sql = "SELECT * FROM users WHERE customer_id = $1";
     //Execute db query
     dbclient.query(sql,[req.session.customer_id], (err, result) => {
       //Check for error in db query
@@ -183,7 +183,7 @@ router.post('/add_user', function(req, res, next) {
       }
       console.log(hashedPassword);
       // Make a database query
-      var sql = `INSERT INTO customers (first_name, second_name, phone, email, password) 
+      var sql = `INSERT INTO users (first_name, second_name, phone, email, password) 
       VALUES ($1,$2,$3,$4,$5)`;
       //Execute db query
       dbclient.query(sql, [req.body.first_name,req.body.second_name,req.body.phone,req.body.email,hashedPassword], (err, result) => {
@@ -242,7 +242,7 @@ router.post('/checkout', async function(req, res, next) {
   if (req.session.customer_id) {
     const deliveryAmount = req.body.deliveryoptions;
     //Make database queries to get data for page
-    const customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = $1", [req.session.customer_id]);
+    const customer_query = await resultQuery("SELECT * FROM users WHERE customer_id = $1", [req.session.customer_id]);
     const address_query = await resultQuery("SELECT * FROM address WHERE customer_id = $1 ORDER BY address_id DESC LIMIT 1", [req.session.customer_id]);
     const card_query = await resultQuery("SELECT * FROM card_details WHERE customer_id = $1 ORDER BY card_id DESC LIMIT 1", [req.session.customer_id]);
     const basket_query = await resultQuery(`SELECT * FROM basket
@@ -403,7 +403,7 @@ router.post('/payment', async function(req, res, next) {
     const ordered_items_query = await resultQuery(ordered_items_sql);
     const delete_basket_query = await resultQuery(delete_basket_sql);
     //GET customer details
-    const customer_query = await resultQuery("SELECT * FROM customers WHERE customer_id = $1", [req.session.customer_id]);
+    const customer_query = await resultQuery("SELECT * FROM users WHERE customer_id = $1", [req.session.customer_id]);
 
     console.log('items added to odered items list');
 

@@ -8,8 +8,6 @@ const app = require('../app');
 
 
 
-
-
 var session;
 
 
@@ -26,7 +24,7 @@ router.post('/login', async function (req, res, next) {
   if(user_email_address && user_password) {
     //build query to search for user by email address
       let query = `
-      SELECT * FROM customers 
+      SELECT * FROM users 
       WHERE email = $1
       `;
       dbclient.query(query, [user_email_address], async (err, result) => {
