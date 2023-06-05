@@ -38,8 +38,6 @@ html(lang='en')
                                 td #{row.size}
                                 td 
                                     .btn-group(role='group')
-                                        button#btnGroupDrop1.btn.btn-primary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
-                                            | Dropdown
                                         form.mt-1(id="editForm"+row.product_id method="POST" action="/edit_product")
                                             input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                             button#btnGroupDrop.btn.btn-primary(type="submit" data-bs-toggle='dropdown' aria-expanded='false') Edit
