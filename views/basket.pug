@@ -52,7 +52,7 @@ html(lang='en')
                                                 svg.bi.bi-dash-lg(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewbox='0 0 16 16')
                                                     path(fill-rule='evenodd' d='M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z')
 
-                                        p.mt-1 #{row.quantity}
+                                        p.mt-2 #{row.quantity}
 
                                         form(id="increaseForm" method="post" action="/basket_increase")
                                             input(type="text" name="size_id" id="size_id" value=row.size_id style="display:none;")
@@ -63,7 +63,7 @@ html(lang='en')
                                 td £#{row.price * row.quantity}
                                 td 
                                     form(id="removeForm"+row.product_id method="post" action="/basketremove") 
-                                        button.btn.removeBtn.btn-sm(type="submit")
+                                        button.btn.removeBtn.btn-xl.btn-circle(type="submit")
                                             svg.bi.bi-x-lg(xmlns='http://www.w3.org/2000/svg', width='16', height='16', fill='currentColor', viewBox='0 0 16 16')
                                                 path(d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z')
                                         input(type="text" name="size_id" id="size_id" value=row.size_id style="display:none;")
