@@ -592,10 +592,10 @@ router.post('/basket_decrease', async function(req, res, next) {
   console.log("the lower quantity is : ",quantity);
   if (quantity==0){
     // Make a database query
-    var sql = "UPDATE basket SET quantity="+quantity+" WHERE size_id = $1 AND customer_id=$2";
+    var sql = "DELETE FROM basket WHERE size_id = $1 AND customer_id=$2";
   } else{
     // Make a database query
-    var sql = "DELETE FROM basket WHERE size_id = $1 AND customer_id=$2";
+    var sql = "UPDATE basket SET quantity="+quantity+" WHERE size_id = $1 AND customer_id=$2";
   }
   console.log(sql);
 
