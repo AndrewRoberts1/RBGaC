@@ -588,18 +588,16 @@ router.post('/basket_decrease', async function(req, res, next) {
   var size_id = req.body.size_id;
   var customer_id = req.session.customer_id;
   var quantity = req.body.quantity;
-  console.log(quantity);
-  console.log(quantity--);
   if (quantity>1){
     // Make a database query
-    var sql = "UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3";
+    var sql = "UPDATE basket SET quantity="+quantity--+" WHERE size_id = $2 AND customer_id=$3";
   } else{
     // Make a database query
     var sql = "DELETE FROM basket WHERE size_id = $2 AND customer_id=$33";
   }
 
   //Execute db query
-  dbclient.query(sql, [quantity--,size_id, customer_id], (err, result) => {
+  dbclient.query(sql, [size_id, customer_id], (err, result) => {
     //Check for error in db query
     if (err) {
       //display the error
