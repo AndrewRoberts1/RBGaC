@@ -40,7 +40,7 @@ html(lang='en')
                                     .btn-group(role='group')
                                         form.mt-1(id="editForm"+row.product_id method="POST" action="/edit_product")
                                             input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
-                                            button#btnGroupDrop.btn.btn-primary.dropdown-toggle(type="submit" data-bs-toggle='dropdown' aria-expanded='false') Edit
+                                            button#btnGroupDrop.btn.btn-primary.dropdown-toggle(type="button" data-bs-toggle='dropdown' aria-expanded='false') Edit
                                         ul.dropdown-menu(aria-labelledby='btnGroupDrop')
                                             li
                                                 form.mt-1(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/_")
