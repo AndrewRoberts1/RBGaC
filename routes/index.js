@@ -560,10 +560,10 @@ router.post('/basketremove', function(req, res, next) {
 })
 
 router.post('/basket_increase', async function(req, res, next) {
-  const size_id = req.body.size_id;
-  const customer_id = req.body.customer_id;
-  const quantity = req.body.quantity;
-  const update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity++,size_id, customer_id]);
+  var size_id = req.body.size_id;
+  var customer_id = req.body.customer_id;
+  var quantity = req.body.quantity;
+  var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity++,size_id, customer_id]);
 
   //Reload page to show change
   res.redirect('/basket');
@@ -571,13 +571,13 @@ router.post('/basket_increase', async function(req, res, next) {
 })
 
 router.post('/basket_decrease', async function(req, res, next) {
-  const size_id = req.body.size_id;
-  const customer_id = req.body.customer_id;
-  const quantity = req.body.quantity;
+  var size_id = req.body.size_id;
+  var customer_id = req.body.customer_id;
+  var quantity = req.body.quantity;
   if (quantity==1){
-    const update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity--,size_id, customer_id]);
+    var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity--,size_id, customer_id]);
   } else{
-    const update_size_query = await resultQuery("DELETE FROM basket WHERE size_id = $1 AND customer_id=$2", [size_id, customer_id]);
+    var update_size_query = await resultQuery("DELETE FROM basket WHERE size_id = $1 AND customer_id=$2", [size_id, customer_id]);
   }
 
   //Reload page to show change

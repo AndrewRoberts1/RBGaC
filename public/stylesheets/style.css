@@ -483,6 +483,11 @@ body {
   float: right !important;
 }
 
+.basketIcons{
+  border: 0;
+  background-color: transparent;
+}
+
 /* Success page */
 
 .successHead {
