@@ -588,7 +588,7 @@ router.post('/basket_decrease', async function(req, res, next) {
   var size_id = req.body.size_id;
   var customer_id = req.session.customer_id;
   var quantity = req.body.quantity;
-  if (quantity==1){
+  if (quantity>1){
     var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity--,size_id, customer_id]);
   } else{
     var update_size_query = await resultQuery("DELETE FROM basket WHERE size_id = $1 AND customer_id=$2", [size_id, customer_id]);
