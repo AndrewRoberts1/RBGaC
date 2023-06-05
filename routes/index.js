@@ -559,6 +559,32 @@ router.post('/basketremove', function(req, res, next) {
   }
 })
 
+router.post('/basket_increase', async function(req, res, next) {
+  const size_id = req.body.size_id;
+  const customer_id = req.body.customer_id;
+  const quantity = req.body.quantity;
+  const update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity++,size_id, customer_id]);
+
+  //Reload page to show change
+  res.redirect('/basket');
+  
+})
+
+router.post('/basket_decrease', async function(req, res, next) {
+  const size_id = req.body.size_id;
+  const customer_id = req.body.customer_id;
+  const quantity = req.body.quantity;
+  if (quantity==1){
+    const update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity--,size_id, customer_id]);
+  } else{
+    const update_size_query = await resultQuery("DELETE FROM basket WHERE size_id = $1 AND customer_id=$2", [size_id, customer_id]);
+  }
+
+  //Reload page to show change
+  res.redirect('/basket');
+  
+})
+
 
 router.get('/add_product', async function(req, res, next) {
   const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
@@ -754,6 +780,7 @@ router.post('/remove_size', async function(req, res, next) {
   res.redirect('/edit_size/'+req.body.product_id+"/_")
   
 })
+
 
 
 router.post('/newsletter_signup', function(req, res, next) {
