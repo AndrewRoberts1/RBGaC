@@ -44,7 +44,7 @@ html(lang='en')
                                             li 
                                                 form.mt-1(id="editForm"+row.product_id method="POST" action="/edit_product")
                                                     input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
-                                                    button.btn.btn-primary.dropdown-toggle(type="button") Edit
+                                                    button.btn.btn-primary(type="button") Edit
                                             li
                                                 form.mt-1(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/_")
                                                     input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
