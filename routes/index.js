@@ -561,18 +561,32 @@ router.post('/basketremove', function(req, res, next) {
 
 router.post('/basket_increase', async function(req, res, next) {
   var size_id = req.body.size_id;
-  var customer_id = req.body.customer_id;
+  var customer_id = req.session.customer_id;
   var quantity = req.body.quantity;
-  var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity++,size_id, customer_id]);
-
-  //Reload page to show change
-  res.redirect('/basket');
+  console.log(quantity);
+  console.log(quantity++);
+  //var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity++,size_id, customer_id]);
+  // Make a database query
+  var sql = "UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3";
+  //Execute db query
+  dbclient.query(sql, [quantity++,size_id, customer_id], (err, result) => {
+    //Check for error in db query
+    if (err) {
+      //display the error
+      console.log('Error querying the database:', err);
+      res.send(500);
+    } else {
+      //Reload page to show change
+      res.redirect('/basket');
+    }
+      
+  });
   
 })
 
 router.post('/basket_decrease', async function(req, res, next) {
   var size_id = req.body.size_id;
-  var customer_id = req.body.customer_id;
+  var customer_id = req.session.customer_id;
   var quantity = req.body.quantity;
   if (quantity==1){
     var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity--,size_id, customer_id]);
