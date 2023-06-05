@@ -587,7 +587,8 @@ router.post('/basket_increase', async function(req, res, next) {
 router.post('/basket_decrease', async function(req, res, next) {
   var size_id = req.body.size_id;
   var customer_id = req.session.customer_id;
-  var quantity = Number(req.body.quantity)--;
+  var quantity = Number(req.body.quantity);
+  quantity--;
   console.log("the lower quantity is : ",quantity);
   if (quantity==0){
     // Make a database query
