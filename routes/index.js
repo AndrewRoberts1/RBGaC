@@ -587,11 +587,11 @@ router.post('/basket_increase', async function(req, res, next) {
 router.post('/basket_decrease', async function(req, res, next) {
   var size_id = req.body.size_id;
   var customer_id = req.session.customer_id;
-  var quantity = req.body.quantity;
-  console.log("the current quantity is : ",quantity);
-  if (quantity>1){
+  var quantity = Number(req.body.quantity)--;
+  console.log("the lower quantity is : ",quantity);
+  if (quantity==0){
     // Make a database query
-    var sql = "UPDATE basket SET quantity="+quantity--+" WHERE size_id = $1 AND customer_id=$2";
+    var sql = "UPDATE basket SET quantity="+quantity+" WHERE size_id = $1 AND customer_id=$2";
   } else{
     // Make a database query
     var sql = "DELETE FROM basket WHERE size_id = $1 AND customer_id=$2";
