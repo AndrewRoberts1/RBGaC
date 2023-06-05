@@ -588,14 +588,29 @@ router.post('/basket_decrease', async function(req, res, next) {
   var size_id = req.body.size_id;
   var customer_id = req.session.customer_id;
   var quantity = req.body.quantity;
+  console.log(quantity);
+  console.log(quantity--);
   if (quantity>1){
-    var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity--,size_id, customer_id]);
+    // Make a database query
+    var sql = "UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3";
   } else{
-    var update_size_query = await resultQuery("DELETE FROM basket WHERE size_id = $1 AND customer_id=$2", [size_id, customer_id]);
+    // Make a database query
+    var sql = "DELETE FROM basket WHERE size_id = $2 AND customer_id=$33";
   }
 
-  //Reload page to show change
-  res.redirect('/basket');
+  //Execute db query
+  dbclient.query(sql, [quantity--,size_id, customer_id], (err, result) => {
+    //Check for error in db query
+    if (err) {
+      //display the error
+      console.log('Error querying the database:', err);
+      res.send(500);
+    } else {
+      //Reload page to show change
+      res.redirect('/basket');
+    }
+      
+  });
   
 })
 
