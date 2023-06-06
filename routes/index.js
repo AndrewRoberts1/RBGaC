@@ -35,7 +35,7 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage })
 
-
+app.use('/images/product_images', express.static('/images/product_images'));
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
@@ -654,8 +654,6 @@ router.get('/edit_image', async function(req, res, next) {
 })
 
 router.post('/file_upload',upload.single('prodImage'),  function(req, res, next) {
-  // req.file is the `profile-file` file
-  // req.body will hold the text fields, if there were any
   console.log(JSON.stringify(req.file))
   var response = '<a href="/">Home</a><br>'
   response += "Files uploaded successfully.<br>"
