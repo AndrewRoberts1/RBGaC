@@ -653,7 +653,7 @@ router.get('/edit_image', async function(req, res, next) {
   res.render('edit_image')
 })
 
-router.get('/file_upload',upload.single('prodImage'),  function(req, res, next) {
+router.post('/file_upload',upload.single('prodImage'),  function(req, res, next) {
   // req.file is the `profile-file` file
   // req.body will hold the text fields, if there were any
   console.log(JSON.stringify(req.file))
