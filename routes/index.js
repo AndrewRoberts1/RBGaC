@@ -23,6 +23,18 @@ const transporter = nodemailer.createTransport({
 });
 
 
+//Add image file to storage
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/public/images/product_images')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+var upload = multer({ storage: storage })
+
+
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
@@ -621,6 +633,9 @@ router.get('/add_product', async function(req, res, next) {
     const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
     const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
     const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
+
+    upload.single('prodImage')
+    console.log('product added')
 
     // Render the pug template file with the database results
     res.render('edit_products', {
