@@ -23,8 +23,9 @@ html(lang='en')
             // Header Image Section [END]
         .row.mainRow.justify-content-center
             .col-md-10.mt-3.mb-3.rbContainer
-                
+                //Product table
                 table#prodTable.table
+                    //Table headers
                     thead
                         th Product
                         th Size Opitons
@@ -32,25 +33,30 @@ html(lang='en')
                             form(id="addForm" method="get" action="/add_product")
                                 button.btn.btn-primary.mb-2.mt-2(type="submit") Add new
                     tbody#prodTableBody
+                        //Add items from each row in product_list
                         each row in product_list
                             tr
                                 td #{row.product_id} - #{row.product_name}
                                 td #{row.size}
                                 td 
+                                    //Add button group to organise options
                                     .btn-group(role='group')
                                         
                                         button#btnGroupDrop1.btn.btn-primary.dropdown-toggle(type="button" data-bs-toggle='dropdown' aria-expanded='false') Options
                                         ul.dropdown-menu(aria-labelledby='btnGroupDrop1')
                                             li 
+                                                //Button to edit the product
                                                 form.mt-1(id="editForm"+row.product_id method="POST" action="/edit_product")
                                                     input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
-                                                    button.btn.btn-primary(type="button") Edit
+                                                    button.btn.btn-primary(type="submit") Edit
                                             li
+                                                //Button to edit the product size options
                                                 form.mt-1(id="editForm"+row.product_id method="GET" action="/edit_size/"+row.product_id+"/_")
                                                     input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                                     button.btn.btn-primary(type="submit") Edit Sizes
                                             li
-                                                 form.mt-1(id="editForm"+row.product_id method="POST" action="/remove_product")
+                                                //Button to remove the product
+                                                form.mt-1(id="editForm"+row.product_id method="POST" action="/remove_product")
                                                     input#addProdMode.form-control(type='text' name="product_id" value=row.product_id  style="display:none;")
                                                     button.btn.btn-danger(type="submit") Remove
         
