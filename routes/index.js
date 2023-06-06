@@ -617,18 +617,23 @@ router.post('/basket_decrease', async function(req, res, next) {
 
 
 router.get('/add_product', async function(req, res, next) {
-  const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
-  const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
-  const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
+  if (req.session.admin) {
+    const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
+    const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
+    const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
 
-  // Render the pug template file with the database results
-  res.render('edit_products', {
-    brand_options: brand_query.rows,
-    activity_options: activity_query.rows,
-    product_type_options: product_type_query.rows,
-    mode: "New",
-    admin: req.session.admin
-  });
+    // Render the pug template file with the database results
+    res.render('edit_products', {
+      brand_options: brand_query.rows,
+      activity_options: activity_query.rows,
+      product_type_options: product_type_query.rows,
+      mode: "New",
+      admin: req.session.admin
+    });
+  } else {
+    // Redirect user to login if not already
+    res.redirect('/customer_login');
+  }
 })
 
 
@@ -660,81 +665,92 @@ router.post('/productsave', async function(req, res, next) {
 })
 
 router.post('/edit_product', async function(req, res, next) {
-  const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
-  const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
-  const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
-  var sql = 'SELECT * FROM product ' ;
-  sql += 'LEFT JOIN size_options ON size_options.product_id = product.product_id '
-  sql += 'LEFT JOIN product_activity ON product_activity.activity_id = product.activity_id '
-  sql += 'LEFT JOIN product_category ON product_category.product_category_id = product.product_category_id '
-  sql += 'LEFT JOIN brand ON brand.brand_id = product.brand_id '
-  sql += 'WHERE product.product_id=' + req.body.product_id + ' '
-  sql += 'ORDER BY size_options.size_id'
-  const product_query = await resultQuery(sql);
+  if (req.session.admin) {
+    const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
+    const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
+    const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
+    var sql = 'SELECT * FROM product ' ;
+    sql += 'LEFT JOIN size_options ON size_options.product_id = product.product_id '
+    sql += 'LEFT JOIN product_activity ON product_activity.activity_id = product.activity_id '
+    sql += 'LEFT JOIN product_category ON product_category.product_category_id = product.product_category_id '
+    sql += 'LEFT JOIN brand ON brand.brand_id = product.brand_id '
+    sql += 'WHERE product.product_id=' + req.body.product_id + ' '
+    sql += 'ORDER BY size_options.size_id'
+    const product_query = await resultQuery(sql);
 
-  // Render the pug template file with the database results
-  res.render('edit_products', {
-    //load product detials
-    product_id:  product_query.rows[0].product_id,
-    product_name: product_query.rows[0].product_name,
-    price: product_query.rows[0].price,
-    colour: product_query.rows[0].colour,
-    brand: product_query.rows[0].brand_name,
-    activity: product_query.rows[0].activity,
-    desc: product_query.rows[0].description,
-    popular_item: product_query.rows[0].popular_item,
-    product_type: product_query.rows[0].category,
-    brand_options: brand_query.rows,
-    activity_options: activity_query.rows,
-    product_type_options: product_type_query.rows,
-    mode: "Edit",
-    admin: req.session.admin
-  });
+    // Render the pug template file with the database results
+    res.render('edit_products', {
+      //load product detials
+      product_id:  product_query.rows[0].product_id,
+      product_name: product_query.rows[0].product_name,
+      price: product_query.rows[0].price,
+      colour: product_query.rows[0].colour,
+      brand: product_query.rows[0].brand_name,
+      activity: product_query.rows[0].activity,
+      desc: product_query.rows[0].description,
+      popular_item: product_query.rows[0].popular_item,
+      product_type: product_query.rows[0].category,
+      brand_options: brand_query.rows,
+      activity_options: activity_query.rows,
+      product_type_options: product_type_query.rows,
+      mode: "Edit",
+      admin: req.session.admin
+    });
+  } else {
+    // Redirect user to login if not already
+    res.redirect('/customer_login');
+  }
 })
 
 router.post('/remove_product', async function(req, res, next) {
-  const product_id = req.body.product_id;
-    // Make a database query
-    var sql = "DELETE FROM product WHERE product_id = $1";
-    //Execute db query
-    dbclient.query(sql, [product_id], (err, result) => {
-      //Check for error in db query
-      if (err) {
-        //display the error
-        console.log('Error querying the database:', err);
-        res.send(500);
-      } else {
+  if (req.session.admin) {
+    const product_id = req.body.product_id;
+      // Make a database query
+      var sql = "DELETE FROM product WHERE product_id = $1";
+      //Execute db query
+      dbclient.query(sql, [product_id], (err, result) => {
+        //Check for error in db query
+        if (err) {
+          //display the error
+          console.log('Error querying the database:', err);
+          res.send(500);
+        } else {
 
-        // Make a database query
-        var sql = "DELETE FROM size_options WHERE product_id = $1";
-        //Execute db query
-        dbclient.query(sql, [product_id], (err, result) => {
-          //Check for error in db query
-          if (err) {
-            //display the error
-            console.log('Error querying the database:', err);
-            res.send(500);
-          } else {
-            //Reload page to show change
-            res.redirect('view_products');
-          }
-            
-        });
-      }
-        
-    });
+          // Make a database query
+          var sql = "DELETE FROM size_options WHERE product_id = $1";
+          //Execute db query
+          dbclient.query(sql, [product_id], (err, result) => {
+            //Check for error in db query
+            if (err) {
+              //display the error
+              console.log('Error querying the database:', err);
+              res.send(500);
+            } else {
+              //Reload page to show change
+              res.redirect('view_products');
+            }
+              
+          });
+        }
+          
+      });
+    } else {
+      // Redirect user to login if not already
+      res.redirect('/customer_login');
+    }
   
 })
 
 
 router.get('/view_products', async function(req, res, next) {
-  const product_id = req.body.product_id;
-    // Make a database query
-    var sql = `SELECT product.*, string_agg(size_options.size, ', ') AS size
-  FROM product
-  INNER JOIN size_options ON product.product_id = size_options.product_id
-  GROUP BY product.product_id
-  ORDER BY product.product_id;`;
+  if (req.session.admin) {
+    const product_id = req.body.product_id;
+      // Make a database query
+      var sql = `SELECT product.*, string_agg(size_options.size, ', ') AS size
+    FROM product
+    INNER JOIN size_options ON product.product_id = size_options.product_id
+    GROUP BY product.product_id
+    ORDER BY product.product_id;`;
     //Execute db query
     dbclient.query(sql, (err, result) => {
       //Check for error in db query
@@ -752,33 +768,42 @@ router.get('/view_products', async function(req, res, next) {
       }
         
     });
+  } else {
+    // Redirect user to login if not already
+    res.redirect('/customer_login');
+  }
   
 })
 
 
 router.get('/edit_size/:product_id/:size_id', async function(req, res, next) {
-  console.log("you got the get for edit_size");
-  const product_id = req.params.product_id;
-  const size_query = await resultQuery("SELECT * FROM size_options WHERE product_id = $1", [product_id]);
-  if (req.params.size_id !== "_") {
-    const size_id = req.params.size_id;
-    const single_size_query = await resultQuery("SELECT * FROM size_options WHERE size_id = $1", [size_id]);
-  
-    res.render('edit_size_options', {
-      size_options: size_query.rows,
-      size_id: single_size_query.rows[0].size_id,
-      size: single_size_query.rows[0].size,
-      size_order: single_size_query.rows[0].size_order,
-      product_id: size_query.rows[0].product_id,
-      admin: req.session.admin
-    });
+  if (req.session.admin) {
+    console.log("you got the get for edit_size");
+    const product_id = req.params.product_id;
+    const size_query = await resultQuery("SELECT * FROM size_options WHERE product_id = $1", [product_id]);
+    if (req.params.size_id !== "_") {
+      const size_id = req.params.size_id;
+      const single_size_query = await resultQuery("SELECT * FROM size_options WHERE size_id = $1", [size_id]);
+    
+      res.render('edit_size_options', {
+        size_options: size_query.rows,
+        size_id: single_size_query.rows[0].size_id,
+        size: single_size_query.rows[0].size,
+        size_order: single_size_query.rows[0].size_order,
+        product_id: size_query.rows[0].product_id,
+        admin: req.session.admin
+      });
+    } else {
+      res.render('edit_size_options', {
+        size_options: size_query.rows,
+        product_id: size_query.rows[0].product_id,
+        admin: req.session.admin
+        
+      });
+    }
   } else {
-    res.render('edit_size_options', {
-      size_options: size_query.rows,
-      product_id: size_query.rows[0].product_id,
-      admin: req.session.admin
-      
-    });
+    // Redirect user to login if not already
+    res.redirect('/customer_login');
   }
   
 })
