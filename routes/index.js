@@ -4,6 +4,7 @@ const dbclient = require('./database');
 const bcrypt = require('bcryptjs');
 var app = require('../app');
 const nodemailer = require("nodemailer");
+var multer  = require('multer')
 
 // Below used to do multiple queries and get the result from all of them
 // util module for handle callback in mysql query
