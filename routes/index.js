@@ -636,7 +636,9 @@ router.get('/add_product',upload.single('prodImage'), async function(req, res, n
     const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
 
     console.log('product added')
-    console.log(req.body);
+    console.log(JSON.stringify(req.body));
+    console.log('--------')
+    console.log(JSON.stringify(req.file))
 
     // Render the pug template file with the database results
     res.render('edit_products', {
