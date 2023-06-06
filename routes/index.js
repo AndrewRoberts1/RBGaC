@@ -661,7 +661,7 @@ router.get('/file_upload',upload.single('prodImage'), async function(req, res, n
 
 
 router.post('/productsave', upload.single('prodImage'), async function(req, res, next) {
-  console.log(JSON.stringify(req.file))
+  console.log(req.file)
   console.log(JSON.stringify(req.body))
   switch (req.body.mode) {
     case "New":
