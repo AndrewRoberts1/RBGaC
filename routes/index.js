@@ -27,7 +27,7 @@ const transporter = nodemailer.createTransport({
 //Add image file to storage
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/public/images/product_images')
+    cb(null, '/images/product_images')
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
@@ -662,6 +662,7 @@ router.get('/file_upload',upload.single('prodImage'), async function(req, res, n
 
 router.post('/productsave', upload.single('prodImage'), async function(req, res, next) {
   console.log(JSON.stringify(req.file))
+  console.log(JSON.stringify(req.body))
   switch (req.body.mode) {
     case "New":
       const insert_prod_query = await resultQuery("INSERT INTO product (product_category_id,activity_id,brand_id,product_name,price,colour,description, popular_item) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
