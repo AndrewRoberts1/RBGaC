@@ -35,7 +35,7 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage })
 
-app.use('/images/product_images', express.static('/images/product_images'));
+
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
