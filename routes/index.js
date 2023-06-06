@@ -629,16 +629,11 @@ router.post('/basket_decrease', async function(req, res, next) {
 })
 
 
-router.get('/add_product',upload.single('prodImage'), async function(req, res, next) {
+router.get('/add_product', async function(req, res, next) {
   if (req.session.admin) {
     const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
     const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
     const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
-
-    console.log('product added')
-    console.log(JSON.stringify(req.body));
-    console.log('--------')
-    console.log(JSON.stringify(req.file))
 
     // Render the pug template file with the database results
     res.render('edit_products', {
@@ -654,8 +649,19 @@ router.get('/add_product',upload.single('prodImage'), async function(req, res, n
   }
 })
 
+router.get('/file_upload',upload.single('prodImage'), async function(req, res, next) {
+  // req.file is the `profile-file` file
+  // req.body will hold the text fields, if there were any
+  console.log(JSON.stringify(req.file))
+  var response = '<a href="/">Home</a><br>'
+  response += "Files uploaded successfully.<br>"
+  response += `<img src="${req.file.path}" /><br>`
+  return res.send(response)
+})
 
-router.post('/productsave', async function(req, res, next) {
+
+router.post('/productsave', upload.single('prodImage'), async function(req, res, next) {
+  console.log(JSON.stringify(req.file))
   switch (req.body.mode) {
     case "New":
       const insert_prod_query = await resultQuery("INSERT INTO product (product_category_id,activity_id,brand_id,product_name,price,colour,description, popular_item) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
