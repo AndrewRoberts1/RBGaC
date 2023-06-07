@@ -671,7 +671,7 @@ router.post('/productsave', upload.single('prodImage'), async function(req, res,
   switch (req.body.mode) {
     case "New":
       //Insert to product and add a single size option
-      const insert_prod_query = await resultQuery("INSERT INTO product (product_category_id,activity_id,brand_id,product_name,price,colour,description, popular_item) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      const insert_prod_query = await resultQuery("INSERT INTO product (product_category_id,activity_id,brand_id,product_name,price,colour,description, popular_item, image_file) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
       [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc, req.body.popular_item, req.file.filename]);
       const get_prod_query = await resultQuery('SELECT * FROM product ORDER BY product_id DESC LIMIT 1');
       const insert_size_query = await resultQuery(`INSERT INTO size_options (product_id) VALUES ($1)`,[get_prod_query.rows[0].product_id]);
