@@ -82,11 +82,10 @@ html(lang='en')
                             .col-md-6.mt-2
                                 label.form-label Popular Item
                                 input#addColour.form-control(type='number' placeholder="1 = Yes / 0 = No" name="popular_item" value=popular_item required)
-                        if mode== "New"
-                            .row.mt-3.justify-content-center
-                                .col-md-4.mx-auto.d-grid
-                                    label.form-label.mt-2 Image
-                                    input.form-control(type='file' name="prodImage")
+                        .row.mt-3.justify-content-center
+                            .col-md-4.mx-auto.d-grid
+                                label.form-label.mt-2 Image
+                                input.form-control(type='file' name="prodImage")
                         .row.mt-3.justify-content-center
                             .col-md-4.mx-auto.d-grid
                                 button#addProduct.btn.btn-secondary(type="submit") Save
