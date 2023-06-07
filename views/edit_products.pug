@@ -58,7 +58,7 @@ html(lang='en')
                                         option(value='' selected='') Please select...
                                     
                                     each row in activity_options 
-                                        if activity = row.activity
+                                        if activity == row.activity
                                             option(value=row.activity_id selected) #{row.activity}
                                         else 
                                             option(value=row.activity_id ) #{row.activity}

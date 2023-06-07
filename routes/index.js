@@ -403,14 +403,11 @@ router.post('/payment', async function(req, res, next) {
     const order_insert_query = await resultQuery(order_insert_sql, [req.session.customer_id, card_id, address_id, req.body.order_amount, "Order Raised", date_today, req.body.delivery_amount]);
     const order_query = await resultQuery(order_sql, [req.session.customer_id]);
     //Get items from the basket
-    console.log('order raised')
 
     const basket_query = await resultQuery(`SELECT * FROM basket
     LEFT JOIN size_options as size ON size.size_id = basket.size_id
     LEFT JOIN product ON product.product_id = size.product_id
     WHERE basket.customer_id =$1`, [req.session.customer_id]);
-
-    console.log('got from basket')
 
     //Move items from basket to ordered items list with new order_id - then delete from basket
 
@@ -577,13 +574,13 @@ router.post('/basket_increase', async function(req, res, next) {
   var size_id = req.body.size_id;
   var customer_id = req.session.customer_id;
   var quantity = req.body.quantity;
-  console.log(quantity);
-  console.log(quantity++);
+  //Increase the quantity by 1
+  quantity++;
   //var update_size_query = await resultQuery("UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3", [quantity++,size_id, customer_id]);
   // Make a database query
   var sql = "UPDATE basket SET quantity=$1 WHERE size_id = $2 AND customer_id=$3";
   //Execute db query
-  dbclient.query(sql, [quantity++,size_id, customer_id], (err, result) => {
+  dbclient.query(sql, [quantity,size_id, customer_id], (err, result) => {
     //Check for error in db query
     if (err) {
       //display the error
@@ -602,8 +599,8 @@ router.post('/basket_decrease', async function(req, res, next) {
   var size_id = req.body.size_id;
   var customer_id = req.session.customer_id;
   var quantity = Number(req.body.quantity);
+  //Reduce the quantity by 1
   quantity--;
-  console.log("the lower quantity is : ",quantity);
   if (quantity==0){
     // Make a database query
     var sql = "DELETE FROM basket WHERE size_id = $1 AND customer_id=$2";
@@ -632,6 +629,7 @@ router.post('/basket_decrease', async function(req, res, next) {
 
 router.get('/add_product', async function(req, res, next) {
   if (req.session.admin) {
+    //Get dropdown data
     const brand_query = await resultQuery("SELECT * FROM brand ORDER BY brand_id");
     const activity_query = await resultQuery("SELECT * FROM product_activity ORDER BY activity_id");
     const product_type_query = await resultQuery("SELECT * FROM product_category ORDER BY product_category_id");
@@ -649,22 +647,6 @@ router.get('/add_product', async function(req, res, next) {
     res.redirect('/customer_login');
   }
 })
-
-const testFolder = './public/images/product_images/';
-const fs = require('fs');
-router.get('/edit_image', async function(req, res, next) {
-
-  res.render('edit_image')
-})
-
-router.post('/file_upload',upload.single('prodImage'),  function(req, res, next) {
-  console.log(JSON.stringify(req.file))
-  var response = '<a href="/">Home</a><br>'
-  response += "Files uploaded successfully.<br>"
-  response += `<img src="${req.file.path}" /><br>`
-  return res.send(response)
-})
-
 
 router.post('/productsave', upload.single('prodImage'), async function(req, res, next) {
   //Decide on whether to insert or update
