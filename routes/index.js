@@ -667,11 +667,10 @@ router.post('/productsave', upload.single('prodImage'), async function(req, res,
       price = $5,
       colour = $6,
       description = $7,
-      popular_item = $8,
-      image_file = $10
+      popular_item = $8
       WHERE product_id = $9;`,
       [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc,
-         req.body.popular_item, req.body.product_id, req.file.filename]);
+         req.body.popular_item, req.body.product_id]);
       break;
   }
   
