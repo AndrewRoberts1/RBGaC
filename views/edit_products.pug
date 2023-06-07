@@ -26,7 +26,7 @@ html(lang='en')
                 form(id="backForm" method="get" action="/view_products")
                     button.btn.btn-secondary.mb-2.mt-2(type="submit") Back
                 div.text-center
-                    form(class="p-3" method="POST" action="/productsave")
+                    form(class="p-3" method="POST" action="/productsave" enctype="multipart/form-data")
                         input#addProdMode.form-control(type='text' name="mode" value=mode  style="display:none;")
                         input#prodId.form-control(type='text' name="product_id" value=product_id  style="display:none;")
                         .row.mt-3.justify-content-center
