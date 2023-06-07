@@ -134,7 +134,8 @@ router.get('/product/:product_id', function(req, res, next) {
         price: product_info.price,
         colour: product_info.colour,
         size_options: result.rows,
-        admin: req.session.admin
+        admin: req.session.admin,
+        image_file: product_info.image_file
       });
     }
   });
@@ -666,12 +667,12 @@ router.post('/file_upload',upload.single('prodImage'),  function(req, res, next)
 
 
 router.post('/productsave', upload.single('prodImage'), async function(req, res, next) {
-  console.log(req.file)
-  console.log(JSON.stringify(req.body))
+  //Decide on whether to insert or update
   switch (req.body.mode) {
     case "New":
-      const insert_prod_query = await resultQuery("INSERT INTO product (product_category_id,activity_id,brand_id,product_name,price,colour,description, popular_item) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
-      [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc, req.body.popular_item]);
+      //Insert to product and add a single size option
+      const insert_prod_query = await resultQuery("INSERT INTO product (product_category_id,activity_id,brand_id,product_name,price,colour,description, popular_item) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc, req.body.popular_item, req.file.filename]);
       const get_prod_query = await resultQuery('SELECT * FROM product ORDER BY product_id DESC LIMIT 1');
       const insert_size_query = await resultQuery(`INSERT INTO size_options (product_id) VALUES ($1)`,[get_prod_query.rows[0].product_id]);
       break;
@@ -687,7 +688,8 @@ router.post('/productsave', upload.single('prodImage'), async function(req, res,
       popular_item = $8,
       image_file = $10
       WHERE product_id = $9;`,
-      [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc, req.body.popular_item, req.body.product_id, req.file.filename]);
+      [req.body.product_type, req.body.activity, req.body.brand, req.body.product_name, req.body.price, req.body.colour, req.body.desc,
+         req.body.popular_item, req.body.product_id, req.file.filename]);
       break;
   }
   
