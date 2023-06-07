@@ -649,7 +649,14 @@ router.get('/add_product', async function(req, res, next) {
   }
 })
 
+const testFolder = './images/product_images/';
+const fs = require('fs');
 router.get('/edit_image', async function(req, res, next) {
+  
+
+  fs.readdirSync(testFolder).forEach(file => {
+    console.log(file);
+  });
   res.render('edit_image')
 })
 
